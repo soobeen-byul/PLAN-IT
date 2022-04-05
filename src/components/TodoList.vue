@@ -2,8 +2,12 @@
   <section>
     <transition-group name="list" tag="ul">
       <li v-for="(todoItem, index) in propsdata" :key="todoItem" class="shadow">
-        <i class="checkBtn fas fa-check" aria-hidden="true"></i>
+        
         {{ todoItem }}
+        <span class="detailBtn" type="button">
+          <i class="fas fa-ellipsis-v"></i>
+        </span>
+
         <span class="removeBtn" type="button" @click="removeTodo(todoItem, index)">
           <i class="far fa-trash-alt" aria-hidden="true"></i>
         </span>
@@ -40,13 +44,13 @@ export default {
     background: white;
     border-radius: 5px;
   }
-  .checkBtn {
-    line-height: 45px;
-    color: #62acde;
-    margin-right: 5px;
+
+  .detailBtn {
+    margin-left: auto;
+    color: #de4343;
   }
   .removeBtn {
-    margin-left: auto;
+    margin-left: 10px;
     color: #de4343;
   }
 
