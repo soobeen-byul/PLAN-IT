@@ -2,8 +2,19 @@
   <section>
     <transition-group name="list" tag="ul">
       <li v-for="(todoItem, index) in propsdata" :key="todoItem" class="shadow">
-        <i class="checkBtn fas fa-check" aria-hidden="true"></i>
+        <i class="checkBtn fas fa-check" aria-hidden="true" @click="updateState(todoItem)"></i>
         {{ todoItem }}
+        <span class="detailBtn" type="button" @click="showDetailModal(todoItem,index)">
+          <i class="fas fa-ellipsis-v"></i>
+        </span>
+
+        <modal v-if="DetailModal" @close="DetailModal = false">
+          <h3 slot="header">Detail</h3>
+          <span slot="footer" @click="DetailModal = false">내용 블라블라
+            <i class="closeModalBtn fas fa-times" aria-hidden="true"></i>
+          </span>
+        </modal>
+
         <span class="removeBtn" type="button" @click="removeTodo(todoItem, index)">
           <i class="far fa-trash-alt" aria-hidden="true"></i>
         </span>
@@ -13,13 +24,39 @@
 </template>
 
 <script>
+import Modal from './common/DetailModal.vue'
+
+
+
 export default {
+  data(){
+    return{
+      DetailModal: false
+    }
+  }
+  ,
+
   props: ['propsdata'],
   methods: {
     removeTodo(todoItem, index) {
       this.$emit('removeTodo', todoItem, index);
+    },
+    updateState(todoItem){
+      var items=JSON.parse(localStorage.getItem(todoItem))
+      items[0].done=!items[0].done
+      localStorage.setItem(todoItem,JSON.stringify(items))
+    } ,
+    
+    showDetailModal(todoItem, index){
+      this.$emit('showDetailModal',todoItem,index)
+      this.DetailModal=!this.DetailModal;
     }
   }
+  ,
+  components: {
+    Modal: Modal
+  }
+
 }
 </script>
 
@@ -40,13 +77,13 @@ export default {
     background: white;
     border-radius: 5px;
   }
-  .checkBtn {
-    line-height: 45px;
-    color: #62acde;
-    margin-right: 5px;
+
+  .detailBtn {
+    margin-left: auto;
+    color: #de4343;
   }
   .removeBtn {
-    margin-left: auto;
+    margin-left: 10px;
     color: #de4343;
   }
 

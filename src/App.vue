@@ -24,13 +24,18 @@ export default {
       localStorage.clear();
       this.todoItems = [];
     },
-		addTodo(todoItem) {
-			localStorage.setItem(todoItem, todoItem);
+		addTodo(todoItem,items) {
+      var stringItems = JSON.stringify(items)
+
+			localStorage.setItem(todoItem, stringItems);
 			this.todoItems.push(todoItem);
 		},
     removeTodo(todoItem, index) {
       localStorage.removeItem(todoItem);
       this.todoItems.splice(index, 1);
+    },
+    showDetailModal(){
+
     }
   },
   created() {
