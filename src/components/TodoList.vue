@@ -2,7 +2,7 @@
   <section>
     <transition-group name="list" tag="ul">
       <li v-for="(todoItem, index) in propsdata" :key="todoItem" class="shadow">
-        <i class="checkBtn fas fa-check" aria-hidden="true"></i>
+        <i class="checkBtn fas fa-check" aria-hidden="true" @click="updateState(todoItem)"></i>
         {{ todoItem }}
         <span class="removeBtn" type="button" @click="removeTodo(todoItem, index)">
           <i class="far fa-trash-alt" aria-hidden="true"></i>
@@ -18,7 +18,13 @@ export default {
   methods: {
     removeTodo(todoItem, index) {
       this.$emit('removeTodo', todoItem, index);
-    }
+    },
+    updateState(todoItem){
+      var items=JSON.parse(localStorage.getItem(todoItem))
+      items[0].done=!items[0].done
+      localStorage.setItem(todoItem,JSON.stringify(items))
+    }  
+
   }
 }
 </script>
