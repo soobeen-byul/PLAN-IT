@@ -2,11 +2,18 @@
   <section>
     <transition-group name="list" tag="ul">
       <li v-for="(todoItem, index) in propsdata" :key="todoItem" class="shadow">
-        
+        <!--체크박스 들어갈 부분-->
         {{ todoItem }}
-        <span class="detailBtn" type="button">
+        <span class="detailBtn" type="button" @click="showDetailModal(todoItem,index)">
           <i class="fas fa-ellipsis-v"></i>
         </span>
+
+        <modal v-if="DetailModal" @close="DetailModal = false">
+          <h3 slot="header">Detail</h3>
+          <span slot="footer" @click="DetailModal = false">내용 블라블라
+            <i class="closeModalBtn fas fa-times" aria-hidden="true"></i>
+          </span>
+        </modal>
 
         <span class="removeBtn" type="button" @click="removeTodo(todoItem, index)">
           <i class="far fa-trash-alt" aria-hidden="true"></i>
@@ -17,13 +24,34 @@
 </template>
 
 <script>
+import Modal from './common/DetailModal.vue'
+
+
+
 export default {
+  data(){
+    return{
+      DetailModal: false
+    }
+  }
+  ,
+
   props: ['propsdata'],
   methods: {
     removeTodo(todoItem, index) {
       this.$emit('removeTodo', todoItem, index);
+    },
+    showDetailModal(todoItem, index){
+      this.$emit('showDetailModal',todoItem,index)
+      this.DetailModal=!this.DetailModal;
     }
+
   }
+  ,
+  components: {
+    Modal: Modal
+  }
+
 }
 </script>
 
