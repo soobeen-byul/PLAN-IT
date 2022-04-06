@@ -2,7 +2,7 @@
   <section>
     <transition-group name="list" tag="ul">
       <li v-for="(todoItem, index) in propsdata" :key="todoItem" class="shadow">
-        <!--체크박스 들어갈 부분-->
+        <i class="checkBtn fas fa-check" aria-hidden="true" @click="updateState(todoItem)"></i>
         {{ todoItem }}
         <span class="detailBtn" type="button" @click="showDetailModal(todoItem,index)">
           <i class="fas fa-ellipsis-v"></i>
@@ -41,11 +41,16 @@ export default {
     removeTodo(todoItem, index) {
       this.$emit('removeTodo', todoItem, index);
     },
+    updateState(todoItem){
+      var items=JSON.parse(localStorage.getItem(todoItem))
+      items[0].done=!items[0].done
+      localStorage.setItem(todoItem,JSON.stringify(items))
+    } ,
+    
     showDetailModal(todoItem, index){
       this.$emit('showDetailModal',todoItem,index)
       this.DetailModal=!this.DetailModal;
     }
-
   }
   ,
   components: {

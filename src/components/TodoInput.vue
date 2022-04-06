@@ -28,7 +28,9 @@ export default {
     addTodo() {
       if (this.newTodoItem !== "") {
         var value = this.newTodoItem && this.newTodoItem.trim();
-				this.$emit('addTodo', value)
+        var items=[{done : false}]
+
+				this.$emit('addTodo', value,items)
         this.clearInput();
       } else {
         this.showModal = !this.showModal;
