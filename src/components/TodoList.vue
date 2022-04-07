@@ -11,15 +11,14 @@
         <modal v-if="DetailModal" @close="DetailModal = false" >
           <h2 slot="header"> {{DetailTodo}} </h2>
           <div slot="content">
-            
             <br>마감기한
             <input type="text" v-model="deadline" placeholder="마감기한을 입력하세요">
             <br>장소
             <input type="text" v-model="place" placeholder="장소를 입력하세요">
           </div>
-          <!-- <span slot="footer" @click="addDetailTodo(DetailTodo,deadline,place)">
+          <span slot="footer" @click="addDetailTodo(DetailTodo,deadline,place)">
             <i class="addDetailBtn fas fa-plus" aria-hidden="true"></i>
-          </span> -->
+          </span>
           <span slot="footer" @click="DetailModal = false">
             <i class="closeModalBtn fas fa-times" aria-hidden="true"></i>
           </span>
@@ -41,7 +40,9 @@ export default {
   data(){
     return{
       DetailModal: false,
-      DetailTodo: ''
+      DetailTodo: '',
+      place:'',
+      deadline:''
     }
   }
   ,
@@ -63,10 +64,19 @@ export default {
       this.DetailModal=!this.DetailModal
       this.DetailTodo=todoItem
     },
-    // addDetailTodo(DetailTodo,deadline,place){
-    //   this.DetailModal=false
-    //   this.$emit('addDetailTodo',DetailTodo,deadline,place)
-    // }
+    addDetailTodo(DetailTodo,deadline,place){
+      this.DetailModal=false
+      this.todoItem=DetailTodo
+      var items={done : false , deadline: deadline, place: place}
+      localStorage.setItem(DetailTodo,JSON.stringify(items))
+      this.clearInput()
+
+      
+    },
+    clearInput(){
+      this.place='';
+      this.deadline='';
+    }
 
   }
   ,

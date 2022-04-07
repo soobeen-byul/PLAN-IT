@@ -16,7 +16,7 @@ import TodoFooter from './components/TodoFooter.vue'
 export default {
   data() {
     return {
-      todoItems: [],
+      todoItems: []
     
     }
   },
@@ -34,30 +34,24 @@ export default {
     removeTodo(todoItem, index) {
       localStorage.removeItem(todoItem);
       this.todoItems.splice(index, 1);
-    },
+    }
 
-    // addDetailTodo(todoItem,deadline,place){
-    //   var items={done : false,deadline:"deadline",place="place"}
-    //   localStorage.setItem(todoItem,JSON.stringify(items))
-    //   // localStorage.setItem(deadline,JSON.stringify(this.deadline))
-    //   // localStorage.setItem(place,JSON.stringify(this.place))
 
-    // }
   },
   created() {
-    console.log(localStorage)
 		if (localStorage.length > 0) {
 			for (var i = 0; i < localStorage.length; i++) {
-				this.todoItems.push(localStorage.key(i));
+        this.todoItems.push(localStorage.key(i));
 			}
-		}
+    }
   },
-  components: {
+    components: {
     'TodoHeader': TodoHeader,
     'TodoInput': TodoInput,
     'TodoList': TodoList,
     'TodoFooter': TodoFooter
-  }
+    }
+  
 }
 </script>
 

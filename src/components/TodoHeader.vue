@@ -1,6 +1,6 @@
 <template>
   <header @:today="today">
-    <h1> TODOLIST </h1>
+    <h1> PLAN IT </h1>
     <div class="today-header">
       <h2>{{ today.date }}</h2>
       <p>오늘은 {{ today.day }} {{ today.time }}</p>
