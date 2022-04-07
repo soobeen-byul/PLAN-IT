@@ -9,14 +9,14 @@
         </span>
 
         <modal v-if="DetailModal" @close="DetailModal = false">
-          <h3 slot="header"> Detail</h3>
+          <h2 slot="header"> Detail</h2>
           <div slot="content">
             <br>마감기한
             <input type="text" v-model=deadline placeholder="마감기한을 입력하세요">
             <br>장소
             <input type="text" v-model=place placeholder="장소를 입력하세요">
           </div>
-          <span slot="footer" @click="DetailModal = false">창종료
+          <span slot="footer" @click="DetailModal = false">
             <i class="closeModalBtn fas fa-times" aria-hidden="true"></i>
           </span>
         </modal>
