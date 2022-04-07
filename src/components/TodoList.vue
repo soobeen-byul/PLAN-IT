@@ -9,7 +9,7 @@
         </span>
 
         <modal v-if="DetailModal" @close="DetailModal = false">
-          <h3 slot="header">Detail</h3>
+          <h3 slot="header">{{detailTodo}}</h3>
           <span slot="footer" @click="DetailModal = false">내용 블라블라
             <i class="closeModalBtn fas fa-times" aria-hidden="true"></i>
           </span>
@@ -33,7 +33,8 @@ export default {
     return{
       DetailModal: false,
       editedTodoItem: [],
-      showModal: false
+      showModal: false,
+      detailTodo : ''
     }
   }
   ,
@@ -53,16 +54,22 @@ export default {
     showDetailModal(todoItem, index){
       this.$emit('showDetailModal',todoItem,index)
       this.DetailModal=!this.DetailModal;
+      this.detailTodo=todoItem
     },
     editTodo(todoItem,index){
-      if (this.editedTodoItem[index] !== "") {
+      if (this.editedTodoItem[index] !== undefined) {
+        console.log(this.editedTodoItem[index])
         var value = this.editedTodoItem[index] && this.editedTodoItem[index].trim();
 				this.$emit('editTodo',index,todoItem,value)
-        this.editedTodoItem=[]
+        this.clearInput();
       } else {
-        this.showModal =!this.showModal;
+        // this.DetailModal=!this.DetailModal 공백 입력시 modal창을 등장시켜라!;
       }
-    }
+    },
+    clearInput() {
+      this.editedTodoItem= [];
+    },
+    
   }
   ,
   components: {
