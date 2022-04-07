@@ -3,13 +3,13 @@
     <h1> TODOLIST </h1>
     <div class="today-header">
       <h2>{{ today.date }}</h2>
-      <p>{{ today.day }} {{ today.time }}</p>
+      <p>오늘은 {{ today.day }} {{ today.time }}</p>
     </div>
   </header>
 </template>
 
 <script>
-var days = ["월", "월", "화", "수", "목", "금", "토"];
+var days = ["두려움의 일요일", "고통의 월요일", "절망의 화요일", "인내의 수요일", "희망의 목요일", "환희의 금요일", "쾌락의 토요일"];
 export default {
   props: {
     state: {

@@ -9,15 +9,15 @@
         </span>
 
         <modal v-if="DetailModal" @close="DetailModal = false" >
-          <h2 slot="header"> Detail</h2>
+          <h2 slot="header"> {{DetailTodo}} </h2>
           <div slot="content">
-            {{items.todoItem}}
+            
             <br>마감기한
             <input type="text" v-model="deadline" placeholder="마감기한을 입력하세요">
             <br>장소
             <input type="text" v-model="place" placeholder="장소를 입력하세요">
           </div>
-          <!-- <span slot="footer" @click="addDetailTodo(todoItem,deadline,place)">
+          <!-- <span slot="footer" @click="addDetailTodo(DetailTodo,deadline,place)">
             <i class="addDetailBtn fas fa-plus" aria-hidden="true"></i>
           </span> -->
           <span slot="footer" @click="DetailModal = false">
@@ -37,12 +37,11 @@
 import Modal from './common/DetailModal.vue'
 
 
-
 export default {
   data(){
     return{
       DetailModal: false,
-
+      DetailTodo: ''
     }
   }
   ,
@@ -62,18 +61,18 @@ export default {
     showDetailModal(todoItem, index){
       this.$emit('showDetailModal',todoItem,index)
       this.DetailModal=!this.DetailModal
-      return todoItem
+      this.DetailTodo=todoItem
     },
-    // addDetailTodo(todoItem,deadline,place){
+    // addDetailTodo(DetailTodo,deadline,place){
     //   this.DetailModal=false
-    //   this.$emit('addDetailTodo',todoItem,deadline,place)
-
+    //   this.$emit('addDetailTodo',DetailTodo,deadline,place)
     // }
 
   }
   ,
   components: {
     Modal: Modal
+
   }
 
 }

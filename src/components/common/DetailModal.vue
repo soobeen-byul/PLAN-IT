@@ -5,6 +5,8 @@
         <div class="modal-container">
           <div class="modal-header">
             <slot name="header">
+              <br>컴포넌트
+              
               <!--  -->
             </slot>
           </div>
@@ -24,14 +26,6 @@
   </transition>
 </template>
 
-<script>
-export default{
-  method:{
-    
-  }
-
-}
-</script>
 
 
 
