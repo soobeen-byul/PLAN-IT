@@ -17,6 +17,7 @@ export default {
   data() {
     return {
       todoItems: []
+    
     }
   },
   methods: {
@@ -33,25 +34,24 @@ export default {
     removeTodo(todoItem, index) {
       localStorage.removeItem(todoItem);
       this.todoItems.splice(index, 1);
-    },
-    showDetailModal(){
-
     }
+
+
   },
   created() {
-    console.log(localStorage)
 		if (localStorage.length > 0) {
 			for (var i = 0; i < localStorage.length; i++) {
-				this.todoItems.push(localStorage.key(i));
+        this.todoItems.push(localStorage.key(i));
 			}
-		}
+    }
   },
-  components: {
+    components: {
     'TodoHeader': TodoHeader,
     'TodoInput': TodoInput,
     'TodoList': TodoList,
     'TodoFooter': TodoFooter
-  }
+    }
+  
 }
 </script>
 
