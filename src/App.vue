@@ -39,10 +39,15 @@ export default {
     }
   },
   created() {
-    console.log(localStorage)
+    // console.log(localStorage)
 		if (localStorage.length > 0) {
 			for (var i = 0; i < localStorage.length; i++) {
 				this.todoItems.push(localStorage.key(i));
+        // var items=JSON.parse(localStorage.getItem(localStorage.key(i)))
+
+        // this.doneItems.push(items.done)
+        // console.log(items.done)
+        
 			}
 		}
   },
