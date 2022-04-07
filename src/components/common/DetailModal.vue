@@ -8,6 +8,10 @@
               <!--  -->
             </slot>
           </div>
+          <div class="modal-content">
+            <slot name="content">
+            </slot>
+          </div>
 
           <div class="modal-footer">
             <slot name="footer">
@@ -55,6 +59,10 @@
 .modal-header h3 {
   margin-top: 0;
   color: #62acde;
+}
+
+.modal-content {
+  background-color: aqua;
 }
 
 .modal-body {
