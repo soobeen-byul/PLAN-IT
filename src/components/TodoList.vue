@@ -87,12 +87,13 @@ export default {
         // this.DetailModal=!this.DetailModal 공백 입력시 modal창을 등장시켜라!;
       }
 
-  }
+  }}
   ,
   components: {
     Modal: Modal
 
   }
+  
 
 }
 </script>
