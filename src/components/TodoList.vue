@@ -3,7 +3,7 @@
     <transition-group name="list" tag="ul">
       <li v-for="(todoItem, index) in propsdata" :key="todoItem" class="shadow">
         <i class="checkBtn fas fa-check" aria-hidden="true" @click="updateState(todoItem)"></i>
-        {{ todoItem }}
+        <input class="list-todoItem" :placeholder="todoItem" v-model="editedTodoItem[index]" @keyup.enter="editTodo(todoItem,index)">
         <span class="detailBtn" type="button" @click="showDetailModal(todoItem,index)">
           <i class="fas fa-ellipsis-v"></i>
         </span>
@@ -42,7 +42,8 @@ export default {
       DetailModal: false,
       DetailTodo: '',
       place:'',
-      deadline:''
+      deadline:'',
+      editedTodoItem: []
     }
   }
   ,
@@ -55,8 +56,9 @@ export default {
     },
     updateState(todoItem){
       var items=JSON.parse(localStorage.getItem(todoItem))
-      items[0].done=!items[0].done
+      items.done=!items.done
       localStorage.setItem(todoItem,JSON.stringify(items))
+      console.log(todoItem.done)
     } ,
     
     showDetailModal(todoItem, index){
@@ -70,13 +72,20 @@ export default {
       var items={done : false , deadline: deadline, place: place}
       localStorage.setItem(DetailTodo,JSON.stringify(items))
       this.clearInput()
-
-      
     },
     clearInput(){
       this.place='';
       this.deadline='';
-    }
+    },
+    editTodo(todoItem,index){
+      if (this.editedTodoItem[index] !== undefined) {
+        console.log(this.editedTodoItem[index])
+        var value = this.editedTodoItem[index] && this.editedTodoItem[index].trim();
+				this.$emit('editTodo',index,todoItem,value)
+        this.editedTodoItem= [];
+      } else {
+        // this.DetailModal=!this.DetailModal 공백 입력시 modal창을 등장시켜라!;
+      }
 
   }
   ,
@@ -121,5 +130,11 @@ export default {
   .list-enter, .list-leave-to {
     opacity: 0;
     transform: translateY(30px);
+  }
+  .list-todoItem{
+    outline: none;
+    border-style: none;
+    transition: opacity 1s;
+  /* font-size: 0.9rem; */
   }
 </style>
