@@ -8,14 +8,18 @@
           <i class="fas fa-ellipsis-v"></i>
         </span>
 
-        <modal v-if="DetailModal" @close="DetailModal = false">
+        <modal v-if="DetailModal" @close="DetailModal = false" >
           <h2 slot="header"> Detail</h2>
           <div slot="content">
+            {{items.todoItem}}
             <br>마감기한
-            <input type="text" v-model=deadline placeholder="마감기한을 입력하세요">
+            <input type="text" v-model="deadline" placeholder="마감기한을 입력하세요">
             <br>장소
-            <input type="text" v-model=place placeholder="장소를 입력하세요">
+            <input type="text" v-model="place" placeholder="장소를 입력하세요">
           </div>
+          <!-- <span slot="footer" @click="addDetailTodo(todoItem,deadline,place)">
+            <i class="addDetailBtn fas fa-plus" aria-hidden="true"></i>
+          </span> -->
           <span slot="footer" @click="DetailModal = false">
             <i class="closeModalBtn fas fa-times" aria-hidden="true"></i>
           </span>
@@ -38,12 +42,13 @@ export default {
   data(){
     return{
       DetailModal: false,
-      clickItem:''
+
     }
   }
   ,
 
   props: ['propsdata'],
+
   methods: {
     removeTodo(todoItem, index) {
       this.$emit('removeTodo', todoItem, index);
@@ -57,7 +62,13 @@ export default {
     showDetailModal(todoItem, index){
       this.$emit('showDetailModal',todoItem,index)
       this.DetailModal=!this.DetailModal
+      return todoItem
     },
+    // addDetailTodo(todoItem,deadline,place){
+    //   this.DetailModal=false
+    //   this.$emit('addDetailTodo',todoItem,deadline,place)
+
+    // }
 
   }
   ,

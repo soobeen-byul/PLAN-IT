@@ -24,6 +24,18 @@
   </transition>
 </template>
 
+<script>
+export default{
+  method:{
+    
+  }
+
+}
+</script>
+
+
+
+
 <style lang="css">
 .closeModalBtn {
   color: rgb(102, 103, 171);
