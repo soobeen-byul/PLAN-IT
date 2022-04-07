@@ -3,7 +3,7 @@
     <transition-group name="list" tag="ul">
       <li v-for="(todoItem, index) in propsdata" :key="todoItem" class="shadow">
         <i class="checkBtn fas fa-check" aria-hidden="true" @click="updateState(todoItem)"></i>
-        {{ todoItem }}
+        <input class="list-todoItem" :placeholder="todoItem" v-model="editedTodoItem[index]" @keyup.enter="editTodo(todoItem,index)">
         <span class="detailBtn" type="button" @click="showDetailModal(todoItem,index)">
           <i class="fas fa-ellipsis-v"></i>
         </span>
@@ -31,7 +31,9 @@ import Modal from './common/DetailModal.vue'
 export default {
   data(){
     return{
-      DetailModal: false
+      DetailModal: false,
+      editedTodoItem: [],
+      showModal: false
     }
   }
   ,
@@ -43,13 +45,23 @@ export default {
     },
     updateState(todoItem){
       var items=JSON.parse(localStorage.getItem(todoItem))
-      items[0].done=!items[0].done
+      items.done=!items.done
       localStorage.setItem(todoItem,JSON.stringify(items))
+      console.log(todoItem.done)
     } ,
     
     showDetailModal(todoItem, index){
       this.$emit('showDetailModal',todoItem,index)
       this.DetailModal=!this.DetailModal;
+    },
+    editTodo(todoItem,index){
+      if (this.editedTodoItem[index] !== "") {
+        var value = this.editedTodoItem[index] && this.editedTodoItem[index].trim();
+				this.$emit('editTodo',index,todoItem,value)
+        this.editedTodoItem=[]
+      } else {
+        this.showModal =!this.showModal;
+      }
     }
   }
   ,
@@ -93,5 +105,11 @@ export default {
   .list-enter, .list-leave-to {
     opacity: 0;
     transform: translateY(30px);
+  }
+  .list-todoItem{
+    outline: none;
+    border-style: none;
+    transition: opacity 1s;
+  /* font-size: 0.9rem; */
   }
 </style>

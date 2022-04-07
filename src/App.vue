@@ -2,7 +2,7 @@
   <div id="app">
     <TodoHeader></TodoHeader>
     <TodoInput v-on:addTodo="addTodo"></TodoInput>
-    <TodoList v-bind:propsdata="todoItems" @removeTodo="removeTodo"></TodoList>
+    <TodoList v-bind:propsdata="todoItems" @removeTodo="removeTodo" @editTodo="editTodo"></TodoList>
     <TodoFooter v-on:removeAll="clearAll"></TodoFooter>
   </div>
 </template>
@@ -35,8 +35,15 @@ export default {
       this.todoItems.splice(index, 1);
     },
     showDetailModal(){
+    },
+    editTodo(index,todoItem,editedTodoItem){
+        var savedItems=JSON.parse(localStorage.getItem(todoItem))
+        localStorage.removeItem(todoItem)
 
-    }
+        this.todoItems[index]=editedTodoItem
+        localStorage.setItem(editedTodoItem,JSON.stringify(savedItems))
+      }
+
   },
   created() {
     console.log(localStorage)

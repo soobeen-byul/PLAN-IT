@@ -28,7 +28,7 @@ export default {
     addTodo() {
       if (this.newTodoItem !== "") {
         var value = this.newTodoItem && this.newTodoItem.trim();
-        var items=[{done : false}]
+        var items={done : false}
 
 				this.$emit('addTodo', value,items)
         this.clearInput();
