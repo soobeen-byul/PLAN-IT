@@ -3,7 +3,7 @@
     <transition-group name="list" tag="ul">
       <li v-for="(todoItem, index) in propsdata" :key="todoItem" class="shadow">
         <i class="checkBtn fas fa-check" aria-hidden="true" @click="updateState(todoItem)"></i>
-        <span id="todo" v-bind:class="{textCompleted: doneItems[index]}"> {{ todoItem }} </span>
+        <span :class="{textCompleted:doneItems[index]}"> {{ todoItem }} </span>
         <span class="detailBtn" type="button" @click="showDetailModal(todoItem,index)">
           <i class="fas fa-ellipsis-v"></i>
         </span>
@@ -42,28 +42,26 @@ export default {
     removeTodo(todoItem, index) {
       this.$emit('removeTodo', todoItem, index);
     },
-    updateState(todoItem, index){
+    updateState(todoItem, doneItems){
       var items=JSON.parse(localStorage.getItem(todoItem))
       items.done=!items.done
-      this.doneItems.splice(index,1,items.done)
       localStorage.setItem(todoItem,JSON.stringify(items))
-    } ,
+      this.doneItems=[]
+			for (var i = 0; i < localStorage.length; i++) {
+        var item=JSON.parse(localStorage.getItem(localStorage.key(i)))
+        this.doneItems.push(item["done"])
+      }
+      this.$emit('clearAll', doneItems)
+      
+    },
+
     
     showDetailModal(todoItem, index){
       this.$emit('showDetailModal',todoItem,index)
       this.DetailModal=!this.DetailModal;
     }
   },
-    created() {
-		if (localStorage.length > 0) {
-			for (var i = 0; i < localStorage.length; i++) {
-        var items=JSON.parse(localStorage.getItem(localStorage.key(i)))
-        this.doneItems.push(items.done)
-        // console.log(items.done)
-        console.log(this.doneItems)
-      }
-    }
-  },
+
   components: {
     Modal: Modal
   }
