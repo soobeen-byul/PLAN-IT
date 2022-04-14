@@ -74,12 +74,12 @@ export default {
       this.todoItem=DetailTodo
       var items={done : false , deadline: deadline, place: place}
       localStorage.setItem(DetailTodo,JSON.stringify(items))
-      this.clearInput()
+      // this.clearInput()
     },
-    clearInput(){
-      this.place='';
-      this.deadline='';
-    },
+    // clearInput(){
+    //   this.place='';
+    //   this.deadline='';
+    // },
     editTodo(todoItem,index){
       if (this.editedTodoItem[index] !== undefined) {
         console.log(this.editedTodoItem[index])
