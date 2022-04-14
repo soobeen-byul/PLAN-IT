@@ -5,7 +5,13 @@
         <div class="modal-container">
           <div class="modal-header">
             <slot name="header">
+              <br>컴포넌트
+              
               <!--  -->
+            </slot>
+          </div>
+          <div class="modal-content">
+            <slot name="content">
             </slot>
           </div>
 
@@ -20,11 +26,18 @@
   </transition>
 </template>
 
+
+
+
+
 <style lang="css">
 .closeModalBtn {
-  color: #62acde;
+  color: rgb(102, 103, 171);
 }
+
+/* 모달창 겉에 배경 */
 .modal-mask {
+  
   position: fixed;
   z-index: 9998;
   top: 0;
@@ -52,9 +65,13 @@
   font-family: Helvetica, Arial, sans-serif;
 }
 
-.modal-header h3 {
+.modal-header h2 {
   margin-top: 0;
-  color: #62acde;
+  color: rgb(102, 103, 171);
+}
+
+.modal-content {
+  margin: 0;
 }
 
 .modal-body {
@@ -62,7 +79,7 @@
 }
 
 .modal-default-button {
-  float: right;
+  float:right;
 }
 
 /*

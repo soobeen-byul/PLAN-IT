@@ -22,7 +22,7 @@
 
 <style lang="css">
 .closeModalBtn {
-  color: #62acde;
+  color: rgb(102, 103, 171);
 }
 .modal-mask {
   position: fixed;
@@ -54,7 +54,7 @@
 
 .modal-header h3 {
   margin-top: 0;
-  color: #62acde;
+  color: rgb(102, 103, 171);
 }
 
 .modal-body {
