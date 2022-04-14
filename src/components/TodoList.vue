@@ -18,19 +18,20 @@
         <DetailModal v-if="DetailModal" @close="DetailModal = false" >
           <h2 slot="header"> {{DetailTodo}} </h2>
           <div slot="content">
+            <br>카테고리
+              <input type="text" v-model="category" placeholder="카테고리를 선택하세요">
             <br>마감기한
-            <input type="text" v-model="deadline" placeholder="마감기한을 입력하세요">
-            <!-- <span class="calendarBtn" type="button">
-              <i class="fas fa-calendar"></i>
-            </span> -->
+              <input type="text" v-model="deadline" placeholder="마감기한을 입력하세요">
             <br>장소
-            <input type="text" v-model="place" placeholder="장소를 입력하세요">
+              <input type="text" v-model="place" placeholder="장소를 입력하세요">
+            <br>메모
+              <input type="text" v-model="memo" placeholder="추가정보를 입력하세요">
           </div>
-          <span slot="footer" @click="addDetailTodo(DetailTodo,deadline,place)">
-            <i class="addDetailBtn fas fa-plus" aria-hidden="true"></i>
+          <span slot="footer" @click="addDetailTodo(DetailTodo,deadline,place,memo,category)">
+            <span class="saveDetailBtn" aria-hidden="true">SAVE</span>
           </span>
           <span slot="footer" @click="DetailModal = false">
-            <i class="closeModalBtn fas fa-times" aria-hidden="true"></i>
+            <span class="closeModalBtn" aria-hidden="true">CLOSE</span>
           </span>
         </DetailModal>
 
@@ -55,6 +56,9 @@ export default {
       DetailTodo: '',
       place:'',
       deadline:'',
+      memo:'',
+      category:'', 
+      //카테고리 라디오버튼 할때 빼기
       editedTodoItem: []
     }
   }
@@ -78,10 +82,10 @@ export default {
       this.DetailModal=!this.DetailModal
       this.DetailTodo=todoItem
     },
-    addDetailTodo(DetailTodo,deadline,place){
+    addDetailTodo(DetailTodo,deadline,place,memo,category){
       this.DetailModal=false
       this.todoItem=DetailTodo
-      var items={done : false , deadline: deadline, place: place}
+      var items={done : false , deadline: deadline, place: place, memo: memo, category: category}
       localStorage.setItem(DetailTodo,JSON.stringify(items))
  
     },
@@ -108,7 +112,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
   ul {
     list-style-type: none;
     padding-left: 0px;
@@ -133,6 +137,29 @@ export default {
   .removeBtn {
     margin-left: 10px;
     color: #de4343;
+  }
+
+  .saveDetailBtn{
+    width: 7.5rem;
+    height: 40px;
+    line-height: 40px;
+    color: rgb(102, 103, 171);
+    background-color:white;
+    border-radius: 5px;
+    margin-right: 0;
+    float:left;
+    border-style: solid;
+  }
+  .closeDetailBtn{
+    width: 7.5rem;
+    height: 40px;
+    line-height: 40px;
+    color: rgb(102, 103, 171);
+    background-color:white;
+    border-radius: 5px;
+    margin-right: 0;
+    float:right;
+    border-style: solid;
   }
 
   .list-enter-active, .list-leave-active {

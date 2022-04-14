@@ -8,6 +8,7 @@
               <!--  -->
             </slot>
           </div>
+
           <div class="modal-content">
             <slot name="content">
             </slot>
@@ -24,15 +25,11 @@
   </transition>
 </template>
 
-
-
-
-
 <style lang="css">
-
-/* 모달창 겉에 배경 */
+.closeModalBtn {
+  color: rgb(102, 103, 171);
+}
 .modal-mask {
-  
   position: fixed;
   z-index: 9998;
   top: 0;
@@ -45,13 +42,13 @@
 }
 
 .modal-wrapper {
-  background-color: #fff;
   display: table-cell;
   vertical-align: middle;
 }
 
 .modal-container {
   width: 300px;
+  height: 175px;
   margin: 0px auto;
   padding: 20px 30px;
   background-color: #fff;
@@ -61,23 +58,19 @@
   font-family: Helvetica, Arial, sans-serif;
 }
 
-.modal-header {
-  margin-bottom: 0;
+.modal-header h3 {
+  margin-top: 0;
   color: rgb(102, 103, 171);
 }
-
 .modal-content {
   margin: 0;
-  background-color: #fff;
 }
-
-.modal-footer{
-  background-color: #fff;
+.modal-body {
+  margin: 20px 0;
 }
-
 
 .modal-default-button {
-  float:right;
+  float: right;
 }
 
 /*
