@@ -13,6 +13,9 @@
           <div slot="content">
             <br>마감기한
             <input type="text" v-model="deadline" placeholder="마감기한을 입력하세요">
+            <span class="calendarBtn" type="button">
+              <i class="fas fa-calendar"></i>
+            </span>
             <br>장소
             <input type="text" v-model="place" placeholder="장소를 입력하세요">
           </div>
