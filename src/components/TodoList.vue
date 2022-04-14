@@ -8,14 +8,21 @@
           <i class="fas fa-ellipsis-v"></i>
         </span>
 
-        <modal v-if="DetailModal" @close="DetailModal = false" >
+        <EditAlertModal v-if="showEditAlertModal" @close="showEditAlertModal = false">
+          <h3 slot="header">경고</h3>
+         <span slot="footer" @click="showEditAlertModal = false">할 일을 입력하세요.
+            <i class="closeModalBtn fas fa-times" aria-hidden="true"></i>
+         </span>
+        </EditAlertModal> 
+
+        <DetailModal v-if="DetailModal" @close="DetailModal = false" >
           <h2 slot="header"> {{DetailTodo}} </h2>
           <div slot="content">
             <br>마감기한
             <input type="text" v-model="deadline" placeholder="마감기한을 입력하세요">
-            <span class="calendarBtn" type="button">
+            <!-- <span class="calendarBtn" type="button">
               <i class="fas fa-calendar"></i>
-            </span>
+            </span> -->
             <br>장소
             <input type="text" v-model="place" placeholder="장소를 입력하세요">
           </div>
@@ -25,7 +32,7 @@
           <span slot="footer" @click="DetailModal = false">
             <i class="closeModalBtn fas fa-times" aria-hidden="true"></i>
           </span>
-        </modal>
+        </DetailModal>
 
         <span class="removeBtn" type="button" @click="removeTodo(todoItem, index)">
           <i class="far fa-trash-alt" aria-hidden="true"></i>
@@ -36,13 +43,15 @@
 </template>
 
 <script>
-import Modal from './common/DetailModal.vue'
+import DetailModal from './common/DetailModal.vue'
+import EditAlertModal from './common/EditAlertModal.vue'
 
 
 export default {
   data(){
     return{
       DetailModal: false,
+      showEditAlertModal: false,
       DetailTodo: '',
       place:'',
       deadline:'',
@@ -74,12 +83,9 @@ export default {
       this.todoItem=DetailTodo
       var items={done : false , deadline: deadline, place: place}
       localStorage.setItem(DetailTodo,JSON.stringify(items))
-      // this.clearInput()
+ 
     },
-    // clearInput(){
-    //   this.place='';
-    //   this.deadline='';
-    // },
+
     editTodo(todoItem,index){
       if (this.editedTodoItem[index] !== undefined) {
         console.log(this.editedTodoItem[index])
@@ -87,13 +93,14 @@ export default {
 				this.$emit('editTodo',index,todoItem,value)
         this.editedTodoItem= [];
       } else {
-        // this.DetailModal=!this.DetailModal 공백 입력시 modal창을 등장시켜라!;
+        this.showEditAlertModal=!this.showEditAlertModal
       }
 
   }}
   ,
   components: {
-    Modal: Modal
+    DetailModal: DetailModal,
+    EditAlertModal: EditAlertModal
 
   }
   
