@@ -3,7 +3,7 @@
     <transition-group name="list" tag="ul">
       <li v-for="(todoItem, index) in propsdata" :key="todoItem" class="shadow">
         <i class="checkBtn fas fa-check" aria-hidden="true" @click="updateState(todoItem)"></i>
-        <input class="list-todoItem" :placeholder="todoItem" v-model="editedTodoItem[index]" @keyup.enter="editTodo(todoItem,index)">
+        <input :class="{textCompleted:doneItems[index]}" :placeholder="todoItem" v-model="editedTodoItem[index]" @keyup.enter="editTodo(todoItem,index)">
         <span class="detailBtn" type="button" @click="showDetailModal(todoItem,index)">
           <i class="fas fa-ellipsis-v"></i>
         </span>
@@ -43,7 +43,8 @@ export default {
       DetailTodo: '',
       place:'',
       deadline:'',
-      editedTodoItem: []
+      editedTodoItem: [],
+      doneItems: []
     }
   }
   ,
@@ -54,13 +55,20 @@ export default {
     removeTodo(todoItem, index) {
       this.$emit('removeTodo', todoItem, index);
     },
-    updateState(todoItem){
+    updateState(todoItem, doneItems){
       var items=JSON.parse(localStorage.getItem(todoItem))
       items.done=!items.done
       localStorage.setItem(todoItem,JSON.stringify(items))
-      console.log(todoItem.done)
-    } ,
-    
+
+      this.doneItems=[]
+			for (var i = 0; i < localStorage.length; i++) {
+        var item=JSON.parse(localStorage.getItem(localStorage.key(i)))
+        this.doneItems.push(item["done"])
+      }
+      this.$emit('clearAll', doneItems)
+      
+    },
+
     showDetailModal(todoItem, index){
       this.$emit('showDetailModal',todoItem,index)
       this.DetailModal=!this.DetailModal
@@ -123,6 +131,10 @@ export default {
   .removeBtn {
     margin-left: 10px;
     color: #de4343;
+  }
+  .textCompleted {
+    text-decoration: line-through;
+    color: #b3adad;
   }
 
   .list-enter-active, .list-leave-active {

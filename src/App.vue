@@ -24,6 +24,7 @@ export default {
     clearAll() {
       localStorage.clear();
       this.todoItems = [];
+      this.doneItems = [];
     },
 		addTodo(todoItem,items) {
       var stringItems = JSON.stringify(items)

@@ -30,7 +30,7 @@ export default {
         var value = this.newTodoItem && this.newTodoItem.trim();
         var items={done : false}
 
-				this.$emit('addTodo', value,items)
+				this.$emit('addTodo', value, items)
         this.clearInput();
       } else {
         this.showModal = !this.showModal;
