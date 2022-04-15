@@ -2,8 +2,8 @@
   <section>
     <transition-group name="list" tag="ul">
       <li v-for="(todoItem, index) in propsdata" :key="todoItem" class="shadow">
-        <i class="checkBtn fas fa-check" aria-hidden="true" @click="updateState(todoItem)"></i>
-        <input :class="{textCompleted:doneItems[index]}" :placeholder="todoItem" v-model="editedTodoItem[index]" @keyup.enter="editTodo(todoItem,index)">
+        <img id="doneIcon" src="..\public\img\seed.png" width="25" height="25" class="doneIcon" aria-hidden="true" @click="updateState(todoItem)">
+        <input style="outline:none; border-style:none;" :class="{textCompleted:doneItems[index]}" :placeholder="todoItem" v-model="editedTodoItem[index]" @keyup.enter="editTodo(todoItem,index)">
         <span class="detailBtn" type="button" @click="showDetailModal(todoItem,index)">
           <i class="fas fa-ellipsis-v"></i>
         </span>
@@ -58,6 +58,9 @@ export default {
     updateState(todoItem, doneItems){
       var items=JSON.parse(localStorage.getItem(todoItem))
       items.done=!items.done
+      if (items.done==true) {
+        document.getElementById("doneIcon").src.replace("seed.png", "flower.png")
+      }
       localStorage.setItem(todoItem,JSON.stringify(items))
 
       this.doneItems=[]
@@ -79,11 +82,6 @@ export default {
       this.todoItem=DetailTodo
       var items={done : false , deadline: deadline, place: place}
       localStorage.setItem(DetailTodo,JSON.stringify(items))
-      this.clearInput()
-    },
-    clearInput(){
-      this.place='';
-      this.deadline='';
     },
     editTodo(todoItem,index){
       if (this.editedTodoItem[index] !== undefined) {
@@ -149,5 +147,8 @@ export default {
     border-style: none;
     transition: opacity 1s;
   /* font-size: 0.9rem; */
+  }
+  .doneIcon {
+    
   }
 </style>
