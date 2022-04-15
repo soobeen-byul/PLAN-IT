@@ -178,4 +178,7 @@ export default {
     transition: opacity 1s;
   /* font-size: 0.9rem; */
   }
+  .doneIcon {
+    
+  }
 </style>
