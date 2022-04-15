@@ -76,15 +76,15 @@ export default {
       var keyIdx=this.propsIdx[index]
       this.$emit('updateState',keyIdx,index);
     },
-    updateState(todoItem){
-      var items=JSON.parse(localStorage.getItem(todoItem))
-      items.done=!items.done
-      localStorage.setItem(todoItem,JSON.stringify(items))
-      console.log(todoItem.done)
-    } ,
+    // updateState(todoItem){
+    //   var items=JSON.parse(localStorage.getItem(todoItem))
+    //   items.done=!items.done
+    //   localStorage.setItem(todoItem,JSON.stringify(items))
+    //   console.log(todoItem.done)
+    // } ,
     
     showDetailModal(index){
-      this.$emit('showDetailModal',todoItem,index)
+      // this.$emit('showDetailModal',index)
       this.TFDetailModal=!this.TFDetailModal
       this.DetailIndex=index
       
@@ -99,13 +99,16 @@ export default {
       this.TFDetailModal=false
       var keyIdx=this.propsIdx[DetailIndex]
    
-      var items={done : done , deadline: deadline, place: place, memo: memo, category: category}
+      var items={todo :this.propsdata[DetailIndex], done : this.done , deadline: this.deadline, place: this.place, memo: this.memo, category: this.category}
       localStorage.setItem(keyIdx,JSON.stringify(items))
       this.clearInput()
     },
     clearInput(){
       this.place='';
       this.deadline='';
+      this.done=''
+      this.memo=''
+      this.category=''
     },
     editTodo(index){
       if (this.editedTodoItem[index] !== undefined) {
