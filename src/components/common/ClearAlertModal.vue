@@ -26,9 +26,7 @@
 </template>
 
 <style lang="css">
-.closeModalBtn {
-  color: rgb(102, 103, 171);
-}
+
 .modal-mask {
   position: fixed;
   z-index: 9998;

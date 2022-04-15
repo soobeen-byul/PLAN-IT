@@ -67,7 +67,7 @@ export default {
     float:left;
     border-style: solid;
   }
-    .noCloseBtn{
+  .noCloseBtn{
     width: 7.5rem;
     height: 40px;
     line-height: 40px;

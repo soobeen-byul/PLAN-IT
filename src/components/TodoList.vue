@@ -15,7 +15,7 @@
          </span>
         </EditAlertModal> 
 
-        <DetailModal v-if="DetailModal" @close="DetailModal = false" >
+        <DetailModal v-if="TFDetailModal" @close="TFDetailModal = false">
           <h2 slot="header"> {{DetailTodo}} </h2>
           <div slot="content">
             <br>카테고리
@@ -28,10 +28,10 @@
               <input type="text" v-model="memo" placeholder="추가정보를 입력하세요">
           </div>
           <span slot="footer" @click="addDetailTodo(DetailTodo,deadline,place,memo,category)">
-            <span class="saveDetailBtn" aria-hidden="true">SAVE</span>
+            <span class="saveDetailBtn" >SAVE</span>
           </span>
-          <span slot="footer" @click="DetailModal = false">
-            <span class="closeModalBtn" aria-hidden="true">CLOSE</span>
+          <span slot="footer" @click="TFDetailModal = false">
+            <span class="closeDetailBtn" >CLOSE</span>
           </span>
         </DetailModal>
 
@@ -51,7 +51,7 @@ import EditAlertModal from './common/EditAlertModal.vue'
 export default {
   data(){
     return{
-      DetailModal: false,
+      TFDetailModal: false,
       showEditAlertModal: false,
       DetailTodo: '',
       place:'',
@@ -79,11 +79,11 @@ export default {
     
     showDetailModal(todoItem, index){
       this.$emit('showDetailModal',todoItem,index)
-      this.DetailModal=!this.DetailModal
+      this.TFDetailModal=!this.TFDetailModal
       this.DetailTodo=todoItem
     },
     addDetailTodo(DetailTodo,deadline,place,memo,category){
-      this.DetailModal=false
+      this.TFDetailModal=false
       this.todoItem=DetailTodo
       var items={done : false , deadline: deadline, place: place, memo: memo, category: category}
       localStorage.setItem(DetailTodo,JSON.stringify(items))
@@ -139,28 +139,7 @@ export default {
     color: #de4343;
   }
 
-  .saveDetailBtn{
-    width: 7.5rem;
-    height: 40px;
-    line-height: 40px;
-    color: rgb(102, 103, 171);
-    background-color:white;
-    border-radius: 5px;
-    margin-right: 0;
-    float:left;
-    border-style: solid;
-  }
-  .closeDetailBtn{
-    width: 7.5rem;
-    height: 40px;
-    line-height: 40px;
-    color: rgb(102, 103, 171);
-    background-color:white;
-    border-radius: 5px;
-    margin-right: 0;
-    float:right;
-    border-style: solid;
-  }
+
 
   .list-enter-active, .list-leave-active {
     transition: all 1s;
