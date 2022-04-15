@@ -51,17 +51,21 @@ export default {
 
 <style scoped>
   .clearAllContainer {
-    width:624px;
+    width:370px;
     height: 50px;
     line-height: 50px;
     background-color: white;
     border-radius: 5px;
-    margin-right: 0;
-    float:right;
+    margin-top: 0;
+    float:none;
+    
   }
   .pageContainer{
+    height: 40px;
+    line-height:40px;
     margin-top:20px;
     width:auto;
+    
   }
 
   .clearAllBtn {
@@ -70,23 +74,17 @@ export default {
     float:none;
   }
   .allBtn{
-    border-style: solid;
     color: rgb(102, 103, 171);
-    background-color: white;
     width: 100px;
     float:left;
   }
   .unfinishedBtn{
-    border-style: solid;
     color: rgb(102, 103, 171);
-    background-color: white;
     width: 100px;
     float:auto;
   }
   .finishedBtn{
-    border-style: solid;
     color: rgb(102, 103, 171);
-    background-color: white;
     width: 100px;
     float:right;
   }
