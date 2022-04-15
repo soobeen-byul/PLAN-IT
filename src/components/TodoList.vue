@@ -2,7 +2,7 @@
   <section>
     <transition-group name="list" tag="ul">
       <li v-for="(todoItem, index) in propsdata" :key="todoItem" class="shadow">
-        <i class="checkBtn fas fa-check" aria-hidden="true" @click="updateState(index)"></i>
+        <span type="button" aria-hidden="true" @click="updateState(index)"><img v-if=propsDone[index] src="..\src\assets\flower.png" width="25" height="25" align='center'><img v-else src="..\src\assets\seed.png" width="25" height="25" align='center'></span>
         <input :class="{textCompleted:propsDone[index]}" style="outline: none;border-style: none;" :placeholder="todoItem" v-model="editedTodoItem[index]" @keyup.enter="editTodo(index)">
         <span class="detailBtn" type="button" @click="showDetailModal(index)">
           <i class="fas fa-ellipsis-v"></i>
