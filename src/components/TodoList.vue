@@ -8,21 +8,32 @@
           <i class="fas fa-ellipsis-v"></i>
         </span>
 
-        <modal v-if="DetailModal" @close="DetailModal = false" >
+        <EditAlertModal v-if="showEditAlertModal" @close="showEditAlertModal = false">
+          <h3 slot="header">경고</h3>
+         <span slot="footer" @click="showEditAlertModal = false">할 일을 입력하세요.
+            <i class="closeModalBtn fas fa-times" aria-hidden="true"></i>
+         </span>
+        </EditAlertModal> 
+
+        <DetailModal v-if="TFDetailModal" @close="TFDetailModal = false">
           <h2 slot="header"> {{propsdata[DetailIndex]}} </h2>
           <div slot="content">
+            <br>카테고리
+              <input type="text" v-model="category" placeholder="카테고리를 선택하세요">
             <br>마감기한
-            <input type="text" v-model="deadline">
+              <input type="text" v-model="deadline">
             <br>장소
-            <input type="text" v-model="place">
+              <input type="text" v-model="place">
+            <br>메모
+              <input type="text" v-model="memo">
           </div>
-          <span slot="footer" @click="addDetailTodo(DetailIndex,deadline,place)">
-            <i class="addDetailBtn fas fa-plus" aria-hidden="true"></i>
+          <span slot="footer" @click="addDetailTodo(DetailIndex,deadline,place,memo,category)">
+            <span class="saveDetailBtn" >SAVE</span>
           </span>
-          <span slot="footer" @click="DetailModal = false">
-            <i class="closeModalBtn fas fa-times" aria-hidden="true"></i>
+          <span slot="footer" @click="TFDetailModal = false">
+            <span class="closeDetailBtn" >CLOSE</span>
           </span>
-        </modal>
+        </DetailModal>
 
         <span class="removeBtn" type="button" @click="removeTodo(index)">
           <i class="far fa-trash-alt" aria-hidden="true"></i>
@@ -33,16 +44,22 @@
 </template>
 
 <script>
-import Modal from './common/DetailModal.vue'
+import DetailModal from './common/DetailModal.vue'
+import EditAlertModal from './common/EditAlertModal.vue'
 
 
 export default {
   data(){
     return{
-      DetailModal: false,
+      TFDetailModal: false,
+      showEditAlertModal: false,
       DetailTodo: '',
       place:'',
       deadline:'',
+      memo:'',
+      category:'',
+      done:'',
+      //카테고리 라디오버튼 할때 빼기
       editedTodoItem: [],
       doneItems: []
     }
@@ -59,21 +76,30 @@ export default {
       var keyIdx=this.propsIdx[index]
       this.$emit('updateState',keyIdx,index);
     },
-
+    updateState(todoItem){
+      var items=JSON.parse(localStorage.getItem(todoItem))
+      items.done=!items.done
+      localStorage.setItem(todoItem,JSON.stringify(items))
+      console.log(todoItem.done)
+    } ,
+    
     showDetailModal(index){
-     
-      this.DetailModal=!this.DetailModal
+      this.$emit('showDetailModal',todoItem,index)
+      this.TFDetailModal=!this.TFDetailModal
       this.DetailIndex=index
-      this.place=JSON.parse(localStorage.getItem(this.propsIdx[index])).place;
-      this.deadline=JSON.parse(localStorage.getItem(this.propsIdx[index])).deadline;
+      
+      var items =JSON.parse(localStorage.getItem(this.propsIdx[index]))
+      this.done=items.done
+      this.place=items.place
+      this.deadline=items.deadline
+      this.memo=items.memo
+      this.category=items.category 
     },
-    addDetailTodo(DetailIndex,deadline,place){
-      this.DetailModal=false
-  
+    addDetailTodo(DetailIndex){
+      this.TFDetailModal=false
       var keyIdx=this.propsIdx[DetailIndex]
-      var items=JSON.parse(localStorage.getItem(keyIdx))
-      items.deadline=deadline
-      items.place=place
+   
+      var items={done : done , deadline: deadline, place: place, memo: memo, category: category}
       localStorage.setItem(keyIdx,JSON.stringify(items))
       this.clearInput()
     },
@@ -88,13 +114,14 @@ export default {
 				this.$emit('editTodo',keyIdx,index,value)
         this.editedTodoItem= [];
       } else {
-        // this.DetailModal=!this.DetailModal 공백 입력시 modal창을 등장시켜라!;
+        this.showEditAlertModal=!this.showEditAlertModal
       }
 
   }}
   ,
   components: {
-    Modal: Modal
+    DetailModal: DetailModal,
+    EditAlertModal: EditAlertModal
 
   }
   
@@ -102,7 +129,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
   ul {
     list-style-type: none;
     padding-left: 0px;
@@ -132,6 +159,8 @@ export default {
     text-decoration: line-through;
     color: #b3adad;
   }
+
+
 
   .list-enter-active, .list-leave-active {
     /* transition: all 1s; */
