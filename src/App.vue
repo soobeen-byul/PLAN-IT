@@ -2,7 +2,7 @@
   <div id="app">
     <TodoHeader></TodoHeader>
     <TodoInput v-on:addTodo="addTodo"></TodoInput>
-    <TodoList v-bind:propsdata="todoItems" @removeTodo="removeTodo" @editTodo="editTodo"></TodoList>
+    <TodoList v-bind:propsdata="todoItems"  v-bind:propsIdx="todoItems_Idx" v-bind:propsDone="doneItems" @removeTodo="removeTodo" @editTodo="editTodo" @updateState="updateState"></TodoList>
     <TodoFooter v-on:removeAll="clearAll"></TodoFooter>
   </div>
 </template>
@@ -16,7 +16,9 @@ import TodoFooter from './components/TodoFooter.vue'
 export default {
   data() {
     return {
-      todoItems: []
+      todoItems: [],
+      todoItems_Idx: [],
+      doneItems : []
     
     }
   },
@@ -24,32 +26,47 @@ export default {
     clearAll() {
       localStorage.clear();
       this.todoItems = [];
-      this.doneItems = [];
     },
-		addTodo(todoItem,items) {
-      var stringItems = JSON.stringify(items)
-
-			localStorage.setItem(todoItem, stringItems);
-			this.todoItems.push(todoItem);
+		addTodo(keyIdx,todoItem) {
+			localStorage.setItem(keyIdx, JSON.stringify(todoItem));
+			this.todoItems.push(todoItem.todo);
+      this.todoItems_Idx.push(keyIdx);
 		},
-    removeTodo(todoItem, index) {
-      localStorage.removeItem(todoItem);
+    removeTodo(keyIdx,index) {
+      localStorage.removeItem(keyIdx);
       this.todoItems.splice(index, 1);
+      this.todoItems_Idx.splice(index, 1);
     },
-    editTodo(index,todoItem,editedTodoItem){
-        var savedItems=JSON.parse(localStorage.getItem(todoItem))
-        localStorage.removeItem(todoItem)
+    editTodo(keyIdx,index,editedTodoItem){
+        var savedItems=JSON.parse(localStorage.getItem(keyIdx))
+        savedItems.todo=editedTodoItem
+        this.todoItems.splice(index,1,editedTodoItem)
+        // this.todoItems[index]=editedTodoItem
+        localStorage.setItem(keyIdx,JSON.stringify(savedItems))
+      
+      },
+    updateState(keyIdx,index){
+      var items=JSON.parse(localStorage.getItem(keyIdx))
+      items.done=!items.done
+      localStorage.setItem(keyIdx,JSON.stringify(items))
 
-        this.todoItems[index]=editedTodoItem
-        localStorage.setItem(editedTodoItem,JSON.stringify(savedItems))
-      }
+      this.doneItems.splice(index,1,!this.doneItems[index])
+
+      
+    }
 
   },
   created() {
 	if (localStorage.length > 0) {
 			for (var i = 0; i < localStorage.length; i++) {
-        this.todoItems.push(localStorage.key(i));
+        var Idx=localStorage.key(i)
+        this.todoItems_Idx.push(Idx)
+
+        var item= JSON.parse(localStorage[Idx])
+        this.todoItems.push(item.todo);
+        this.doneItems.push(item.done)
 			}
+      
     }
   },
     components: {

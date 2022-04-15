@@ -2,21 +2,21 @@
   <section>
     <transition-group name="list" tag="ul">
       <li v-for="(todoItem, index) in propsdata" :key="todoItem" class="shadow">
-        <i class="checkBtn fas fa-check" aria-hidden="true" @click="updateState(todoItem)"></i>
-        <input :class="{textCompleted:doneItems[index]}" :placeholder="todoItem" v-model="editedTodoItem[index]" @keyup.enter="editTodo(todoItem,index)">
-        <span class="detailBtn" type="button" @click="showDetailModal(todoItem,index)">
+        <i class="checkBtn fas fa-check" aria-hidden="true" @click="updateState(index)"></i>
+        <input :class="{textCompleted:propsDone[index]}" style="outline: none;border-style: none;" :placeholder="todoItem" v-model="editedTodoItem[index]" @keyup.enter="editTodo(index)">
+        <span class="detailBtn" type="button" @click="showDetailModal(index)">
           <i class="fas fa-ellipsis-v"></i>
         </span>
 
         <modal v-if="DetailModal" @close="DetailModal = false" >
-          <h2 slot="header"> {{DetailTodo}} </h2>
+          <h2 slot="header"> {{propsdata[DetailIndex]}} </h2>
           <div slot="content">
             <br>마감기한
-            <input type="text" v-model="deadline" placeholder="마감기한을 입력하세요">
+            <input type="text" v-model="deadline">
             <br>장소
-            <input type="text" v-model="place" placeholder="장소를 입력하세요">
+            <input type="text" v-model="place">
           </div>
-          <span slot="footer" @click="addDetailTodo(DetailTodo,deadline,place)">
+          <span slot="footer" @click="addDetailTodo(DetailIndex,deadline,place)">
             <i class="addDetailBtn fas fa-plus" aria-hidden="true"></i>
           </span>
           <span slot="footer" @click="DetailModal = false">
@@ -24,7 +24,7 @@
           </span>
         </modal>
 
-        <span class="removeBtn" type="button" @click="removeTodo(todoItem, index)">
+        <span class="removeBtn" type="button" @click="removeTodo(index)">
           <i class="far fa-trash-alt" aria-hidden="true"></i>
         </span>
       </li>
@@ -48,48 +48,44 @@ export default {
     }
   }
   ,
-
-  props: ['propsdata'],
+  props: ['propsdata','propsIdx','propsDone'],
 
   methods: {
-    removeTodo(todoItem, index) {
-      this.$emit('removeTodo', todoItem, index);
+    removeTodo(index) {
+      var keyIdx=this.propsIdx[index]
+      this.$emit('removeTodo',keyIdx,index);
     },
-    updateState(todoItem, doneItems){
-      var items=JSON.parse(localStorage.getItem(todoItem))
-      items.done=!items.done
-      localStorage.setItem(todoItem,JSON.stringify(items))
-
-      this.doneItems=[]
-			for (var i = 0; i < localStorage.length; i++) {
-        var item=JSON.parse(localStorage.getItem(localStorage.key(i)))
-        this.doneItems.push(item["done"])
-      }
-      this.$emit('clearAll', doneItems)
-      
+    updateState(index){
+      var keyIdx=this.propsIdx[index]
+      this.$emit('updateState',keyIdx,index);
     },
 
-    showDetailModal(todoItem, index){
-      this.$emit('showDetailModal',todoItem,index)
+    showDetailModal(index){
+     
       this.DetailModal=!this.DetailModal
-      this.DetailTodo=todoItem
+      this.DetailIndex=index
+      this.place=JSON.parse(localStorage.getItem(this.propsIdx[index])).place;
+      this.deadline=JSON.parse(localStorage.getItem(this.propsIdx[index])).deadline;
     },
-    addDetailTodo(DetailTodo,deadline,place){
+    addDetailTodo(DetailIndex,deadline,place){
       this.DetailModal=false
-      this.todoItem=DetailTodo
-      var items={done : false , deadline: deadline, place: place}
-      localStorage.setItem(DetailTodo,JSON.stringify(items))
+  
+      var keyIdx=this.propsIdx[DetailIndex]
+      var items=JSON.parse(localStorage.getItem(keyIdx))
+      items.deadline=deadline
+      items.place=place
+      localStorage.setItem(keyIdx,JSON.stringify(items))
       this.clearInput()
     },
     clearInput(){
       this.place='';
       this.deadline='';
     },
-    editTodo(todoItem,index){
+    editTodo(index){
       if (this.editedTodoItem[index] !== undefined) {
-        console.log(this.editedTodoItem[index])
         var value = this.editedTodoItem[index] && this.editedTodoItem[index].trim();
-				this.$emit('editTodo',index,todoItem,value)
+        var keyIdx=this.propsIdx[index]
+				this.$emit('editTodo',keyIdx,index,value)
         this.editedTodoItem= [];
       } else {
         // this.DetailModal=!this.DetailModal 공백 입력시 modal창을 등장시켜라!;
@@ -138,7 +134,7 @@ export default {
   }
 
   .list-enter-active, .list-leave-active {
-    transition: all 1s;
+    /* transition: all 1s; */
   }
   .list-enter, .list-leave-to {
     opacity: 0;

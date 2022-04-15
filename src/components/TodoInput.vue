@@ -28,9 +28,10 @@ export default {
     addTodo() {
       if (this.newTodoItem !== "") {
         var value = this.newTodoItem && this.newTodoItem.trim();
-        var items={done : false}
+        var todoItem={todo : value, done : false, deadline:'', place: '',memo:''}
+        var keyIdx=Date.now()
 
-				this.$emit('addTodo', value, items)
+				this.$emit('addTodo',keyIdx,todoItem)
         this.clearInput();
       } else {
         this.showModal = !this.showModal;
