@@ -1,8 +1,9 @@
 <template>
   <header @:today="today">
-    <h1> PLAN IT </h1>
+    <h1> <img class="flowerlogo" src='../assets/flower.png'>PLAN IT<img class="flowerlogo" src='../assets/flower.png'></h1>
     <div class="today-header">
-      <h2>{{ today.date }}</h2>
+      <h2><span class="leftpageBtn fas fa-angle-left" type="Button">
+        </span>     {{today.date}}     <span class="rightpageBtn fas fa-angle-right" type="Button"></span></h2>
       <p>오늘은 {{ today.day }} {{ today.time }}</p>
     </div>
   </header>
@@ -75,8 +76,11 @@ export default {
   .today-header{
     color:rgba(102, 103, 171, 0.614);
     line-height: 50%;
-
-
-
   }
+  .flowerlogo{
+    height: 35px;
+    width: 35px;
+    vertical-align: middle;
+  }
+
 </style>
