@@ -26,11 +26,14 @@ export default {
     clearAll() {
       localStorage.clear();
       this.todoItems = [];
+      this.todoItems_Idx= [];
+      this.doneItems= [];
     },
 		addTodo(keyIdx,todoItem) {
 			localStorage.setItem(keyIdx, JSON.stringify(todoItem));
 			this.todoItems.push(todoItem.todo);
       this.todoItems_Idx.push(keyIdx);
+      this.doneItems.push(todoItem.done);
 		},
     removeTodo(keyIdx,index) {
       localStorage.removeItem(keyIdx);
@@ -49,9 +52,8 @@ export default {
       var items=JSON.parse(localStorage.getItem(keyIdx))
       items.done=!items.done
       localStorage.setItem(keyIdx,JSON.stringify(items))
-
+      
       this.doneItems.splice(index,1,!this.doneItems[index])
-
       
     }
 
@@ -61,7 +63,7 @@ export default {
 			for (var i = 0; i < localStorage.length; i++) {
         var Idx=localStorage.key(i)
         this.todoItems_Idx.push(Idx)
-
+    
         var item= JSON.parse(localStorage[Idx])
         this.todoItems.push(item.todo);
         this.doneItems.push(item.done)
