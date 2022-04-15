@@ -1,7 +1,11 @@
 <template>
   <div class="clearAllContainer">
     <span class="clearAllBtn" @click="showClearModal">Clear All</span>
-  
+    <div class="pageContainer">
+      <span class="allBtn">ALL</span>
+      <span class="unfinishedBtn">UNFINISHED</span>
+      <span class="finishedBtn">FINISHED</span>
+    </div>
 
     <ClearAlertModal v-if="showClearAlertModal" @close="showClearAlertModal = false">
       <h3 slot="header">경고</h3>
@@ -12,6 +16,9 @@
       </span>
     </ClearAlertModal> 
   </div>
+
+
+
 </template>
 
 <script>
@@ -44,18 +51,46 @@ export default {
 
 <style scoped>
   .clearAllContainer {
-    width: 8.5rem;
+    width:370px;
     height: 50px;
     line-height: 50px;
     background-color: white;
     border-radius: 5px;
-    margin-right: 0;
-    float:right; 
+    margin-top: 0;
+    float:none;
+    
+  }
+  .pageContainer{
+    height: 40px;
+    line-height:40px;
+    margin-top:20px;
+    width:auto;
+    
+  }
 
-  }
   .clearAllBtn {
+    width: 8.5rem;
     color: #e20303;
+    float:none;
   }
+  .allBtn{
+    color: rgb(102, 103, 171);
+    width: 100px;
+    float:left;
+  }
+  .unfinishedBtn{
+    color: rgb(102, 103, 171);
+    width: 100px;
+    float:auto;
+  }
+  .finishedBtn{
+    color: rgb(102, 103, 171);
+    width: 100px;
+    float:right;
+  }
+
+
+  
   .realCloseBtn{
     width: 7.5rem;
     height: 40px;
