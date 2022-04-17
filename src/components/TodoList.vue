@@ -20,7 +20,11 @@
           <h2 slot="header"> {{propsdata[DetailIndex]}} </h2>
           <div slot="content">
             <br>카테고리
-              <input type="text" v-model="category" placeholder="카테고리를 선택하세요">
+            <select class="categorybox" v-model="category">
+              <option disabled value="" >카테고리를 선택하세요</option>
+              <option :key=index :value=value  v-for="(value,index) in propsCate">{{propsCate[index]}}</option>
+            </select>
+              <!-- <input type="text" v-model="category" placeholder="카테고리를 선택하세요"> -->
             <br>마감기한
               <input type="date" id="deadline" v-model="deadline">
             <br>장소
@@ -67,7 +71,7 @@ export default {
     }
   }
   ,
-  props: ['propsdata','propsIdx','propsDone','propsDate'],
+  props: ['propsdata','propsIdx','propsDone','propsDate','propsCate'],
 
   methods: {
     removeTodo(index) {

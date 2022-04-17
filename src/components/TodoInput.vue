@@ -17,7 +17,11 @@
         <span class="setupCategoryBtn fas fa-plus" @click="showSetupCategoryModal"></span>
       </h3>
       <div slot="content">
-        <input type="text" v-model="category" placeholder="카테고리를 선택하세요">
+        <select class="categorybox" v-model="category">
+          <option disabled value="" >카테고리를 선택하세요.</option>
+          <option :key=index :value=value  v-for="(value,index) in propsCate">{{propsCate[index]}}</option>
+        </select>
+        <!-- <input type="text" v-model="category" placeholder="카테고리를 선택하세요"> -->
       </div>
       <span slot="footer" class="saveCatecoryBtn" @click="addCategory"> SAVE </span>
     </SelectCategoryModal>
@@ -51,19 +55,20 @@ export default {
       TFSetupModal: false
     }
   },
+  props: ['propsCate'],
   methods: {
     selectCategory(){
       if (this.newTodoItem !== ""){
         this.TFSelectModal =! this.TFSelectModal;
       }
       else{
-this.showModal = !this.showModal;
+        this.showModal = !this.showModal;
       }
     },
     addCategory(){
       var category = this.category;
       var value = this.newTodoItem && this.newTodoItem.trim();
-      var todoItem={todo : value, done : false, deadline:'', place: '',memo:'',category: category,dday:''}
+      var todoItem={todo : value, done : false, deadline:'', place: '',memo:'',category: category}
       var keyIdx=Date.now()
 
       this.$emit('addCategory',keyIdx ,todoItem);

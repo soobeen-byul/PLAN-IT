@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <TodoHeader></TodoHeader>
-    <TodoInput v-on:addCategory="addCategory" v-on:addNewCategory="addNewCategory"></TodoInput>
+    <TodoInput v-on:addCategory="addCategory" v-on:addNewCategory="addNewCategory" v-bind:propsCate="categoryItems"></TodoInput>
     <TodoList v-bind:propsdata="todoItems"  v-bind:propsIdx="todoItems_Idx" v-bind:propsDone="doneItems" v-bind:propsCate="categoryItems" v-bind:propsDate="ddate" @removeTodo="removeTodo" @editTodo="editTodo" @updateState="updateState"></TodoList>
     <TodoFooter v-on:removeAll="clearAll" v-bind:propsDone="doneItems"></TodoFooter>
   </div>
@@ -31,6 +31,8 @@ export default {
       this.todoItems_Idx= [];
       this.doneItems= [];
       this.ddate= [];
+      localStorage.setItem("category",JSON.stringify(this.categoryItems));
+    
     },
 		addCategory(keyIdx,todoItem) {
 			localStorage.setItem(keyIdx, JSON.stringify(todoItem));
