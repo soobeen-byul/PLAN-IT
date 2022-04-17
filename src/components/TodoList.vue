@@ -4,6 +4,7 @@
       <li v-for="(todoItem, index) in propsdata" :key="todoItem" class="shadow">
         <span type="button" aria-hidden="true" @click="updateState(index)"><img v-if=propsDone[index] src="..\src\assets\flower.png" width="25" height="25" align='center'><img v-else src="..\src\assets\seed.png" width="25" height="25" align='center'></span>
         <input :class="{textCompleted:propsDone[index]}" style="outline: none;border-style: none;" :placeholder="todoItem" v-model="editedTodoItem[index]" @keyup.enter="editTodo(index)">
+        <div class="dday"> {{propsDate[index]}} </div>
         <span class="detailBtn" type="button" @click="showDetailModal(index)">
           <i class="fas fa-ellipsis-v"></i>
         </span>
@@ -21,7 +22,7 @@
             <br>카테고리
               <input type="text" v-model="category" placeholder="카테고리를 선택하세요">
             <br>마감기한
-              <input type="text" v-model="deadline">
+              <input type="date" id="deadline" v-model="deadline">
             <br>장소
               <input type="text" v-model="place">
             <br>메모
@@ -61,11 +62,12 @@ export default {
       done:'',
       //카테고리 라디오버튼 할때 빼기
       editedTodoItem: [],
-      doneItems: []
+      doneItems: [],
+      ddate: []
     }
   }
   ,
-  props: ['propsdata','propsIdx','propsDone'],
+  props: ['propsdata','propsIdx','propsDone','propsDate'],
 
   methods: {
     removeTodo(index) {
@@ -93,15 +95,30 @@ export default {
       this.place=items.place
       this.deadline=items.deadline
       this.memo=items.memo
-      this.category=items.category 
+      this.category=items.category
     },
     addDetailTodo(DetailIndex){
       this.TFDetailModal=false
       var keyIdx=this.propsIdx[DetailIndex]
-   
-      var items={todo :this.propsdata[DetailIndex], done : this.done , deadline: this.deadline, place: this.place, memo: this.memo, category: this.category}
-      localStorage.setItem(keyIdx,JSON.stringify(items))
+
+      this.ddate = this.propsDate
+      if (this.deadline.length > 0) {
+        var today = new Date().getTime()
+        var deaddate = new Date(this.deadline.split("-")[0],this.deadline.split("-")[1]-1,this.deadline.split("-")[2]).getTime()
+        this.dday = deaddate - today
+        this.dday = Math.ceil((this.dday) / (1000*60*60*24))
+        if (this.dday > 0) {
+          this.ddate.splice(DetailIndex,1,("D-"+this.dday))
+        } else if (this.dday < 0) {
+          this.ddate.splice(DetailIndex,1,'')
+        } else {this.ddate.splice(DetailIndex,1,'D-day')}
+      } else {this.ddate.splice(DetailIndex,1,'')}
+
+      var items={todo :this.propsdata[DetailIndex], done : this.done , deadline: this.deadline, dday: this.ddate[DetailIndex], place: this.place, memo: this.memo, category: this.category}
+      localStorage.setItem(keyIdx, JSON.stringify(items))
+
       this.clearInput()
+
     },
     clearInput(){
       this.place='';
@@ -178,7 +195,8 @@ export default {
     transition: opacity 1s;
   /* font-size: 0.9rem; */
   }
-  .doneIcon {
-    
+  .dday {
+    font-size: 0.4rem;
+    color:cadetblue;  
   }
 </style>

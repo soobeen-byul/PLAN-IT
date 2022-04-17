@@ -1,6 +1,9 @@
 <template>
   <div class="clearAllContainer">
     <span class="clearAllBtn" @click="showClearModal">Clear All</span>
+    <div class="doneleft">
+      할일 {{doneLeft}}개 남음!
+    </div>
     <div class="pageContainer">
       <span class="allBtn">ALL</span>
       <span class="unfinishedBtn">UNFINISHED</span>
@@ -33,6 +36,8 @@ export default {
     }
 
   },
+  props: ['propsDone'],
+
   methods: {
     showClearModal(){
       this.showClearAlertModal=!this.showClearAlertModal;
@@ -40,8 +45,18 @@ export default {
     clearTodo() {
       this.$emit('removeAll');
       this.showClearAlertModal=!this.showClearAlertModal;
+    },
+  },
+  
+  computed: {
+    doneLeft: function() {
+      var undone = this.propsDone
+      undone = undone.filter(item => item === false);
+      return undone.length
     }
   },
+
+
   components: {
     ClearAlertModal:ClearAlertModal
 

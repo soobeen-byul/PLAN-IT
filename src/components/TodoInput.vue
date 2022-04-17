@@ -28,7 +28,7 @@ export default {
     addTodo() {
       if (this.newTodoItem !== "") {
         var value = this.newTodoItem && this.newTodoItem.trim();
-        var todoItem={todo : value, done : false, deadline:'', place: '',memo:''}
+        var todoItem={todo : value, done : false, deadline:'', dday:'', place: '',memo:''}
         var keyIdx=Date.now()
 
 				this.$emit('addTodo',keyIdx,todoItem)
