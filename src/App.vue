@@ -2,7 +2,7 @@
   <div id="app">
     <TodoHeader></TodoHeader>
     <TodoInput v-on:addCategory="addCategory" v-on:addNewCategory="addNewCategory" v-bind:propsCate="categoryItems"></TodoInput>
-    <TodoList v-bind:propsdata="todoItems"  v-bind:propsIdx="todoItems_Idx" v-bind:propsDone="doneItems" v-bind:propsCate="categoryItems" v-bind:propsDate="ddate" @removeTodo="removeTodo" @editTodo="editTodo" @updateState="updateState"></TodoList>
+    <TodoList v-bind:propsdata="todoItems"  v-bind:propsIdx="todoItems_Idx" v-bind:propsDone="doneItems" v-bind:propsCate="categoryItems" v-bind:propsDate="ddate" v-bind:propsTodoCate="todoCate" @removeTodo="removeTodo" @editTodo="editTodo" @updateState="updateState"></TodoList>
     <TodoFooter v-on:removeAll="clearAll" v-bind:propsDone="doneItems"></TodoFooter>
   </div>
 </template>
@@ -20,7 +20,8 @@ export default {
       todoItems_Idx: [],
       doneItems : [],
       categoryItems: [],
-      ddate: []
+      ddate: [],
+      todoCate : []
     
     }
   },
@@ -40,6 +41,7 @@ export default {
       this.todoItems_Idx.push(keyIdx);
       this.doneItems.push(todoItem.done);
       this.ddate.push(todoItem.dday);
+      this.todoCate.push(todoItem.category)
 		},
     addNewCategory(newCategory){
       this.categoryItems.push(newCategory);
@@ -77,12 +79,19 @@ export default {
 	if (localStorage.length > 0) {
 			for (var i = 0; i < localStorage.length; i++) {
         var Idx=localStorage.key(i)
-        this.todoItems_Idx.push(Idx)
-    
         var item= JSON.parse(localStorage[Idx])
-        this.todoItems.push(item.todo);
-        this.doneItems.push(item.done)
-        this.ddate.push(item.dday)
+        if (Idx=='category'){
+          this.categoryItems=item
+        }
+        else {
+          this.todoItems_Idx.push(Idx)
+    
+          this.todoItems.push(item.todo);
+          this.doneItems.push(item.done)
+          this.ddate.push(item.dday)
+          this.todoCate.push(item.category)
+
+        }
 			}
       
     }
