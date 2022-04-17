@@ -76,15 +76,9 @@ export default {
       var keyIdx=this.propsIdx[index]
       this.$emit('updateState',keyIdx,index);
     },
-    // updateState(todoItem){
-    //   var items=JSON.parse(localStorage.getItem(todoItem))
-    //   items.done=!items.done
-    //   localStorage.setItem(todoItem,JSON.stringify(items))
-    //   console.log(todoItem.done)
-    // } ,
+
     
     showDetailModal(index){
-      // this.$emit('showDetailModal',index)
       this.TFDetailModal=!this.TFDetailModal
       this.DetailIndex=index
       
