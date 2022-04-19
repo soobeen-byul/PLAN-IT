@@ -2,8 +2,8 @@
   <transition name="modal">
     <div class="modal-mask" @keyup.esc="$emit('close')">
       <div class="modal-wrapper">
-        <div class="modal-container">
-          <div class="modal-header">
+        <div class="modal-container" style="height:120px">
+          <div class="modal-header" style="height:20%">
             <slot name="header">
               <!--  -->
             </slot>

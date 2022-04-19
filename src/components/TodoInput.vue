@@ -1,38 +1,38 @@
 <template>
   <div class="inputBox shadow">
-    <input type="text" v-model="newTodoItem" placeholder="오늘의 새싹을 피워주세요♬" v-on:keyup.enter="selectCategory">
+    <input type="text" v-model="newTodoItem" placeholder="오늘의 새싹을 피워주세요♬" v-on:keyup.enter="selectCategory" style="text-align: center;">
     <span class="addContainer" v-on:click="selectCategory">
       <i class="addBtn fas fa-plus" aria-hidden="true"></i>
     </span>
 
     <AlertModal v-if="showModal" @close="showModal = false">
       <h3 slot="header">경고</h3>
-      <span slot="footer" @click="showModal = false">할 일을 입력하세요.
-        <i class="closeModalBtn fas fa-times" aria-hidden="true"></i>
-      </span>
+      <p slot="content">할 일을 입력하세요.</p>
+      <span slot="footer" class="closeModalBtn" @click="showModal = false">닫기</span>
     </AlertModal>
 
     <SelectCategoryModal v-if="TFSelectModal" @close="TFSelectModal=false">
-      <h3 slot="header"> 카테고리를 선택하세요
+      <div slot="header" >
+        <h3 > 카테고리를 선택하세요
         <span class="setupCategoryBtn fas fa-plus" @click="showSetupCategoryModal"></span>
-      </h3>
-      <div slot="content">
+        </h3>
+      </div>
+      <div slot="content" style="float:left">
         <select class="categorybox" v-model="category">
           <option disabled value="" >카테고리를 선택하세요.</option>
           <option :key=index :value=value  v-for="(value,index) in propsCate">{{propsCate[index]}}</option>
         </select>
-        <!-- <input type="text" v-model="category" placeholder="카테고리를 선택하세요"> -->
       </div>
-      <span slot="footer" class="saveCatecoryBtn" @click="addCategory"> SAVE </span>
+      <span slot="footer" class="saveCatecoryBtn" @click="addCategory"> 저장하기 </span>
     </SelectCategoryModal>
 
     <SetupCategoryModal v-if="TFSetupModal" @close="TFSetupModal=false">
       <div slot="content">
-        <input type="text" v-model="newCategory" placeholder="추가할 카테고리 이름" @keyup.enter="addNewCategory">
+        <input type="text" v-model="newCategory" placeholder="추가할 카테고리 이름" @keyup.enter="addNewCategory" style="border-style:solid;height:30px">
       </div>
       <div slot="footer">
-        <span class="saveNewCategoryBtn" @click="addNewCategory">SAVE</span>
-        <span class="closeNewCategoryBtn" @click="closeNewCategory">CLOSE</span>
+        <span class="saveNewCategoryBtn" @click="addNewCategory">저장하기</span>
+        <span class="closeNewCategoryBtn" @click="closeNewCategory">닫기</span>
       </div>
     </SetupCategoryModal>
 
@@ -104,6 +104,7 @@ export default {
 
 <style scoped>
 input:focus {
+
   outline: none;
 }
 .inputBox {
