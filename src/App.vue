@@ -2,7 +2,7 @@
   <div id="app">
     <TodoHeader></TodoHeader>
     <TodoInput v-on:addCategory="addCategory" v-on:addNewCategory="addNewCategory" v-bind:propsCate="categoryItems"></TodoInput>
-    <TodoList v-bind:propsdata="todoItems"  v-bind:propsIdx="todoItems_Idx" v-bind:propsDone="doneItems" v-bind:propsCate="categoryItems" v-bind:propsDate="ddate" v-bind:propsTodoCate="todoCate" @removeTodo="removeTodo" @editTodo="editTodo" @updateState="updateState" @editCategory="editCategory"></TodoList>
+    <TodoList v-bind:propsdata="todoItems"  v-bind:propsIdx="todoItems_Idx" v-bind:propsDone="doneItems" v-bind:propsCate="categoryItems" v-bind:propsDate="ddate" v-bind:propsTodoCate="todoCate" @removeTodo="removeTodo" @editTodo="editTodo" @updateState="updateState" @editCategory="editCategory" @clearCategory="clearCategory"></TodoList>
     <TodoFooter v-on:removeAll="clearAll" v-bind:propsDone="doneItems"></TodoFooter>
   </div>
 </template>
@@ -82,21 +82,71 @@ export default {
           this.categoryItems[n]=editedCate
         }
       }
-      console.log('app',editpastCate,editedCate, this.categoryItems)
       localStorage.setItem('category',JSON.stringify( this.categoryItems))
      
       for (var i=0;i<localStorage.length-1;i++){
         if (this.todoCate[i]==editpastCate){
           var items=JSON.parse(localStorage.getItem(this.todoItems_Idx[i]))
           items.category=editedCate
-          console.log('app2',this.todoItems_Idx[i],items)
           localStorage.setItem(this.todoItems_Idx[i],JSON.stringify(items))
         }
       }
       location.reload();
+    },
+    clearCategory(clearCate){
+      for (var n=0; n<this.categoryItems.length;n++){
+        if(this.categoryItems[n]==clearCate){
+          this.categoryItems.splice(n,1)
+        }
+      }
+      localStorage.setItem('category',JSON.stringify(this.categoryItems))
+      
+      if (this.categoryItems==''){
+        localStorage.removeItem('category')
+      }
+      for (var i=0;i<this.todoCate.length;i++){
+        if (this.todoCate[i]==clearCate){
+          localStorage.removeItem(this.todoItems_Idx[i])
+        }
+      }
+      this.reloading()
+
+    },
+    reloading(){
+      this.todoItems=[]
+      this.todoItems_Idx=[]
+      this.doneItems=[]
+      this.categoryItems=[]
+      this.ddate=[]
+      this.todoCate=[]
+
+      if (localStorage.length > 0) {
+			for (var i = 0; i < localStorage.length; i++) {
+        var Idx=localStorage.key(i)
+        var item= JSON.parse(localStorage[Idx])
+        if (Idx=='category'){
+          this.categoryItems=item
+        }
+        else {
+          this.todoItems_Idx.push(Idx)
+    
+          this.todoItems.push(item.todo);
+          this.doneItems.push(item.done)
+          this.ddate.push(item.dday)
+          this.todoCate.push(item.category)
+
+        }
+			}
+      
     }
+
+
+    }
+    
+
   },
   created() {
+
 	if (localStorage.length > 0) {
 			for (var i = 0; i < localStorage.length; i++) {
         var Idx=localStorage.key(i)

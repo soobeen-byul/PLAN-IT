@@ -65,6 +65,7 @@
                   <span class="noAllDeleteBtn" @click="goEditCategoryModal()">닫기</span>
                   <span class="allDeleteBtn" @click="TFEditCategoryModal = false">삭제하기</span>
                 </div>            
+
               </AlertCategoryModal>
 
               <span class="removeBtn" type="button" @click="removeTodo(index)">
@@ -136,13 +137,14 @@ export default {
       this.TFEditCategoryModal=!this.TFEditCategoryModal
       this.editpastCate=cate
 
-      console.log('showEditCategoryModal',this.editpastCate)
-
     },
     editCategory(){
       this.$emit('editCategory',this.editpastCate,this.editedCate)
-      console.log('list',this.editpastCate,this.editedCate)
       this.TFEditCategoryModal=!this.TFEditCategoryModal
+    },
+    clearCategory(){
+      this.$emit('clearCategory',this.editpastCate)
+      this.TFAlertCategoryModal=!this.TFAlertCategoryModal;
     },
     goEditCategoryModal(){
       this.TFAlertCategoryModal=!this.TFAlertCategoryModal;
