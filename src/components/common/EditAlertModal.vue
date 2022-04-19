@@ -2,10 +2,15 @@
   <transition name="modal">
     <div class="modal-mask" @keyup.esc="$emit('close')">
       <div class="modal-wrapper">
-        <div class="modal-container">
-          <div class="modal-header">
+        <div class="modal-container" style="height: 120px">
+          <div class="modal-header" style="margin-top:0">
             <slot name="header">
               <!--  -->
+            </slot>
+          </div>
+
+          <div class="modal-content" style="height:50px;margin-top:30px">
+            <slot name="content">
             </slot>
           </div>
 
@@ -23,6 +28,9 @@
 <style lang="css">
 .closeModalBtn {
   color: rgb(102, 103, 171);
+}
+.modal-footer{
+  font-family: 'NanumBaReunHiPi';
 }
 .modal-mask {
   position: fixed;

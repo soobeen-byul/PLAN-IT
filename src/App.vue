@@ -129,6 +129,9 @@ export default {
 
 <style>
   body {
+    font-family: 'NanumBaReunHiPi';
+    font-size: 1.2rem;
+
     text-align: center;
     background-color: #F6F6F8;
 
@@ -137,13 +140,28 @@ export default {
     padding-bottom: 170px;
   }
   input {
+    font-family: 'NanumBaReunHiPi';
+    font-size:1rem;
+    font-weight: 300;
     border-style: groove;
     width: 200px;
   }
   button {
+    color: rgb(102, 103, 171);
+    border-style: solid;
+    width: 7.5rem;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 5px;
     border-style: groove;
   }
   .shadow {
     box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.03)
   }
+
+
+
+
+
+
 </style>

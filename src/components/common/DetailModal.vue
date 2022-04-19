@@ -28,7 +28,8 @@
 
 
 
-<style lang="css">
+<style scope>
+
 
 /* 모달창 겉에 배경 */
 .modal-mask {
@@ -56,45 +57,39 @@
   border-radius: 2px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
   transition: all .3s ease;
-  font-family: Helvetica, Arial, sans-serif;
 }
 
 .modal-header {
+  font-family: 'NanumBaReunHiPi';
+  height: 0;
   margin-bottom: 0;
   color: rgb(102, 103, 171);
 }
 
 .modal-content {
-  margin: 0;
-  background-color: #fff;
-}
-
-.modal-footer{
-  background-color: #fff;
+  font-family: 'NanumBaReunHiPi';
 }
 
 
-.modal-default-button {
-  float:right;
-}
   .saveDetailBtn{
+    font-family: 'NanumBaReunHiPi';
     width: 7.5rem;
     height: 40px;
     line-height: 40px;
     color: rgb(102, 103, 171);
     border-radius: 5px;
-    margin-right: 0;
     float:left;
     border-style: solid;
     text-align: center;
   }
   .closeDetailBtn{
+    font-family: 'NanumBaReunHiPi';
     width: 7.5rem;
     height: 40px;
     line-height: 40px;
     color: rgb(102, 103, 171);
     border-radius: 5px;
-    margin-right: auto;
+
     float:right;
     border-style: solid;
     text-align: center;
@@ -121,4 +116,6 @@
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
 }
+
+    
 </style>
