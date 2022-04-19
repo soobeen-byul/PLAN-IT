@@ -2,7 +2,7 @@
   <div id="app">
     <TodoHeader></TodoHeader>
     <TodoInput v-on:addCategory="addCategory" v-on:addNewCategory="addNewCategory" v-bind:propsCate="categoryItems"></TodoInput>
-    <TodoList v-bind:propsdata="todoItems"  v-bind:propsIdx="todoItems_Idx" v-bind:propsDone="doneItems" v-bind:propsCate="categoryItems" v-bind:propsDate="ddate" v-bind:propsTodoCate="todoCate" @removeTodo="removeTodo" @editTodo="editTodo" @updateState="updateState"></TodoList>
+    <TodoList v-bind:propsdata="todoItems"  v-bind:propsIdx="todoItems_Idx" v-bind:propsDone="doneItems" v-bind:propsCate="categoryItems" v-bind:propsDate="ddate" v-bind:propsTodoCate="todoCate" @removeTodo="removeTodo" @editTodo="editTodo" @updateState="updateState" @editCategory="editCategory"></TodoList>
     <TodoFooter v-on:removeAll="clearAll" v-bind:propsDone="doneItems"></TodoFooter>
   </div>
 </template>
@@ -75,6 +75,26 @@ export default {
       
       this.doneItems.splice(index,1,!this.doneItems[index])
     },
+    editCategory(editpastCate,editedCate){
+
+      for (var n=0; n<this.categoryItems.length;n++){
+        if(this.categoryItems[n]==editpastCate){
+          this.categoryItems[n]=editedCate
+        }
+      }
+      console.log('app',editpastCate,editedCate, this.categoryItems)
+      localStorage.setItem('category',JSON.stringify( this.categoryItems))
+     
+      for (var i=0;i<localStorage.length-1;i++){
+        if (this.todoCate[i]==editpastCate){
+          var items=JSON.parse(localStorage.getItem(this.todoItems_Idx[i]))
+          items.category=editedCate
+          console.log('app2',this.todoItems_Idx[i],items)
+          localStorage.setItem(this.todoItems_Idx[i],JSON.stringify(items))
+        }
+      }
+      location.reload();
+    }
   },
   created() {
 	if (localStorage.length > 0) {

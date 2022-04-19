@@ -2,7 +2,7 @@
   <div class="clearAllContainer" >
     <span class="clearAllBtn" @click="showClearModal">Clear All</span>
     <div class="doneleft">
-      할일 {{doneLeft}}개 남음!
+      할일 {{doneLeft}}개 남았어요!
     </div>
     <div class="pageContainer">
       <span class="allBtn">ALL</span>

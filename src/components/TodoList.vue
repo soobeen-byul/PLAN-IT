@@ -3,7 +3,7 @@
     <ol name="list_cate" >
       <div v-for="cate in propsCate" :key="cate" class="shadow">
         <p style='border:solid 1px grey vertical-align:middle'>{{cate}}
-          <span class="categorydetailBtn fas fa-cog" type="button" @click="showEditCategoryModal()"></span>
+          <span class="categorydetailBtn fas fa-cog" type="button" @click="showEditCategoryModal(cate)"></span>
         </p>
         <draggable>
           <transition-group name="list" tag="ul">
@@ -46,7 +46,7 @@
               </DetailModal>
 
               <EditCategoryModal v-if="TFEditCategoryModal" @close="TFEditCategoryModal=false">
-                <h3 slot="header">{{cate}}</h3>
+                <h3 slot="header">{{editpastCate}}</h3>
                 <div slot="content">
                   <input type="text" v-model="editedCate" placeholder="카테고리 이름 수정">
                 </div>
@@ -85,7 +85,9 @@ export default {
       done:'',
       editedTodoItem: [],
       doneItems: [],
-      ddate: []
+      ddate: [],
+      editpastCate:'',
+      editedCate:''
     }
   }
   ,
@@ -113,13 +115,16 @@ export default {
       this.memo=items.memo
       this.category=items.category
     },
-    showEditCategoryModal(){
+    showEditCategoryModal(cate){
       this.TFEditCategoryModal=!this.TFEditCategoryModal
+      this.editpastCate=cate
+
+      console.log('showEditCategoryModal',this.editpastCate)
+
     },
     editCategory(){
-      var editedCate = this.editedCate;
-
-      this.$emit('editCategory',editedCate)
+      this.$emit('editCategory',this.editpastCate,this.editedCate)
+      console.log('list',this.editpastCate,this.editedCate)
       this.TFEditCategoryModal=!this.TFEditCategoryModal
     },
     addDetailTodo(DetailIndex){
