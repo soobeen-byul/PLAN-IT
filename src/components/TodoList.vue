@@ -46,13 +46,24 @@
               </DetailModal>
 
               <EditCategoryModal v-if="TFEditCategoryModal" @close="TFEditCategoryModal=false">
-                <h3 slot="header">{{editpastCate}}</h3>
+                <div slot="header">
+                  <h3>{{editpastCate}}</h3>
+                  <span class="closeEditModalBtn fas fa-times" @click="TFEditCategoryModal = false" ></span>
+                </div>
+                
                 <div slot="content">
                   <input type="text" v-model="editedCate" placeholder="카테고리 이름 수정">
                 </div>
                 <span slot="footer" class="EditCategoryBtn" @click="editCategory()">SAVE</span>
-                <span slot="footer" class="DeleteCategoryBtn" @click="TFEditCategoryModal = false">DELETE</span>
+                <span slot="footer" class="DeleteCategoryBtn" @click="goAlertCategoryModal()">DELETE</span>
               </EditCategoryModal>
+
+              <AlertCategoryModal v-if="TFAlertCategoryModal" @close="TFAlertCategoryModal=false">
+                <h3 slot="header">{{editpastCate}}을 정말 삭제하겠습니까?</h3>
+                <span slot="footer" class="noAllDeleteBtn" @click="goEditCategoryModal()">CLOSE</span>
+                <span slot="footer" class="allDeleteBtn" @click="TFEditCategoryModal = false">DELETE</span>
+            
+              </AlertCategoryModal>
 
               <span class="removeBtn" type="button" @click="removeTodo(index)">
                 <i class="far fa-trash-alt" aria-hidden="true"></i>
@@ -69,6 +80,7 @@ import draggable from 'vuedraggable'
 import DetailModal from './common/DetailModal.vue'
 import EditAlertModal from './common/EditAlertModal.vue'
 import EditCategoryModal from './common/EditCategoryModal.vue'
+import AlertCategoryModal from './common/AlertCategoryModal.vue'
 
 
 export default {
@@ -77,6 +89,7 @@ export default {
       TFDetailModal: false,
       showEditAlertModal: false,
       TFEditCategoryModal: false,
+      TFAlertCategoryModal: false,
       DetailTodo: '',
       place:'',
       deadline:'',
@@ -127,6 +140,15 @@ export default {
       console.log('list',this.editpastCate,this.editedCate)
       this.TFEditCategoryModal=!this.TFEditCategoryModal
     },
+    goEditCategoryModal(){
+      this.TFAlertCategoryModal=!this.TFAlertCategoryModal;
+      this.TFEditCategoryModal=!this.TFEditCategoryModal;
+
+    },
+    goAlertCategoryModal(){
+      this.TFAlertCategoryModal=!this.TFAlertCategoryModal;
+      this.TFEditCategoryModal=!this.TFEditCategoryModal;
+    },
     addDetailTodo(DetailIndex){
       this.TFDetailModal=false
       var keyIdx=this.propsIdx[DetailIndex]
@@ -175,6 +197,7 @@ export default {
     DetailModal: DetailModal,
     EditAlertModal: EditAlertModal,
     EditCategoryModal: EditCategoryModal,
+    AlertCategoryModal: AlertCategoryModal,
     draggable
 
   }
@@ -225,6 +248,9 @@ export default {
     margin-top: 0;
     float: right;
     margin-right: 30px;
+  }
+  .closeEditModalBtn{
+    float:right;
   }
 
 

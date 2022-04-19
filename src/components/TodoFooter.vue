@@ -2,7 +2,7 @@
   <div class="clearAllContainer" >
     <span class="clearAllBtn" @click="showClearModal">Clear All</span>
     <div class="doneleft">
-      할일 {{doneLeft}}개 남았어요!
+      할일 {{doneLeft}}개 남음!
     </div>
     <div class="pageContainer">
       <span class="allBtn">ALL</span>
@@ -66,7 +66,6 @@ export default {
 
 <style scoped>
   .clearAllContainer {
-    background-image: src='../assets/Back_footer.png' ;
     position: fixed;
     bottom:0;
     width:100%;
