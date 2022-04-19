@@ -60,10 +60,10 @@
               </EditCategoryModal>
 
               <AlertCategoryModal v-if="TFAlertCategoryModal" @close="TFAlertCategoryModal=false">
-                <h3 slot="header">{{editpastCate}}을 정말 삭제하겠습니까?</h3>
+                <h3 slot="header">{{editpastCate}} 항목을 정말 삭제하겠습니까?</h3>
                 <div slot="footer">
                   <span class="noAllDeleteBtn" @click="goEditCategoryModal()">닫기</span>
-                  <span class="allDeleteBtn" @click="TFEditCategoryModal = false">삭제하기</span>
+                  <span class="allDeleteBtn" @click="clearCategory()">삭제하기</span>
                 </div>            
 
               </AlertCategoryModal>
