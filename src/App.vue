@@ -8,10 +8,13 @@
 </template>
 
 <script>
+
 import TodoHeader from './components/TodoHeader.vue'
 import TodoInput from './components/TodoInput.vue'
 import TodoList from './components/TodoList.vue'
 import TodoFooter from './components/TodoFooter.vue'
+
+
 
 export default {
   data() {
@@ -108,6 +111,10 @@ export default {
   body {
     text-align: center;
     background-color: #F6F6F8;
+
+    min-height: 100%;
+    position:relative;
+    padding-bottom: 170px;
   }
   input {
     border-style: groove;

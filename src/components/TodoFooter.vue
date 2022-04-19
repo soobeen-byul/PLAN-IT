@@ -1,5 +1,5 @@
 <template>
-  <div class="clearAllContainer">
+  <div class="clearAllContainer" >
     <span class="clearAllBtn" @click="showClearModal">Clear All</span>
     <div class="doneleft">
       할일 {{doneLeft}}개 남음!
@@ -66,10 +66,13 @@ export default {
 
 <style scoped>
   .clearAllContainer {
-    width:370px;
-    height: 50px;
+    background-image: src='../assets/Back_footer.png' ;
+    position: fixed;
+    bottom:0;
+    width:100%;
+
+    height: 150px;
     line-height: 50px;
-    background-color: white;
     border-radius: 5px;
     margin-top: 0;
     float:none;
@@ -90,17 +93,17 @@ export default {
   }
   .allBtn{
     color: rgb(102, 103, 171);
-    width: 100px;
+    /* width: 100px; */
     float:left;
   }
   .unfinishedBtn{
     color: rgb(102, 103, 171);
-    width: 100px;
+    /* width: 100px; */
     float:auto;
   }
   .finishedBtn{
     color: rgb(102, 103, 171);
-    width: 100px;
+    width: 90px;
     float:right;
   }
 
@@ -127,5 +130,13 @@ export default {
     margin-right: 0;
     float:right;
     border-style: solid;
+  }
+  .doneleft{
+    height: 30px;
+    line-height: 30px;
+    bottom:0;
+    margin-bottom:0;
+    margin-top:0;
+    padding-bottom:0;
   }
 </style>
