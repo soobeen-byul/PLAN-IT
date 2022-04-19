@@ -61,7 +61,7 @@
               <AlertCategoryModal v-if="TFAlertCategoryModal" @close="TFAlertCategoryModal=false">
                 <h3 slot="header">{{editpastCate}}을 정말 삭제하겠습니까?</h3>
                 <span slot="footer" class="noAllDeleteBtn" @click="goEditCategoryModal()">CLOSE</span>
-                <span slot="footer" class="allDeleteBtn" @click="TFEditCategoryModal = false">DELETE</span>
+                <span slot="footer" class="allDeleteBtn" @click="clearCategory()">DELETE</span>
             
               </AlertCategoryModal>
 
@@ -132,13 +132,14 @@ export default {
       this.TFEditCategoryModal=!this.TFEditCategoryModal
       this.editpastCate=cate
 
-      console.log('showEditCategoryModal',this.editpastCate)
-
     },
     editCategory(){
       this.$emit('editCategory',this.editpastCate,this.editedCate)
-      console.log('list',this.editpastCate,this.editedCate)
       this.TFEditCategoryModal=!this.TFEditCategoryModal
+    },
+    clearCategory(){
+      this.$emit('clearCategory',this.editpastCate)
+      this.TFAlertCategoryModal=!this.TFAlertCategoryModal;
     },
     goEditCategoryModal(){
       this.TFAlertCategoryModal=!this.TFAlertCategoryModal;
