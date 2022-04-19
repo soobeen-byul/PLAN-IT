@@ -36,8 +36,10 @@
                     <input type="text" v-model="place">
                   <br>메모
                     <input type="text" v-model="memo">
+                  <br>알림
+                    <input type="time" v-model="alarm">
                 </div>
-                <span slot="footer" @click="addDetailTodo(DetailIndex,deadline,place,memo,category)">
+                <span slot="footer" @click="addDetailTodo(DetailIndex,deadline,place,memo,category,alarm)">
                   <span class="saveDetailBtn" >SAVE</span>
                 </span>
                 <span slot="footer" @click="TFDetailModal = false">
@@ -95,6 +97,7 @@ export default {
       deadline:'',
       memo:'',
       category:'',
+      alarm:'',
       done:'',
       editedTodoItem: [],
       doneItems: [],
@@ -127,6 +130,7 @@ export default {
       this.deadline=items.deadline
       this.memo=items.memo
       this.category=items.category
+      this.alarm=items.alarm
     },
     showEditCategoryModal(cate){
       this.TFEditCategoryModal=!this.TFEditCategoryModal
@@ -166,7 +170,7 @@ export default {
         } else {this.ddate.splice(DetailIndex,1,'D-day')}
       } else {this.ddate.splice(DetailIndex,1,'')}
 
-      var items={todo :this.propsdata[DetailIndex], done : this.done , deadline: this.deadline, dday: this.ddate[DetailIndex], place: this.place, memo: this.memo, category: this.category}
+      var items={todo :this.propsdata[DetailIndex], done : this.done , deadline: this.deadline, dday: this.ddate[DetailIndex], place: this.place, memo: this.memo, category: this.category, alarm: this.alarm}
       localStorage.setItem(keyIdx, JSON.stringify(items))
 
       this.clearInput()
@@ -180,6 +184,7 @@ export default {
       this.done=''
       this.memo=''
       this.category=''
+      this.alarm=''
     },
     editTodo(index){
       if (this.editedTodoItem[index] !== undefined) {
