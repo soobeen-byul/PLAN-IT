@@ -1,8 +1,10 @@
 <template>
   <section>
-    <ol name="list_cate">
-      <div v-for="cate in propsCate" :key="cate" class="shadow" >
-        <span style='border:solid 1px grey'>{{cate}}</span>
+    <ol name="list_cate" >
+      <div v-for="cate in propsCate" :key="cate" class="shadow">
+        <p style='border:solid 1px grey vertical-align:middle'>{{cate}}
+          <span class="categorydetailBtn fas fa-cog" type="button" @click="showEditCategoryModal()"></span>
+        </p>
       <transition-group name="list" tag="ul">
         <li v-for="(todoItem, index) in propsdata" :key="todoItem" class="shadow" v-show='propsTodoCate[index]==cate'>
           <span type="button" aria-hidden="true" @click="updateState(index)"><img v-if=propsDone[index] src="..\src\assets\flower.png" width="25" height="25" align='center'><img v-else src="..\src\assets\seed.png" width="25" height="25" align='center'></span>
@@ -23,7 +25,10 @@
             <h2 slot="header"> {{propsdata[DetailIndex]}} </h2>
             <div slot="content">
               <br>카테고리
-                <input type="text" v-model="category" placeholder="카테고리를 선택하세요">
+                <select class="categorybox" v-model="category">
+                  <option disabled value="" >카테고리를 선택하세요.</option>
+                  <option :key=index :value=value  v-for="(value,index) in propsCate">{{propsCate[index]}}</option>
+                </select> 
               <br>마감기한
                 <input type="date" id="deadline" v-model="deadline">
               <br>장소
@@ -39,6 +44,15 @@
             </span>
           </DetailModal>
 
+          <EditCategoryModal v-if="TFEditCategoryModal" @close="TFEditCategoryModal=false">
+            <h3 slot="header">{{cate}}</h3>
+            <div slot="content">
+              <input type="text" v-model="editedCate" placeholder="카테고리 이름 수정">
+            </div>
+            <span slot="footer" class="EditCategoryBtn" @click="editCategory()">SAVE</span>
+            <span slot="footer" class="DeleteCategoryBtn" @click="TFEditCategoryModal = false">DELETE</span>
+          </EditCategoryModal>
+
           <span class="removeBtn" type="button" @click="removeTodo(index)">
             <i class="far fa-trash-alt" aria-hidden="true"></i>
           </span>
@@ -51,6 +65,7 @@
 <script>
 import DetailModal from './common/DetailModal.vue'
 import EditAlertModal from './common/EditAlertModal.vue'
+import EditCategoryModal from './common/EditCategoryModal.vue'
 
 
 export default {
@@ -58,13 +73,13 @@ export default {
     return{
       TFDetailModal: false,
       showEditAlertModal: false,
+      TFEditCategoryModal: false,
       DetailTodo: '',
       place:'',
       deadline:'',
       memo:'',
       category:'',
       done:'',
-      //카테고리 라디오버튼 할때 빼기
       editedTodoItem: [],
       doneItems: [],
       ddate: []
@@ -94,6 +109,15 @@ export default {
       this.deadline=items.deadline
       this.memo=items.memo
       this.category=items.category
+    },
+    showEditCategoryModal(){
+      this.TFEditCategoryModal=!this.TFEditCategoryModal
+    },
+    editCategory(){
+      var editedCate = this.editedCate;
+
+      this.$emit('editCategory',editedCate)
+      this.TFEditCategoryModal=!this.TFEditCategoryModal
     },
     addDetailTodo(DetailIndex){
       this.TFDetailModal=false
@@ -141,7 +165,8 @@ export default {
   ,
   components: {
     DetailModal: DetailModal,
-    EditAlertModal: EditAlertModal
+    EditAlertModal: EditAlertModal,
+    EditCategoryModal: EditCategoryModal
 
   }
   
@@ -186,6 +211,12 @@ export default {
     text-decoration: line-through;
     color: #b3adad;
   }
+  .categorydetailBtn{
+    margin-top: 0;
+    float: right;
+    margin-right: 30px;
+  }
+
 
 
 

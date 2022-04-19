@@ -71,9 +71,7 @@ export default {
       localStorage.setItem(keyIdx,JSON.stringify(items))
       
       this.doneItems.splice(index,1,!this.doneItems[index])
-      
-    }
-
+    },
   },
   created() {
 	if (localStorage.length > 0) {
