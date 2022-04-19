@@ -116,6 +116,8 @@ export default {
       localStorage.setItem(keyIdx, JSON.stringify(items))
 
       this.clearInput()
+    
+      location.reload();
 
     },
     clearInput(){
