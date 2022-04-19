@@ -2,13 +2,13 @@
   <transition name="modal">
     <div class="modal-mask" @keyup.esc="$emit('close')">
       <div class="modal-wrapper">
-        <div class="modal-container">
-          <div class="modal-header">
+        <div class="modal-container" style="height: 120px">
+          <div class="modal-header" style="height:40%">
             <slot name="header">
               <!--  -->
             </slot>
           </div>
-          <div class="modal-content">
+            <div class="modal-content" style="height:30%;margin-left:90px;" >
               <slot name="content">
 
               </slot>
@@ -26,8 +26,17 @@
 </template>
 
 <style lang="css">
-.closeModalBtn {
+.saveCatecoryBtn{
   color: rgb(102, 103, 171);
+  border-style: solid;
+  width: 7.5rem;
+  height: 40px;
+  line-height: 40px;
+  border-radius: 5px;
+  float:left;
+  text-align: center;
+  margin-left:90px;
+  font-family: 'NanumBaReunHiPi';
 }
 .modal-mask {
   position: fixed;
