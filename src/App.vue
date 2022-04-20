@@ -105,12 +105,15 @@ export default {
       for (var n=0; n<this.categoryItems.length;n++){
         if(this.categoryItems[n]==clearCate){
           this.categoryItems.splice(n,1)
+          this.CategoryColor.splice(n,1)
         }
       }
       localStorage.setItem('category',JSON.stringify(this.categoryItems))
+      localStorage.setItem('CategoryColor',JSON.stringify(this.CategoryColor))
       
       if (this.categoryItems==''){
         localStorage.removeItem('category')
+        localStorage.removeItem('CategoryColor')
       }
       for (var i=0;i<this.todoCate.length;i++){
         if (this.todoCate[i]==clearCate){
