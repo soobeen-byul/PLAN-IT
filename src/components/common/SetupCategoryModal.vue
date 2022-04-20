@@ -2,19 +2,19 @@
   <transition name="modal">
     <div class="modal-mask" @keyup.esc="$emit('close')">
       <div class="modal-wrapper">
-        <div class="modal-container" style="height:100px">
-          <div class="modal-header">
+        <div class="modal-container" style="height:-300px">
+          <div class="modal-header" style="height:-100px" >
             <slot name="header">
 
             </slot>
           </div>
-          <div class="modal-content" style="height:50%, border-style:dotted">
+          <div class="modal-content" style="height=0;">
               <slot name="content">
 
               </slot>
             </div>
 
-          <div class="modal-footer">
+          <div class="modal-footer" style="">
             <slot name="footer">
               <!--  -->
             </slot>

@@ -27,8 +27,11 @@
     </SelectCategoryModal>
 
     <SetupCategoryModal v-if="TFSetupModal" @close="TFSetupModal=false">
-      <div slot="content">
-        <input type="text" v-model="newCategory" placeholder="추가할 카테고리 이름" @keyup.enter="addNewCategory" style="border-style:solid;height:30px">
+      <div slot="content" style="height:130px">
+        카테고리
+        <input type="text" v-model="newCategory" placeholder="추가할 카테고리 이름" @keyup.enter="addNewCategory">
+        <br> 색상
+        <input type="color" v-model="newCategoryColor">
       </div>
       <div slot="footer">
         <span class="saveNewCategoryBtn" @click="addNewCategory">저장하기</span>
@@ -50,6 +53,7 @@ export default {
       newTodoItem: '',
       category: '',
       newCategory: '',
+      newCategoryColor: '#6667ab',
       showModal: false,
       TFSelectModal: false,
       TFSetupModal: false
@@ -66,7 +70,9 @@ export default {
       }
     },
     addCategory(){
-      var category = this.category;
+      if (this.category !== '') {
+        var category = this.category;
+      } else {category = "ToDo"}
       var value = this.newTodoItem && this.newTodoItem.trim();
       var todoItem={todo : value, done : false, deadline:'', place: '',memo:'',category: category}
       var keyIdx=Date.now()
@@ -81,9 +87,16 @@ export default {
       this.TFSetupModal=!this.TFSetupModal;
     },
     addNewCategory(){
-      var newCategory=this.newCategory;
+      if (this.newCategory !== '') {
+        var newCategory = this.newCategory;
+      } else { newCategory = "ToDo"
+      }
+      if (this.newCategoryColor !== '') {
+        var newCategoryColor = this.newCategoryColor;
+      } else {newCategoryColor = "#6667AB"
+      }
 
-      this.$emit('addNewCategory',newCategory);
+      this.$emit('addNewCategory',newCategory, newCategoryColor);
       this.TFSetupModal =! this.TFSetupModal;
       this.TFSelectModal =! this.TFSelectModal;
       this.newCategory=''

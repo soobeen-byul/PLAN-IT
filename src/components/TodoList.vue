@@ -1,8 +1,8 @@
 <template>
   <section>
     <ol name="list_cate" >
-      <div v-for="cate in propsCate" :key="cate" class="shadow">
-        <p style='border:solid 1px grey vertical-align:middle'>{{cate}}
+      <div v-for="(cate,cateidx) in propsCate" :key="cate">
+        <p :key="cateidx"> <span class='catebox' :style={color:propsColor[cateidx]}> {{cate}} </span>
           <span class="categorydetailBtn fas fa-cog" type="button" @click="showEditCategoryModal(cate)"></span>
         </p>
         <draggable>
@@ -108,7 +108,7 @@ export default {
     }
   }
   ,
-  props: ['propsdata','propsIdx','propsDone','propsDate','propsCate','propsTodoCate'],
+  props: ['propsdata','propsIdx','propsDone','propsDate','propsCate','propsTodoCate','propsColor'],
 
   methods: {
     removeTodo(index) {
@@ -290,5 +290,10 @@ export default {
   .dday {
     font-size: 0.4rem;
     color:cadetblue;  
+  }
+  .catebox {
+    font-size: 1rem;
+    font-weight: 800;
+    color: #6667ab;
   }
 </style>

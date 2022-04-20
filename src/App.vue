@@ -2,7 +2,7 @@
   <div id="app">
     <TodoHeader></TodoHeader>
     <TodoInput v-on:addCategory="addCategory" v-on:addNewCategory="addNewCategory" v-bind:propsCate="categoryItems"></TodoInput>
-    <TodoList v-bind:propsdata="todoItems"  v-bind:propsIdx="todoItems_Idx" v-bind:propsDone="doneItems" v-bind:propsCate="categoryItems" v-bind:propsDate="ddate" v-bind:propsTodoCate="todoCate" @removeTodo="removeTodo" @editTodo="editTodo" @updateState="updateState" @editCategory="editCategory" @clearCategory="clearCategory"></TodoList>
+    <TodoList v-bind:propsdata="todoItems"  v-bind:propsIdx="todoItems_Idx" v-bind:propsDone="doneItems" v-bind:propsCate="categoryItems" v-bind:propsColor="CategoryColor" v-bind:propsDate="ddate" v-bind:propsTodoCate="todoCate" @removeTodo="removeTodo" @editTodo="editTodo" @updateState="updateState" @editCategory="editCategory" @clearCategory="clearCategory"></TodoList>
     <TodoFooter v-on:removeAll="clearAll" v-bind:propsDone="doneItems"></TodoFooter>
   </div>
 </template>
@@ -22,9 +22,10 @@ export default {
       todoItems: [],
       todoItems_Idx: [],
       doneItems : [],
-      categoryItems: [],
+      categoryItems: ["ToDo"],
       ddate: [],
-      todoCate : []
+      todoCate : [],
+      CategoryColor: ['#6667ab']
     
     }
   },
@@ -46,9 +47,16 @@ export default {
       this.ddate.push(todoItem.dday);
       this.todoCate.push(todoItem.category)
 		},
-    addNewCategory(newCategory){
-      this.categoryItems.push(newCategory);
-      localStorage.setItem("category",JSON.stringify(this.categoryItems));
+    addNewCategory(newCategory, newCategoryColor){
+      if (this.categoryItems.includes(newCategory) == false) {
+        this.categoryItems.push(newCategory)
+        localStorage.setItem("category", JSON.stringify(this.categoryItems))
+
+      }
+      var CategoryColor = newCategoryColor;
+      this.CategoryColor.push(CategoryColor)
+      console.log(JSON.stringify(this.CategoryColor))
+      localStorage.setItem("CategoryColor", JSON.stringify(this.CategoryColor));
     },
 
     removeTodo(keyIdx,index) {
@@ -110,6 +118,7 @@ export default {
         }
       }
       this.reloading()
+      
 
     },
     reloading(){
@@ -136,6 +145,10 @@ export default {
           this.todoCate.push(item.category)
 
         }
+        if (Idx == 'CategoryColor') {
+          this.CategoryColor = item
+        }
+        
 			}
       
     }
@@ -162,6 +175,9 @@ export default {
           this.ddate.push(item.dday)
           this.todoCate.push(item.category)
 
+        }
+        if (Idx == 'CategoryColor') {
+          this.CategoryColor = item
         }
 			}
       
