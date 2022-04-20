@@ -2,18 +2,18 @@
   <transition name="modal">
     <div class="modal-mask" @keyup.esc="$emit('close')">
       <div class="modal-wrapper">
-        <div class="modal-container" style="height: 400px">
-          <div class="modal-header">
+        <div class="modal-container" style="height: 350px">
+          <div class="modal-header" style="height:17%">
             <slot name="header">
               <!--  -->
             </slot>
           </div>
-          <div class="modal-content">
+          <div class="modal-content" style="line-height:230%;width:auto;height:auto">
             <slot name="content">
             </slot>
           </div>
 
-          <div class="modal-footer">
+          <div class="modal-footer" style="" >
             <slot name="footer">
               <!--  -->
             </slot>
@@ -30,6 +30,12 @@
 
 <style scope>
 
+.categorybox{
+    float:right;
+    font-family: 'NanumBaReunHiPi';
+    vertical-align: middle;
+    height: 30px;
+}
 
 /* 모달창 겉에 배경 */
 .modal-mask {
@@ -71,7 +77,7 @@
 }
 
 
-  .saveDetailBtn{
+.saveDetailBtn{
     font-family: 'NanumBaReunHiPi';
     width: 7.5rem;
     height: 40px;
@@ -81,8 +87,8 @@
     float:left;
     border-style: solid;
     text-align: center;
-  }
-  .closeDetailBtn{
+}
+.closeDetailBtn{
     font-family: 'NanumBaReunHiPi';
     width: 7.5rem;
     height: 40px;
@@ -93,7 +99,7 @@
     float:right;
     border-style: solid;
     text-align: center;
-  }
+}
 /*
  * The following styles are auto-applied to elements with
  * transition="modal" when their visibility is toggled

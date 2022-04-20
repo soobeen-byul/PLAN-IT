@@ -3,18 +3,18 @@
     <div class="modal-mask" @keyup.esc="$emit('close')">
       <div class="modal-wrapper">
         <div class="modal-container" style="height: 120px">
-          <div class="modal-header" >
+          <div class="modal-header" style="height:28%" >
             <slot name="header">
               <!--  -->
             </slot>
           </div>
-          <div class="modal-content" style="margin-left:90px">
+          <div class="modal-content" style="height:40%">
               <slot name="content">
 
               </slot>
             </div>
 
-          <div class="modal-footer">
+          <div class="modal-footer" >
             <slot name="footer">
               <!--  -->
             </slot>
@@ -51,7 +51,7 @@
 }
 .closeEditModalBtn{
   color: rgb(102, 103, 171);
-  padding-left:145px;
+  text-align: left;
 }
 .modal-mask {
   position: fixed;

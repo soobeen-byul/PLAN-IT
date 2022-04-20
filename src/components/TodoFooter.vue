@@ -70,6 +70,7 @@ export default {
     position: fixed;
     bottom:0;
     width:100%;
+    background-color: #F6F6F8;
 
     height: 130px;
     line-height: 40px;

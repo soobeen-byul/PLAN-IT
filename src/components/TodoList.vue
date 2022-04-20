@@ -14,66 +14,66 @@
               <span class="detailBtn" type="button" @click="showDetailModal(index)">
                 <i class="fas fa-ellipsis-v"></i>
               </span>
-
-              <EditAlertModal v-if="showEditAlertModal" @close="showEditAlertModal = false">
-                <h3 slot="header">경고</h3>
-                <p slot="content">할 일을 입력하세요.</p>
-                <span slot="footer" class="closeModalBtn" @click="showEditAlertModal = false">닫기</span>
-              </EditAlertModal> 
-
-              <DetailModal v-if="TFDetailModal" @close="TFDetailModal = false">
-                <h2 slot="header"> {{propsdata[DetailIndex]}} </h2>
-                <div slot="content">
-                  <br>카테고리
-                    <select class="categorybox" v-model="category">
-                      <option disabled value="" >카테고리를 선택하세요.</option>
-                      <option :key=index :value=value  v-for="(value,index) in propsCate">{{propsCate[index]}}</option>
-                    </select> 
-                  <br>마감기한
-                    <input type="date" id="deadline" v-model="deadline" style="float:right">
-                  <br>장소
-                    <input type="text" v-model="place" style="float:right">
-                  <br>메모
-                    <input type="text" v-model="memo"  style="float:right">
-                  <br>알림
-                    <input type="time" v-model="alarm"  style="float:right">
-                </div>
-                <div slot="footer">
-                  <span class="saveDetailBtn" @click="addDetailTodo(DetailIndex,deadline,place,memo,category,alarm)">저장하기</span>
-                  <span class="closeDetailBtn" @click="TFDetailModal = false"> 닫기</span>
-                </div>
-              </DetailModal>
-
-              <EditCategoryModal v-if="TFEditCategoryModal" @close="TFEditCategoryModal=false">
-                <div slot="header">
-                  <h3 >{{editpastCate}}</h3>
-                  <span class="closeEditModalBtn fas fa-times" @click="TFEditCategoryModal = false" ></span>
-                </div>
-                
-                <div slot="content">
-                  <input type="text" v-model="editedCate" placeholder="카테고리 이름 수정">
-                </div>
-                <div slot="footer">
-                  <span class="EditCategoryBtn" @click="editCategory()">수정하기</span>
-                  <span class="DeleteCategoryBtn" @click="goAlertCategoryModal()">삭제하기</span>
-                </div>
-              </EditCategoryModal>
-
-              <AlertCategoryModal v-if="TFAlertCategoryModal" @close="TFAlertCategoryModal=false">
-                <h3 slot="header">{{editpastCate}} 항목을 정말 삭제하겠습니까?</h3>
-                <div slot="footer">
-                  <span class="noAllDeleteBtn" @click="goEditCategoryModal()">닫기</span>
-                  <span class="allDeleteBtn" @click="clearCategory()">삭제하기</span>
-                </div>            
-
-              </AlertCategoryModal>
-
               <span class="removeBtn" type="button" @click="removeTodo(index)">
                 <i class="far fa-trash-alt" aria-hidden="true"></i>
               </span>
             </li>
           </transition-group></draggable>
     </div></ol>
+
+      <EditAlertModal v-if="showEditAlertModal" @close="showEditAlertModal = false">
+        <h3 slot="header">경고</h3>
+        <p slot="content">할 일을 입력하세요.</p>
+        <span slot="footer" class="closeModalBtn" @click="showEditAlertModal = false">닫기</span>
+      </EditAlertModal> 
+
+      <DetailModal v-if="TFDetailModal" @close="TFDetailModal = false">
+        <div slot="header">
+          <h2> {{propsdata[DetailIndex]}} </h2></div>
+        <div slot="content">
+          <span style="padding-right:85px;float:none">카테고리 </span>
+            <select class="categorybox" v-model="category">
+              <option disabled value="" >카테고리를 선택하세요.</option>
+              <option :key=index :value=value  v-for="(value,index) in propsCate">{{propsCate[index]}}</option>
+            </select> 
+          <br>마감기한
+            <input type="date" id="deadline" v-model="deadline" style="float:right;">
+          <br>장소
+            <input type="text" v-model="place" style="float:right">
+          <br>메모
+            <input type="text" v-model="memo"  style="float:right">
+          <br>알림
+            <input type="time" v-model="alarm"  style="float:right">
+        </div>
+        <div slot="footer" style="margin-top:0;">
+          <span class="saveDetailBtn" @click="addDetailTodo(DetailIndex,deadline,place,memo,category,alarm)">저장하기</span>
+          <span class="closeDetailBtn" @click="TFDetailModal = false"> 닫기</span>
+        </div>
+      </DetailModal>
+
+      <EditCategoryModal v-if="TFEditCategoryModal" @close="TFEditCategoryModal=false">
+        <div slot="header">
+          <h3 >{{editpastCate}}</h3>
+        </div>
+        
+        <div slot="content">
+          <input type="text" v-model="editedCate" placeholder="카테고리 이름 수정">
+        </div>
+        <div slot="footer">
+          <span class="EditCategoryBtn" @click="editCategory()">수정하기</span>
+          <span class="closeEditModalBtn fas fa-times" @click="TFEditCategoryModal = false"></span>
+          <span class="DeleteCategoryBtn" @click="goAlertCategoryModal()">삭제하기</span>
+        </div>
+      </EditCategoryModal>
+
+      <AlertCategoryModal v-if="TFAlertCategoryModal" @close="TFAlertCategoryModal=false">
+        <h3 slot="header">{{editpastCate}} 항목을 정말 삭제하겠습니까?</h3>
+        <div slot="footer">
+          <span class="noAllDeleteBtn" @click="goEditCategoryModal()">닫기</span>
+          <span class="allDeleteBtn" @click="clearCategory()">삭제하기</span>
+        </div>            
+
+      </AlertCategoryModal>
   </section>
 </template>
 
@@ -232,22 +232,17 @@ export default {
   }
   ol {
     list-style-type: none;
+    height:50px;
+    line-height: 50px;
     padding-left: 0px;
-    margin-top: 10px;
+    margin:0;
     text-align: left;
   }
-  br{
-    height: 10px;
-  }
 
 
 
-  .categorybox{
-    float:right;
-    font-family: 'NanumBaReunHiPi';
-    vertical-align: middle;
-    height: 30px;
-  }
+
+
   .detailBtn {
     margin-left: auto;
     color: #de4343;
