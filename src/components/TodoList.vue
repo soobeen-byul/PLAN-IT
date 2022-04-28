@@ -232,7 +232,6 @@ export default {
   }
   ol {
     list-style-type: none;
-    height:50px;
     line-height: 50px;
     padding-left: 0px;
     margin:0;

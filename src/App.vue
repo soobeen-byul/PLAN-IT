@@ -65,6 +65,8 @@ export default {
       this.todoItems_Idx.splice(index, 1);
       this.doneItems.splice(index, 1);
       this.ddate.splice(index, 1);
+
+      this.reloading();
     },
     editTodo(keyIdx,index,editedTodoItem){
         var savedItems=JSON.parse(localStorage.getItem(keyIdx))
@@ -99,7 +101,7 @@ export default {
           localStorage.setItem(this.todoItems_Idx[i],JSON.stringify(items))
         }
       }
-      location.reload();
+      this.reloading();
     },
     clearCategory(clearCate){
       for (var n=0; n<this.categoryItems.length;n++){
