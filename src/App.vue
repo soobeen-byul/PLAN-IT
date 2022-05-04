@@ -53,10 +53,9 @@ export default {
         localStorage.setItem("category", JSON.stringify(this.categoryItems))
 
       }
-      var CategoryColor = newCategoryColor;
-      this.CategoryColor.push(CategoryColor)
-      console.log(JSON.stringify(this.CategoryColor))
-      localStorage.setItem("CategoryColor", JSON.stringify(this.CategoryColor));
+      
+      this.CategoryColor.push(newCategoryColor)
+      localStorage.setItem("CategoryColor", JSON.stringify(this.CategoryColor)); // warning 부분??
     },
 
     removeTodo(keyIdx,index) {

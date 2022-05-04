@@ -19,7 +19,8 @@
               </span>
             </li>
           </transition-group></draggable>
-    </div></ol>
+    </div>
+    </ol>
 
       <EditAlertModal v-if="showEditAlertModal" @close="showEditAlertModal = false">
         <h3 slot="header">경고</h3>
