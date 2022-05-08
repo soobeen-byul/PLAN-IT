@@ -27,7 +27,7 @@
 
 <style lang="css">
 .saveNewCategoryBtn{
-    font-family: 'NanumBaReunHiPi';
+    font-family: 'NanumSquare';
     width: 7.5rem;
     height: 40px;
     line-height: 40px;
@@ -39,7 +39,7 @@
 
 }
 .closeNewCategoryBtn{
-     font-family: 'NanumBaReunHiPi';
+    font-family: 'NanumSquare';
     width: 7.5rem;
     height: 40px;
     line-height: 40px;

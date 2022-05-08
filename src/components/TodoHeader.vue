@@ -4,7 +4,7 @@
     <div class="today-header">
       <h2><span class="leftpageBtn fas fa-angle-left" type="Button">
         </span>     {{today.date}}     <span class="rightpageBtn fas fa-angle-right" type="Button"></span></h2>
-      <p class="today-time">오늘은 {{ today.day }} {{ today.time }}</p>
+      <h6 class="today-time">오늘은 {{ today.day }} {{ today.time }}</h6>
     </div>
   </header>
 </template>
@@ -37,9 +37,9 @@ export default {
       var time =
         this.setAMPM(now.getHours()) +
         ":" +
-        this.setTwoDigits(now.getMinutes()) +
-        ":" +
-        this.setTwoDigits(now.getSeconds());
+        this.setTwoDigits(now.getMinutes()) 
+        // ":" +
+        // this.setTwoDigits(now.getSeconds());
       return { date: year+"."+ month + "." + dateValue, day, time };
     },
     setTwoDigits(num) {
@@ -71,8 +71,11 @@ export default {
   h2{
     color: rgba(102, 103, 171, 0.829);
     font-weight: 900;
-
   }
+  .today-time{
+    line-height:170%
+  }
+
   .today-header{
     color:rgba(102, 103, 171, 0.614);
     line-height: 50%;

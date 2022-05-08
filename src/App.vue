@@ -199,7 +199,7 @@ export default {
 
 <style>
   body {
-    font-family: 'NanumBaReunHiPi';
+    font-family: 'NanumSquare';
     font-size: 1.2rem;
 
     text-align: center;
@@ -210,7 +210,7 @@ export default {
     padding-bottom: 170px;
   }
   input {
-    font-family: 'NanumBaReunHiPi';
+    font-family: 'NanumSquare';
     font-size:1rem;
     font-weight: 300;
     border-style: groove;

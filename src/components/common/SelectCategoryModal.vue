@@ -36,7 +36,7 @@
   float:left;
   text-align: center;
   margin-left:90px;
-  font-family: 'NanumBaReunHiPi';
+  font-family: 'NanumSquare';
 }
 .modal-mask {
   position: fixed;

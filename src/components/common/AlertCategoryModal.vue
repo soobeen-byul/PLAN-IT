@@ -30,7 +30,7 @@
   border-radius: 5px;
   float:left;
   text-align: center;
-  font-family: 'NanumBaReunHiPi';
+  font-family: 'NanumSquare';
 }
 .allDeleteBtn{
   color: rgb(102, 103, 171);
@@ -41,7 +41,7 @@
   border-radius: 5px;
   float:right;
   text-align: center;
-  font-family: 'NanumBaReunHiPi';
+  font-family: 'NanumSquare';
 }
 .modal-mask {
   position: fixed;

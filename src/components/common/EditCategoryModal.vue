@@ -36,7 +36,7 @@
   border-radius: 5px;
   float:left;
   text-align: center;
-  font-family: 'NanumBaReunHiPi';
+  font-family: 'NanumSquare';
 }
 .DeleteCategoryBtn{
   color: rgb(102, 103, 171);
@@ -47,7 +47,7 @@
   border-radius: 5px;
   float:right;
   text-align: center;
-  font-family: 'NanumBaReunHiPi';
+  font-family: 'NanumSquare';
 }
 .closeEditModalBtn{
   color: rgb(102, 103, 171);

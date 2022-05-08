@@ -35,7 +35,7 @@
   border-radius: 5px;
   float:right;
   text-align: center;
-  font-family: 'NanumBaReunHiPi';
+  font-family: 'NanumSquare';
 }
 .modal-mask {
   position: fixed;

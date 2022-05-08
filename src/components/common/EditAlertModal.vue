@@ -30,7 +30,7 @@
   color: rgb(102, 103, 171);
 }
 .modal-footer{
-  font-family: 'NanumBaReunHiPi';
+  font-family: 'NanumSquare';
 }
 .modal-mask {
   position: fixed;
