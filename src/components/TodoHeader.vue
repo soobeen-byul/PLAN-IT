@@ -4,7 +4,7 @@
     <div class="today-header">
       <h2><span class="leftpageBtn fas fa-angle-left" type="Button">
         </span>     {{today.date}}     <span class="rightpageBtn fas fa-angle-right" type="Button"></span></h2>
-      <p>오늘은 {{ today.day }} {{ today.time }}</p>
+      <p class="today-time">오늘은 {{ today.day }} {{ today.time }}</p>
     </div>
   </header>
 </template>
@@ -82,5 +82,4 @@ export default {
     width: 35px;
     vertical-align: middle;
   }
-
 </style>
