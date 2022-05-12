@@ -1,11 +1,20 @@
 <template>
   <header @:today="today">
+    <input type="checkbox" id="menuicon">
+      <label for="menuicon">  
+        <span></span>
+        <span></span>
+        <span></span>
+      </label>
+    <div class="sidebar">
+    </div>
     <h1> <img class="flowerlogo" src='../assets/flower.png'>PLAN IT<img class="flowerlogo" src='../assets/flower.png'></h1>
     <div class="today-header">
       <h2><span class="leftpageBtn fas fa-angle-left" type="Button">
         </span>     {{today.date}}     <span class="rightpageBtn fas fa-angle-right" type="Button"></span></h2>
       <h6 class="today-time">오늘은 {{ today.day }} {{ today.time }}</h6>
     </div>
+
   </header>
 </template>
 
@@ -85,4 +94,37 @@ export default {
     width: 35px;
     vertical-align: middle;
   }
+  input[id="menuicon"] {
+    display: none;
+  }
+  input[id="menuicon"] + label {
+    position: absolute;
+    float: right;
+    top: 0%;
+    display: block;
+    width: 30px;
+    height: 25px;
+    position: relative;
+    cursor: pointer;
+  }
+  input[id="menuicon"] + label span {
+    display: block;
+    position: absolute;
+    width: 80%;
+    height: 5px;
+    border-radius: 5px;
+    background: rgba(133, 134, 193, 0.9);
+    transition: all .35s;
+  }
+  input[id="menuicon"] + label span:nth-child(1) {
+    top: 0;
+  }
+  input[id="menuicon"] + label span:nth-child(2) {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  input[id="menuicon"] + label span:nth-child(3) {
+    bottom:0;
+  }
+
 </style>
