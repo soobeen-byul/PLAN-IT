@@ -7,6 +7,7 @@
         <span></span>
       </label>
     <div class="sidebar">
+      <span>로그인</span>
     </div>
     <h1> <img class="flowerlogo" src='../assets/flower.png'>PLAN IT<img class="flowerlogo" src='../assets/flower.png'></h1>
     <div class="today-header">
@@ -112,9 +113,10 @@ export default {
     position: absolute;
     width: 80%;
     height: 5px;
-    border-radius: 5px;
+    border-radius: 30px;
     background: rgba(133, 134, 193, 0.9);
-    transition: all .35s;
+    z-index: 1;
+    /* transition: all .1s; */
   }
   input[id="menuicon"] + label span:nth-child(1) {
     top: 0;
@@ -124,7 +126,30 @@ export default {
     transform: translateY(-50%);
   }
   input[id="menuicon"] + label span:nth-child(3) {
-    bottom:0;
+    bottom: 0;
+  }
+  input[id="menuicon"]:checked + label span:nth-child(1) {
+    top: 50%;
+    transform: translateY(-50%) rotate(45deg);
+  }
+  input[id="menuicon"]:checked + label span:nth-child(2) {
+    opacity: 0;
+  }
+  input[id="menuicon"]:checked + label span:nth-child(3) {
+    bottom: 50%;
+    transform:translateY(50%) rotate(-45deg);
+  }
+  div[class="sidebar"] {
+    width:300px;
+    height: 100%;
+    background: rgb(237, 238, 255);
+    position: fixed;
+    top:0;
+    right: -300px;
+    transition: all .35s;
+  }
+  input[id="menuicon"]:checked + label + div {
+    right:0;
   }
 
 </style>
