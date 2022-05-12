@@ -7,7 +7,6 @@
         <span></span>
       </label>
     <div class="sidebar">
-      <span>로그인</span>
     </div>
     <h1> <img class="flowerlogo" src='../assets/flower.png'>PLAN IT<img class="flowerlogo" src='../assets/flower.png'></h1>
     <div class="today-header">
@@ -21,6 +20,21 @@
 
 <script>
 var days = ["두려움의 일요일", "고통의 월요일", "절망의 화요일", "인내의 수요일", "희망의 목요일", "환희의 금요일", "쾌락의 토요일"];
+
+// 날씨 API //
+const API_KEY = "91ec8d410db7b0c5b73ecc3dcf76935d"
+function onGeoOk(position) {
+const latitude = position.coords.latitude;
+const longitude = position.coords.longitude;
+fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric`)
+.then(response => response.json())
+.then(data => console.log(`온도 : ${data.main.temp}, 날씨 : ${data.weather[0].main} ` +  `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`));
+}
+function onGeoError() {
+alert("Can't find you. No weather for you.");
+}
+navigator.geolocation.getCurrentPosition(onGeoOk, onGeoError);
+
 export default {
   props: {
     state: {
