@@ -183,8 +183,8 @@ export default {
         this.name = user.email;
         // ...
       } else {
-        this.$router.replace({ path: "/" });
-        // ...
+        // this.$router.replace({ path: "/" });
+        this.$router.replace({name:"login",params:{redirect:"invalid access"}})
       }
     });
   },

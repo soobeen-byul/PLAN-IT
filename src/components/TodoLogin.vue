@@ -86,7 +86,7 @@ export default {
 
 <style>
 .login{
-  margin-top:50%;
+  margin-top:40%;
 }
 h1{
   font-family: 'NanumBaReunHiPi';

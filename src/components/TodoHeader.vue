@@ -7,7 +7,16 @@
         <span></span>
       </label>
     <div class="sidebar">
-      <span>로그인</span>
+      <img class="profile" src="../assets/seed.png"> 
+       {{name}}
+      <span class="logoutbtn" @click="logout"> 로그아웃</span>
+      <p> 친구 목록 </p>
+      <p> 작고 소소한 미션 <span class="far fa-question-circle"> </span> </p>
+      <span>오늘의 미션 하러가기 <span class="fas fa-camera"> </span></span>
+      <span>모아보기</span>
+      <p>설정</p>
+      <span class="fas fa-user-edit"> 계정 </span>
+      <span class="fas fa-bell"> 알림</span>
     </div>
     <h1> <img class="flowerlogo" src='../assets/flower.png'>PLAN IT<img class="flowerlogo" src='../assets/flower.png'></h1>
     <div class="today-header">
@@ -20,6 +29,9 @@
 </template>
 
 <script>
+import {getAuth,onAuthStateChanged} from "firebase/auth";
+
+
 var days = ["두려움의 일요일", "고통의 월요일", "절망의 화요일", "인내의 수요일", "희망의 목요일", "환희의 금요일", "쾌락의 토요일"];
 export default {
   props: {
@@ -30,14 +42,33 @@ export default {
   data() {
     return {
       today: {},
+      auth: getAuth(),
+      name:''
     };
   },
   created() {
     setInterval(() => {
       this.today = this.getTime();
     }, 1000);
+    onAuthStateChanged(this.auth, (user) => {
+      if (user) {
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/firebase.User
+        this.name = user.email;
+        console.log(this.name)
+        // ...
+      } else {
+        this.$router.replace({ path: "/" });
+        // ...
+      }
+    });
   },
+
   methods: {
+    logout(){
+      this.user='';
+      console.log(this.name)
+    },
     getTime() {
       var now = new Date();
       var year = now.getFullYear();
@@ -150,6 +181,13 @@ export default {
   }
   input[id="menuicon"]:checked + label + div {
     right:0;
+  }
+  .profile{
+    background-color:white;
+    border-radius: 70%;
+    width:40px;
+    line-height:50px;
+    float:left;
   }
 
 </style>
