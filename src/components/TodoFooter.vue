@@ -27,33 +27,38 @@
 <script>
 
 import ClearAlertModal from './common/ClearAlertModal.vue'
+import { mapGetters } from 'vuex'
 
 export default {
   data(){
     return{
       showClearAlertModal:false
-
     }
 
   },
-  props: ['propsDone'],
-
+  
   methods: {
     showClearModal(){
       this.showClearAlertModal=!this.showClearAlertModal;
     },
     clearTodo() {
-      this.$emit('removeAll');
+      this.$store.commit('clearAll');
       this.showClearAlertModal=!this.showClearAlertModal;
     },
   },
   
   computed: {
     doneLeft: function() {
-      var undone = this.propsDone
-      undone = undone.filter(item => item === false);
+      
+      let undone = []
+      if (this.todoList !== undefined ) {
+        undone = this.todoList.filter(todo=> todo.done === false);
+      }
       return undone.length
-    }
+    },
+    ...mapGetters({
+      'todoList':'getTodoList'
+    })
   },
 
 

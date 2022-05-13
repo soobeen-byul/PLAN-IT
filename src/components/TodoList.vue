@@ -1,20 +1,20 @@
 <template>
   <section>
     <ol name="list_cate" >
-      <div v-for="(cate,cateidx) in propsCate" :key="cate">
-        <p :key="cateidx"> <span class='catebox' :style={color:propsColor[cateidx]}> {{cate}} </span>
-          <span class="categorydetailBtn fas fa-cog" type="button" @click="showEditCategoryModal(cate)"></span>
+      <div v-for="(cate,cateidx) in categoryItems" :key="cate+cateidx">
+        <p :key="cateidx"> <span class='catebox' :style={color:cate.categoryColor}> {{cate.category}} </span>
+          <span class="categorydetailBtn fas fa-cog" type="button" @click="showEditCategoryModal(cate.category)"></span>
         </p>
         <draggable>
           <transition-group name="list" tag="ul">
-            <li v-for="(todoItem, index) in propsdata" :key="todoItem+index" class="shadow" v-show='propsTodoCate[index]==cate'>
-              <span type="button" aria-hidden="true" @click="updateState(index)"><img v-if=propsDone[index] src="..\src\assets\flower.png" width="25" height="25" align='center'><img v-else src="..\src\assets\seed.png" width="25" height="25" align='center'></span>
-              <input :class="{textCompleted:propsDone[index]}" style="outline: none;border-style: none;" :placeholder="todoItem" v-model="editedTodoItem[index]" @keyup.enter="editTodo(index)">
-              <div class="dday"> {{propsDate[index]}} </div>
-              <span class="detailBtn" type="button" @click="showDetailModal(index)">
+            <li v-for="(todoItem, index) in todoList" :key="todoItem+index" class="shadow" v-show='todoItem.category==cate.category'>
+              <span type="button" aria-hidden="true" @click="updateState(todoItem.keyIdx)"><img v-if=todoItem.done src="..\src\assets\flower.png" width="25" height="25" align='center'><img v-else src="..\src\assets\seed.png" width="25" height="25" align='center'></span>
+              <input :class="{textCompleted:todoItem.done}" style="outline: none;border-style: none;" :placeholder="todoItem.task" v-model="editedTodoItem[index]" @keyup.enter="editTodo(todoItem.keyIdx,index)">
+              <div class="dday"> {{todoItem.dday}} </div>
+              <span class="detailBtn" type="button" @click="showDetailModal(todoItem.keyIdx)">
                 <i class="fas fa-ellipsis-v"></i>
               </span>
-              <span class="removeBtn" type="button" @click="removeTodo(index)">
+              <span class="removeBtn" type="button" @click="removeTodo(todoItem.keyIdx)">
                 <i class="far fa-trash-alt" aria-hidden="true"></i>
               </span>
             </li>
@@ -30,15 +30,15 @@
 
       <DetailModal v-if="TFDetailModal" @close="TFDetailModal = false">
         <div slot="header">
-          <h2> {{propsdata[DetailIndex]}} </h2></div>
+          <h2> {{DetailTodo}} </h2></div>
         <div slot="content">
           <span style="padding-right:85px;float:none">카테고리 </span>
             <select class="categorybox" v-model="category">
               <option disabled value="" >카테고리를 선택하세요.</option>
-              <option :key=index :value=value  v-for="(value,index) in propsCate">{{propsCate[index]}}</option>
+              <option :key=cateIdx+cate :value=cate.category v-for="(cate,cateIdx) in categoryItems">{{cate.category}}</option>
             </select> 
           <br>마감기한
-            <input type="date" id="deadline" v-model="deadline" style="float:right;">
+            <input type="date" v-model="deadline" style="float:right;">
           <br>장소
             <input type="text" v-model="place" style="float:right">
           <br>메모
@@ -47,7 +47,7 @@
             <input type="time" v-model="alarm"  style="float:right">
         </div>
         <div slot="footer" style="margin-top:0;">
-          <span class="saveDetailBtn" @click="addDetailTodo(DetailIndex,deadline,place,memo,category,alarm)">저장하기</span>
+          <span class="saveDetailBtn" @click="addDetailTodo(DetailkeyIdx,deadline,place,memo,category,alarm)">저장하기</span>
           <span class="closeDetailBtn" @click="TFDetailModal = false"> 닫기</span>
         </div>
       </DetailModal>
@@ -85,6 +85,7 @@ import DetailModal from './common/DetailModal.vue'
 import EditAlertModal from './common/EditAlertModal.vue'
 import EditCategoryModal from './common/EditCategoryModal.vue'
 import AlertCategoryModal from './common/AlertCategoryModal.vue'
+import { mapGetters } from 'vuex'
 
 
 export default {
@@ -101,50 +102,51 @@ export default {
       category:'',
       alarm:'',
       done:'',
+      dday:'',
       editedTodoItem: [],
-      doneItems: [],
-      ddate: [],
       editpastCate:'',
       editedCate:''
     }
-  }
-  ,
-  props: ['propsdata','propsIdx','propsDone','propsDate','propsCate','propsTodoCate','propsColor'],
+  },
+  
 
   methods: {
-    removeTodo(index) {
-      var keyIdx=this.propsIdx[index]
-      this.$emit('removeTodo',keyIdx,index);
+    removeTodo(keyIdx) {
+      this.$store.commit('removeTodo',keyIdx);
     },
-    updateState(index){
-      var keyIdx=this.propsIdx[index]
-      this.$emit('updateState',keyIdx,index);
+    updateState(keyIdx){
+      this.$store.commit('updateState',keyIdx);
     },
 
-    
-    showDetailModal(index){
+    showDetailModal(keyIdx){
       this.TFDetailModal=!this.TFDetailModal
-      this.DetailIndex=index
-      
-      var items =JSON.parse(localStorage.getItem(this.propsIdx[index]))
+      this.DetailkeyIdx=keyIdx
+
+      var items=this.todoList.filter(todo => todo.keyIdx === this.DetailkeyIdx)[0]
+      this.DetailTodo=items.todo
+
       this.done=items.done
       this.place=items.place
       this.deadline=items.deadline
       this.memo=items.memo
       this.category=items.category
       this.alarm=items.alarm
+      this.dday=items.dday
     },
-    showEditCategoryModal(cate){
+    showEditCategoryModal(category){
       this.TFEditCategoryModal=!this.TFEditCategoryModal
-      this.editpastCate=cate
+      this.editpastCate=category
 
     },
     editCategory(){
-      this.$emit('editCategory',this.editpastCate,this.editedCate)
+      let editpastCate = this.editpastCate
+      let editedCate=this.editedCate
+      this.$store.commit('editCategory',{editpastCate,editedCate})
       this.TFEditCategoryModal=!this.TFEditCategoryModal
+      this.editedCate=''
     },
     clearCategory(){
-      this.$emit('clearCategory',this.editpastCate)
+      this.$store.commit('clearCategory',this.editpastCate)
       this.TFAlertCategoryModal=!this.TFAlertCategoryModal;
     },
     goEditCategoryModal(){
@@ -156,31 +158,40 @@ export default {
       this.TFAlertCategoryModal=!this.TFAlertCategoryModal;
       this.TFEditCategoryModal=!this.TFEditCategoryModal;
     },
-    addDetailTodo(DetailIndex){
+    addDetailTodo(DetailkeyIdx){
       this.TFDetailModal=false
-      var keyIdx=this.propsIdx[DetailIndex]
+ 
+      if (this.deadline !== '') {
 
-      this.ddate = this.propsDate
-      if (this.deadline.length > 0) {
         var today = new Date().getTime()
         var deaddate = new Date(this.deadline.split("-")[0],this.deadline.split("-")[1]-1,this.deadline.split("-")[2]).getTime()
         this.dday = deaddate - today
         this.dday = Math.ceil((this.dday) / (1000*60*60*24))
         if (this.dday > 0) {
-          this.ddate.splice(DetailIndex,1,("D-"+this.dday))
+          this.dday="D-"+this.dday
         } else if (this.dday < 0) {
-          this.ddate.splice(DetailIndex,1,'')
-        } else {this.ddate.splice(DetailIndex,1,'D-day')}
-      } else {this.ddate.splice(DetailIndex,1,'')}
+          this.dday=''
+        } else {this.dday='D-day'}
+      } else {this.dday=''}
 
-      var items={todo :this.propsdata[DetailIndex], done : this.done , deadline: this.deadline, dday: this.ddate[DetailIndex], place: this.place, memo: this.memo, category: this.category, alarm: this.alarm}
-      localStorage.setItem(keyIdx, JSON.stringify(items))
+
+      var todoitem = this.todoList.filter(todo => todo.keyIdx === DetailkeyIdx)[0]
+      var task= todoitem.task
+      var keyIdx= todoitem.keyIdx
+      var done = this.done
+      var deadline = this.deadline
+      var dday = this.dday
+      var place= this.place
+      var memo = this.memo
+      var category = this.category
+      var alarm= this.alarm
+
+      this.$store.commit('addDetailTodo',{task,keyIdx,done,deadline,dday,place,memo,category,alarm})
 
       this.clearInput()
-    
-      location.reload();
 
     },
+
     clearInput(){
       this.place='';
       this.deadline='';
@@ -188,19 +199,22 @@ export default {
       this.memo=''
       this.category=''
       this.alarm=''
+      this.dday=''
     },
-    editTodo(index){
+
+    editTodo(keyIdx,index){
       if (this.editedTodoItem[index] !== undefined) {
         var value = this.editedTodoItem[index] && this.editedTodoItem[index].trim();
-        var keyIdx=this.propsIdx[index]
-				this.$emit('editTodo',keyIdx,index,value)
+       
+				this.$store.commit('editTodo',{keyIdx,value})
+        console.log(keyIdx,value)
         this.editedTodoItem= [];
       } else {
         this.showEditAlertModal=!this.showEditAlertModal
       }
+    }
+  },
 
-  }}
-  ,
   components: {
     DetailModal: DetailModal,
     EditAlertModal: EditAlertModal,
@@ -208,6 +222,13 @@ export default {
     AlertCategoryModal: AlertCategoryModal,
     draggable
 
+  },
+
+  computed:{
+    ...mapGetters({
+      'categoryItems':'getCate',
+      'todoList':'getTodoList'
+   })
   }
   
 
@@ -264,14 +285,6 @@ export default {
     margin-top:0;
   }
 
-
-
-
-
-
-  .list-enter-active, .list-leave-active {
-    /* transition: all 1s; */
-  }
   .list-enter, .list-leave-to {
     opacity: 0;
     transform: translateY(30px);
