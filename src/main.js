@@ -30,7 +30,7 @@ initializeApp(firebaseConfig);
 // const analytics = getAnalytics(app);
 
 new Vue({
-  router,
-  store,
   render: h => h(App),
+  router,
+  store
 }).$mount('#app')

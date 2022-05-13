@@ -245,7 +245,7 @@ export default {
   li {
     display: flex;
     min-height: 50px;
-    height: 50px;
+    /* height: 50px; */
     line-height: 50px;
     margin: 0.5rem 0;
     padding: 0 0.9rem;

@@ -72,7 +72,7 @@ export default {
 <style scoped>
 
   .clearAllContainer {
-    position: fixed;
+    /* position: fixed; */
     bottom:0;
     width:100%;
     background-color: #F6F6F8;
