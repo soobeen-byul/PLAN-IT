@@ -20,10 +20,10 @@
       <div slot="content" style="float:left">
         <select class="categorybox" v-model="category">
           <option disabled value="" >카테고리를 선택하세요.</option>
-          <option :key=index :value=value  v-for="(value,index) in propsCate">{{propsCate[index]}}</option>
+          <option :key=cate+cateIdx :value=cate.category  v-for="(cate,cateIdx) in categoryItems">{{cate.category}}</option>
         </select>
       </div>
-      <span slot="footer" class="saveCatecoryBtn" @click="addCategory"> 저장하기 </span>
+      <span slot="footer" class="saveCatecoryBtn" @click="addTodo"> 저장하기 </span>
     </SelectCategoryModal>
 
     <SetupCategoryModal v-if="TFSetupModal" @close="TFSetupModal=false">
@@ -46,6 +46,7 @@
 import AlertModal from './common/AlertModal.vue'
 import SelectCategoryModal from './common/SelectCategoryModal.vue'
 import SetupCategoryModal from './common/SetupCategoryModal.vue'
+import { mapGetters} from 'vuex'
 
 export default {
   data() {
@@ -59,7 +60,6 @@ export default {
       TFSetupModal: false
     }
   },
-  props: ['propsCate'],
   methods: {
     selectCategory(){
       if (this.newTodoItem !== ""){
@@ -69,18 +69,20 @@ export default {
         this.showModal = !this.showModal;
       }
     },
-    addCategory(){
+    addTodo(){
       if (this.category !== '') {
         var category = this.category;
       } else {category = "ToDo"}
       var value = this.newTodoItem && this.newTodoItem.trim();
-      var todoItem={todo : value, done : false, deadline:'', place: '',memo:'',category: category}
+ 
       var keyIdx=Date.now()
-
-      this.$emit('addCategory',keyIdx ,todoItem);
+  
+      this.$store.commit('addTodo',{keyIdx,value,category});
+   
       this.TFSelectModal =! this.TFSelectModal;
       this.category='';
       this.newTodoItem='';
+  
     },
     showSetupCategoryModal(){
       this.TFSelectModal=!this.TFSelectModal;
@@ -93,10 +95,9 @@ export default {
       }
       if (this.newCategoryColor !== '') {
         var newCategoryColor = this.newCategoryColor;
-      } else {newCategoryColor = "#6667AB"
-      }
+      } else {newCategoryColor = "#6667AB"}
 
-      this.$emit('addNewCategory',newCategory, newCategoryColor);
+      this.$store.commit('addNewCategory',{newCategory, newCategoryColor});
       this.TFSetupModal =! this.TFSetupModal;
       this.TFSelectModal =! this.TFSelectModal;
       this.newCategory=''
@@ -111,6 +112,11 @@ export default {
     AlertModal: AlertModal,
     SelectCategoryModal: SelectCategoryModal,
     SetupCategoryModal: SetupCategoryModal
+  },
+  computed:{
+    ...mapGetters({
+      'categoryItems':'getCate'
+    })
   }
 }
 </script>
