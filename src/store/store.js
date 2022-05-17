@@ -25,10 +25,10 @@ export const store = new Vuex.Store({
 
             var items={
                 keyIdx:payload.keyIdx,
-                task :payload.value, 
+                task :payload.value,
+                todoDate : payload.todoDate,
                 done : false , 
-                deadline: '', 
-                dday: '', 
+                dday: payload.dday, 
                 place: '', 
                 memo: '', 
                 category: payload.category, 
@@ -76,7 +76,7 @@ export const store = new Vuex.Store({
 
             let todo=state.todoList.filter(todo => todo.keyIdx === payload.keyIdx)[0]
 
-            todo.deadline=payload.deadline
+            todo.todoDate=payload.todoDate
             todo.dday=payload.dday
             todo.place=payload.place
             todo.memo=payload.memo

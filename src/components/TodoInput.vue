@@ -49,6 +49,8 @@ import SetupCategoryModal from './common/SetupCategoryModal.vue'
 import { mapGetters} from 'vuex'
 
 export default {
+  props : ['propsDate'],
+
   data() {
     return {
       newTodoItem: '',
@@ -76,12 +78,27 @@ export default {
       var value = this.newTodoItem && this.newTodoItem.trim();
  
       var keyIdx=Date.now()
+      
+
+      var todoDate=this.propsDate
+
+      var today = new Date().getTime()
+      var deaddate = new Date(todoDate.split("-")[0],todoDate.split("-")[1]-1,todoDate.split("-")[2]).getTime()
+      var dday = deaddate - today
+      dday = Math.ceil((dday) / (1000*60*60*24))
+      if (dday > 0) {
+          dday="D-"+dday
+      } else if (dday < 0) {
+          dday=''
+      } else {dday='D-day'}
   
-      this.$store.commit('addTodo',{keyIdx,value,category});
+      this.$store.commit('addTodo',{keyIdx,value,category,todoDate,dday});
    
       this.TFSelectModal =! this.TFSelectModal;
       this.category='';
       this.newTodoItem='';
+
+      console.log(typeof(todoDate),todoDate)
   
     },
     showSetupCategoryModal(){
