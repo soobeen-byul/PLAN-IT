@@ -9,7 +9,7 @@ import TodoContents from '../components/TodoContents'
 const router = new VueRouter({
     mode: 'history',
     routes: [
-        { path: '/', component: TodoLogin },
+        { path: '/', name: 'login',component: TodoLogin },
         { path: '/todo', component: TodoContents },
         { path: '*', component: TodoLogin }
     ]

@@ -1,9 +1,10 @@
 <template>
   <div id="app">
-    <TodoHeader></TodoHeader>
-    <TodoInput v-on:addCategory="addCategory" v-on:addNewCategory="addNewCategory" v-bind:propsCate="categoryItems"></TodoInput>
-    <TodoList v-bind:propsdata="todoItems"  v-bind:propsIdx="todoItems_Idx" v-bind:propsDone="doneItems" v-bind:propsCate="categoryItems" v-bind:propsColor="CategoryColor" v-bind:propsDate="ddate" v-bind:propsTodoCate="todoCate" @removeTodo="removeTodo" @editTodo="editTodo" @updateState="updateState" @editCategory="editCategory" @clearCategory="clearCategory"></TodoList>
-    <TodoFooter v-on:removeAll="clearAll" v-bind:propsDone="doneItems"></TodoFooter>
+    <TodoHeader :propsDate=nowDate @upDate="upDate" @downDate="downDate"></TodoHeader>
+    <TodoInput :propsDate=nowDate></TodoInput>
+    <TodoList :propsDate=nowDate :propsPage=nowPage></TodoList>
+    <TodoFooter :propsDate=nowDate @pageToAll="pageToAll" @pageToDone="pageToDone" @pageToUndone="pageToUndone"></TodoFooter>
+
   </div>
 </template>
 
@@ -12,7 +13,8 @@ import TodoHeader from "./TodoHeader.vue";
 import TodoList from "./TodoList.vue";
 import TodoInput from "./TodoInput.vue";
 import TodoFooter from "./TodoFooter.vue";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth, onAuthStateChanged} from "firebase/auth";
+
 
 export default {  
   components: {
@@ -24,169 +26,84 @@ export default {
 
   data() {
     return {
-      todoItems: [],
-      todoItems_Idx: [],
-      doneItems : [],
-      categoryItems: ["ToDo"],
-      ddate: [],
-      todoCate : [],
-      CategoryColor: ['#6667ab'],
       name: "",
       auth: getAuth(),
-
+      nowDate:'',
+      nowPage:undefined
     };
   },
+
   methods: {
-      clearAll() {
-          localStorage.clear();
-      this.todoItems = [];
-      this.todoItems_Idx= [];
-      this.doneItems= [];
-      this.ddate= [];
-      localStorage.setItem("category",JSON.stringify(this.categoryItems));
-    
+    upDate(){
+      var year=Number(this.nowDate.split("-")[0])
+      var month=Number(this.nowDate.split("-")[1])
+      var date=Number(this.nowDate.split("-")[2])
+
+      var newDate=new Date(year,month-1,date+1)
+      this.nowDate=this.getFormatDate(newDate)
+
+      // this.nowDate=this.nowDate.split("-")[0]+'-'+this.nowDate.split("-")[1]+'-'+String(Number(this.nowDate.split("-")[2])+1)
     },
-	addCategory(keyIdx,todoItem) {
-        localStorage.setItem(keyIdx, JSON.stringify(todoItem));
-        this.todoItems.push(todoItem.todo);
-      this.todoItems_Idx.push(keyIdx);
-      this.doneItems.push(todoItem.done);
-      this.ddate.push(todoItem.dday);
-      this.todoCate.push(todoItem.category)
-		},
-    addNewCategory(newCategory, newCategoryColor){
-      if (this.categoryItems.includes(newCategory) == false) {
-        this.categoryItems.push(newCategory)
-        localStorage.setItem("category", JSON.stringify(this.categoryItems))
+    downDate(){
+      var year=Number(this.nowDate.split("-")[0])
+      var month=Number(this.nowDate.split("-")[1])
+      var date=Number(this.nowDate.split("-")[2])
 
-      }
-      
-      this.CategoryColor.push(newCategoryColor)
-      localStorage.setItem("CategoryColor", JSON.stringify(this.CategoryColor)); // warning 부분??
+      var newDate=new Date(year,month-1,date-1)
+      this.nowDate=this.getFormatDate(newDate)
+    },
+    getFormatDate(date){
+        var year = date.getFullYear();              //yyyy
+        var month = (1 + date.getMonth());          //M
+        month = month >= 10 ? month : '0' + month;  //month 두자리로 저장
+        var day = date.getDate();                   //d
+        day = day >= 10 ? day : '0' + day;          //day 두자리로 저장
+        return  String(year + '-' + month + '-' + day);
     },
 
-    removeTodo(keyIdx,index) {
-      localStorage.removeItem(keyIdx);
-      this.todoItems.splice(index, 1);
-      this.todoItems_Idx.splice(index, 1);
-      this.doneItems.splice(index, 1);
-      this.ddate.splice(index, 1);
-
-      this.reloading();
+    pageToAll(){
+      this.nowPage=undefined
     },
-    editTodo(keyIdx,index,editedTodoItem){
-        var savedItems=JSON.parse(localStorage.getItem(keyIdx))
-        savedItems.todo=editedTodoItem
-        this.todoItems.splice(index,1,editedTodoItem)
-        localStorage.setItem(keyIdx,JSON.stringify(savedItems))
-      
-      },
-    updateState(keyIdx,index){
-      var items=JSON.parse(localStorage.getItem(keyIdx))
-      items.done=!items.done
-      if (items.done == true) {
-        items.dday = ''
-      }
-      localStorage.setItem(keyIdx,JSON.stringify(items))
-      
-      this.doneItems.splice(index,1,!this.doneItems[index])
+    pageToUndone(){
+      this.nowPage=true
     },
-    editCategory(editpastCate,editedCate){
-
-      for (var n=0; n<this.categoryItems.length;n++){
-        if(this.categoryItems[n]==editpastCate){
-          this.categoryItems[n]=editedCate
-        }
-      }
-      localStorage.setItem('category',JSON.stringify( this.categoryItems))
-     
-      for (var i=0;i<localStorage.length-1;i++){
-        if (this.todoCate[i]==editpastCate){
-          var items=JSON.parse(localStorage.getItem(this.todoItems_Idx[i]))
-          items.category=editedCate
-          localStorage.setItem(this.todoItems_Idx[i],JSON.stringify(items))
-        }
-      }
-      this.reloading();
-    },
-    clearCategory(clearCate){
-      for (var n=0; n<this.categoryItems.length;n++){
-        if(this.categoryItems[n]==clearCate){
-          this.categoryItems.splice(n,1)
-          this.CategoryColor.splice(n,1)
-        }
-      }
-      localStorage.setItem('category',JSON.stringify(this.categoryItems))
-      localStorage.setItem('CategoryColor',JSON.stringify(this.CategoryColor))
-      
-      if (this.categoryItems==''){
-        localStorage.removeItem('category')
-        localStorage.removeItem('CategoryColor')
-      }
-      for (var i=0;i<this.todoCate.length;i++){
-        if (this.todoCate[i]==clearCate){
-          localStorage.removeItem(this.todoItems_Idx[i])
-        }
-      }
-      this.reloading()
-      
-
-    },
-    reloading(){
-      this.todoItems=[]
-      this.todoItems_Idx=[]
-      this.doneItems=[]
-      this.categoryItems=[]
-      this.ddate=[]
-      this.todoCate=[]
-
-      if (localStorage.length > 0) {
-			for (var i = 0; i < localStorage.length; i++) {
-        var Idx=localStorage.key(i)
-        var item= JSON.parse(localStorage[Idx])
-        if (Idx=='category'){
-          this.categoryItems=item
-        }
-        else {
-          this.todoItems_Idx.push(Idx)
-    
-          this.todoItems.push(item.todo);
-          this.doneItems.push(item.done)
-          this.ddate.push(item.dday)
-          this.todoCate.push(item.category)
-
-        }
-        if (Idx == 'CategoryColor') {
-          this.CategoryColor = item
-        }
-        
-			}
-      
+    pageToDone(){
+      this.nowPage=false
     }
-
-
-    }
-    
-
-    },
+  },
+  
   created() {
+
+    categoryItems=[{category:"ToDo",categoryColor:'#6667ab'}]
+    todoList=[]
+    
     if (localStorage.length > 0) {
-      for (var i = 0; i < localStorage.length; i++) {
-        this.todoItems.push(localStorage.key(i));
-        // this.$store.commit("addTodo", localStorage.key(i));
+
+        for (var i = 0; i < localStorage.length; i++) {
+          var Idx=localStorage.key(i)
+          var item= JSON.parse(localStorage[Idx])
+
+          if (Idx=='categoryItems'){
+            var categoryItems=item
+          }else {
+            var todoList=item
+          } 
+        }  
       }
-    }
+
+      this.$store.commit('getLocalData',{categoryItems,todoList});
+
+   
     onAuthStateChanged(this.auth, (user) => {
       if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/firebase.User
         this.name = user.email;
-        // ...
       } else {
-        this.$router.replace({ path: "/" });
-        // ...
+        this.$router.replace({ path: "/" }).catch(()=>{});
       }
     });
+
+    this.nowDate=this.getFormatDate(new Date())
+
   },
 };
 </script>

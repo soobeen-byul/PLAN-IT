@@ -7,18 +7,37 @@
         <span></span>
       </label>
     <div class="sidebar">
+      <img class="profile" src="../assets/seed.png"> 
+       {{name}}
+      <span class="logoutbtn" @click="logout">로그아웃</span>
+      <p> 친구 목록 </p>
+      <p> 작고 소소한 미션 <span class="far fa-question-circle"> </span> </p>
+      <span>오늘의 미션 하러가기 <span class="fas fa-camera"> </span></span>
+      <span>모아보기</span>
+      <p>설정</p>
+      <span class="fas fa-user-edit"> 계정 </span>
+      <span class="fas fa-bell"> 알림</span>
     </div>
     <h1> <img class="flowerlogo" src='../assets/flower.png'>PLAN IT<img class="flowerlogo" src='../assets/flower.png'></h1>
     <div class="today-header">
-      <h2><span class="leftpageBtn fas fa-angle-left" type="Button">
-        </span>     {{today.date}}     <span class="rightpageBtn fas fa-angle-right" type="Button"></span></h2>
-      <h6 class="today-time">오늘은 {{ today.day }} {{ today.time }}</h6>
+      <h2>
+        <span class="leftpageBtn fas fa-angle-left" type="Button"  @click="downDate()"></span>     
+        {{propsDate}}     
+        <span class="rightpageBtn fas fa-angle-right" type="Button" @click="upDate()"></span>
+      </h2>
+      <h6 class="today-time">오늘은 {{ today.day}} {{' '}}{{today.date}} {{ today.time }}</h6>
     </div>
 
   </header>
 </template>
 
 <script>
+// import {getAuth,onAuthStateChanged,signOut} from "firebase/auth";
+import {getAuth,signOut} from "firebase/auth";
+
+import { getFirestore } from "firebase/firestore";
+
+
 var days = ["두려움의 일요일", "고통의 월요일", "절망의 화요일", "인내의 수요일", "희망의 목요일", "환희의 금요일", "쾌락의 토요일"];
 
 // 날씨 API //
@@ -36,25 +55,45 @@ alert("Can't find you. No weather for you.");
 navigator.geolocation.getCurrentPosition(onGeoOk, onGeoError);
 
 export default {
-  props: {
-    state: {
-      type: Object,
-    },
-  },
+  props: 
+   ['propsDate'],
+  //   {
+  //   state: {
+  //     type: Object,
+  //   },
+  // },
   data() {
     return {
       today: {},
+      auth: getAuth(),
+      name:'',
+      db: getFirestore(),
+      
     };
   },
   created() {
     setInterval(() => {
       this.today = this.getTime();
     }, 1000);
+    // onAuthStateChanged(this.auth, (user) => {
+    //   if (user) {
+    //     this.name = user.email;
+    //   } 
+    // });
   },
+
   methods: {
+    logout(){
+      signOut(this.auth)
+      .then(() => {
+
+    });
+
+    },
+
     getTime() {
       var now = new Date();
-      var year = now.getFullYear();
+      // var year = now.getFullYear();
       var month = this.setTwoDigits(1 + now.getMonth());
       var dateValue = this.setTwoDigits(now.getDate());
       var day = days[now.getDay()];
@@ -64,7 +103,7 @@ export default {
         this.setTwoDigits(now.getMinutes()) 
         // ":" +
         // this.setTwoDigits(now.getSeconds());
-      return { date: year+"."+ month + "." + dateValue, day, time };
+      return { date: month + "월" + dateValue +'일',day, time };
     },
     setTwoDigits(num) {
       if (num >= 10) {
@@ -82,6 +121,17 @@ export default {
       }
       return sub + this.setTwoDigits(num);
     },
+
+    upDate(){
+      this.$emit('upDate')
+
+    },
+
+    downDate(){
+      this.$emit('downDate')
+
+
+    }
   },
 };
 </script>
@@ -164,6 +214,13 @@ export default {
   }
   input[id="menuicon"]:checked + label + div {
     right:0;
+  }
+  .profile{
+    background-color:white;
+    border-radius: 70%;
+    width:40px;
+    line-height:50px;
+    float:left;
   }
 
 </style>

@@ -5,9 +5,15 @@
       할일 {{doneLeft}}개 남음!
     </div>
     <div class="pageContainer">
-      <span class="allBtn">ALL</span>
-      <span class="unfinishedBtn">UNFINISHED</span>
-      <span class="finishedBtn">FINISHED</span>
+      <span class="allBtn" @click="pageToAll">
+        <i v-if='nowPage==undefined' class="fas fa-check"></i>ALL
+      </span>
+      <span class="unfinishedBtn" @click="pageToUndone" >
+        <i v-if='nowPage==false' class="fas fa-check"></i>UNFINISHED
+      </span>
+      <span class="finishedBtn" @click="pageToDone">
+        <i v-if='nowPage==true' class="fas fa-check"></i>FINISHED
+      </span>
     </div>
 
     <ClearAlertModal v-if="showClearAlertModal" @close="showClearAlertModal = false">
@@ -17,7 +23,7 @@
         <span class="realCloseBtn"  @click="clearTodo">네</span>
         <span class="noCloseBtn" @click="showClearAlertModal = false">아니요</span>
       </div>
-    </ClearAlertModal> 
+    </ClearAlertModal>
   </div>
 
 
@@ -27,33 +33,52 @@
 <script>
 
 import ClearAlertModal from './common/ClearAlertModal.vue'
+import { mapGetters } from 'vuex'
 
 export default {
+  props : ['propsDate'],
   data(){
     return{
-      showClearAlertModal:false
-
+      showClearAlertModal:false,
+      nowPage: undefined
     }
 
   },
-  props: ['propsDone'],
-
+  
   methods: {
     showClearModal(){
       this.showClearAlertModal=!this.showClearAlertModal;
     },
     clearTodo() {
-      this.$emit('removeAll');
+      this.$store.commit('clearAll');
       this.showClearAlertModal=!this.showClearAlertModal;
     },
+    pageToAll(){
+      this.$emit('pageToAll')
+      this.nowPage=undefined
+    },
+    pageToUndone(){
+      this.$emit('pageToUndone')
+      this.nowPage=false
+    },
+    pageToDone(){
+      this.$emit('pageToDone')
+      this.nowPage=true
+    }
   },
   
   computed: {
     doneLeft: function() {
-      var undone = this.propsDone
-      undone = undone.filter(item => item === false);
+      
+      let undone = []
+      if (this.todoList !== undefined ) {
+        undone = this.todoList.filter(todo=> todo.done === false & todo.todoDate==this.propsDate);
+      }
       return undone.length
-    }
+    },
+    ...mapGetters({
+      'todoList':'getTodoList'
+    })
   },
 
 
@@ -67,7 +92,7 @@ export default {
 <style scoped>
 
   .clearAllContainer {
-    position: fixed;
+    /* position: fixed; */
     bottom:0;
     width:100%;
     background-color: #F6F6F8;
