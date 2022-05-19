@@ -1,9 +1,10 @@
 <template>
   <div id="app">
-    <TodoHeader></TodoHeader>
-    <TodoInput ></TodoInput>
-    <TodoList ></TodoList>
-    <TodoFooter ></TodoFooter>
+    <TodoHeader :propsDate=nowDate @upDate="upDate" @downDate="downDate"></TodoHeader>
+    <TodoInput :propsDate=nowDate></TodoInput>
+    <TodoList :propsDate=nowDate :propsPage=nowPage></TodoList>
+    <TodoFooter :propsDate=nowDate @pageToAll="pageToAll" @pageToDone="pageToDone" @pageToUndone="pageToUndone"></TodoFooter>
+
   </div>
 </template>
 
@@ -13,6 +14,7 @@ import TodoList from "./TodoList.vue";
 import TodoInput from "./TodoInput.vue";
 import TodoFooter from "./TodoFooter.vue";
 import { getAuth, onAuthStateChanged} from "firebase/auth";
+
 
 export default {  
   components: {
@@ -26,8 +28,48 @@ export default {
     return {
       name: "",
       auth: getAuth(),
-
+      nowDate:'',
+      nowPage:undefined
     };
+  },
+
+  methods: {
+    upDate(){
+      var year=Number(this.nowDate.split("-")[0])
+      var month=Number(this.nowDate.split("-")[1])
+      var date=Number(this.nowDate.split("-")[2])
+
+      var newDate=new Date(year,month-1,date+1)
+      this.nowDate=this.getFormatDate(newDate)
+
+      // this.nowDate=this.nowDate.split("-")[0]+'-'+this.nowDate.split("-")[1]+'-'+String(Number(this.nowDate.split("-")[2])+1)
+    },
+    downDate(){
+      var year=Number(this.nowDate.split("-")[0])
+      var month=Number(this.nowDate.split("-")[1])
+      var date=Number(this.nowDate.split("-")[2])
+
+      var newDate=new Date(year,month-1,date-1)
+      this.nowDate=this.getFormatDate(newDate)
+    },
+    getFormatDate(date){
+        var year = date.getFullYear();              //yyyy
+        var month = (1 + date.getMonth());          //M
+        month = month >= 10 ? month : '0' + month;  //month 두자리로 저장
+        var day = date.getDate();                   //d
+        day = day >= 10 ? day : '0' + day;          //day 두자리로 저장
+        return  String(year + '-' + month + '-' + day);
+    },
+
+    pageToAll(){
+      this.nowPage=undefined
+    },
+    pageToUndone(){
+      this.nowPage=true
+    },
+    pageToDone(){
+      this.nowPage=false
+    }
   },
   
   created() {
@@ -59,6 +101,9 @@ export default {
         this.$router.replace({ path: "/" }).catch(()=>{});
       }
     });
+
+    this.nowDate=this.getFormatDate(new Date())
+
   },
 };
 </script>
