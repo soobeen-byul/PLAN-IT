@@ -1,13 +1,13 @@
 <template>
   <section>
     <ol name="list_cate" >
-      <div v-for="(cate,cateidx) in categoryItems" :key="cate+cateidx">
+      <div v-for="(cate,cateidx) in categoryItems" :key="cate+cateidx"> 
         <p :key="cateidx"> <span class='catebox' :style={color:cate.categoryColor}> {{cate.category}} </span>
           <span class="categorydetailBtn fas fa-cog" type="button" @click="showEditCategoryModal(cate.category)"></span>
         </p>
         <draggable>
           <transition-group name="list" tag="ul">
-            <li v-for="(todoItem, index) in todoList" :key="todoItem+index" class="shadow" v-show='todoItem.category==cate.category'>
+            <li v-for="(todoItem, index) in todoList" :key="todoItem+index" class="shadow" v-show='todoItem.category==cate.category & todoItem.todoDate==propsDate & todoItem.done!==propsPage'>
               <span type="button" aria-hidden="true" @click="updateState(todoItem.keyIdx)"><img v-if=todoItem.done src="..\src\assets\flower.png" width="25" height="25" align='center'><img v-else src="..\src\assets\seed.png" width="25" height="25" align='center'></span>
               <input :class="{textCompleted:todoItem.done}" style="outline: none;border-style: none;" :placeholder="todoItem.task" v-model="editedTodoItem[index]" @keyup.enter="editTodo(todoItem.keyIdx,index)">
               <div class="dday"> {{todoItem.dday}} </div>
@@ -21,7 +21,6 @@
           </transition-group></draggable>
     </div>
     </ol>
-
       <EditAlertModal v-if="showEditAlertModal" @close="showEditAlertModal = false">
         <h3 slot="header">경고</h3>
         <p slot="content">할 일을 입력하세요.</p>
@@ -37,8 +36,8 @@
               <option disabled value="" >카테고리를 선택하세요.</option>
               <option :key=cateIdx+cate :value=cate.category v-for="(cate,cateIdx) in categoryItems">{{cate.category}}</option>
             </select> 
-          <br>마감기한
-            <input type="date" v-model="deadline" style="float:right;">
+          <br>날짜
+            <input type="date" v-model="todoDate" style="float:right;">
           <br>장소
             <input type="text" v-model="place" style="float:right">
           <br>메모
@@ -47,7 +46,7 @@
             <input type="time" v-model="alarm"  style="float:right">
         </div>
         <div slot="footer" style="margin-top:0;">
-          <span class="saveDetailBtn" @click="addDetailTodo(DetailkeyIdx,deadline,place,memo,category,alarm)">저장하기</span>
+          <span class="saveDetailBtn" @click="addDetailTodo(DetailkeyIdx,todoDate,place,memo,category,alarm)">저장하기</span>
           <span class="closeDetailBtn" @click="TFDetailModal = false"> 닫기</span>
         </div>
       </DetailModal>
@@ -78,6 +77,7 @@
   </section>
 </template>
 
+
 <script>
 import draggable from 'vuedraggable'
 
@@ -89,6 +89,8 @@ import { mapGetters } from 'vuex'
 
 
 export default {
+  props : ['propsDate','propsPage'],
+
   data(){
     return{
       TFDetailModal: false,
@@ -97,7 +99,7 @@ export default {
       TFAlertCategoryModal: false,
       DetailTodo: '',
       place:'',
-      deadline:'',
+      todoDate:'',
       memo:'',
       category:'',
       alarm:'',
@@ -127,7 +129,7 @@ export default {
 
       this.done=items.done
       this.place=items.place
-      this.deadline=items.deadline
+      this.todoDate=items.todoDate
       this.memo=items.memo
       this.category=items.category
       this.alarm=items.alarm
@@ -161,10 +163,10 @@ export default {
     addDetailTodo(DetailkeyIdx){
       this.TFDetailModal=false
  
-      if (this.deadline !== '') {
+      if (this.todoDate !== '') {
 
         var today = new Date().getTime()
-        var deaddate = new Date(this.deadline.split("-")[0],this.deadline.split("-")[1]-1,this.deadline.split("-")[2]).getTime()
+        var deaddate = new Date(this.todoDate.split("-")[0],this.todoDate.split("-")[1]-1,this.todoDate.split("-")[2]).getTime()
         this.dday = deaddate - today
         this.dday = Math.ceil((this.dday) / (1000*60*60*24))
         if (this.dday > 0) {
@@ -179,14 +181,14 @@ export default {
       var task= todoitem.task
       var keyIdx= todoitem.keyIdx
       var done = this.done
-      var deadline = this.deadline
+      var todoDate = this.todoDate
       var dday = this.dday
       var place= this.place
       var memo = this.memo
       var category = this.category
       var alarm= this.alarm
 
-      this.$store.commit('addDetailTodo',{task,keyIdx,done,deadline,dday,place,memo,category,alarm})
+      this.$store.commit('addDetailTodo',{task,keyIdx,done,todoDate,dday,place,memo,category,alarm})
 
       this.clearInput()
 
@@ -194,7 +196,7 @@ export default {
 
     clearInput(){
       this.place='';
-      this.deadline='';
+      this.todoDate='';
       this.done=''
       this.memo=''
       this.category=''
@@ -207,7 +209,7 @@ export default {
         var value = this.editedTodoItem[index] && this.editedTodoItem[index].trim();
        
 				this.$store.commit('editTodo',{keyIdx,value})
-        console.log(keyIdx,value)
+
         this.editedTodoItem= [];
       } else {
         this.showEditAlertModal=!this.showEditAlertModal
@@ -221,7 +223,6 @@ export default {
     EditCategoryModal: EditCategoryModal,
     AlertCategoryModal: AlertCategoryModal,
     draggable
-
   },
 
   computed:{
@@ -229,8 +230,7 @@ export default {
       'categoryItems':'getCate',
       'todoList':'getTodoList'
    })
-  }
-  
+  },
 
 }
 </script>

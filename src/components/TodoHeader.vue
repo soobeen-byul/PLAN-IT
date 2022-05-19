@@ -20,9 +20,12 @@
     </div>
     <h1> <img class="flowerlogo" src='../assets/flower.png'>PLAN IT<img class="flowerlogo" src='../assets/flower.png'></h1>
     <div class="today-header">
-      <h2><span class="leftpageBtn fas fa-angle-left" type="Button">
-        </span>     {{today.date}}     <span class="rightpageBtn fas fa-angle-right" type="Button"></span></h2>
-      <h6 class="today-time">오늘은 {{ today.day }} {{ today.time }}</h6>
+      <h2>
+        <span class="leftpageBtn fas fa-angle-left" type="Button"  @click="downDate()"></span>     
+        {{propsDate}}     
+        <span class="rightpageBtn fas fa-angle-right" type="Button" @click="upDate()"></span>
+      </h2>
+      <h6 class="today-time">오늘은 {{ today.day}} {{' '}}{{today.date}} {{ today.time }}</h6>
     </div>
 
   </header>
@@ -34,11 +37,13 @@ import {getAuth,onAuthStateChanged} from "firebase/auth";
 
 var days = ["두려움의 일요일", "고통의 월요일", "절망의 화요일", "인내의 수요일", "희망의 목요일", "환희의 금요일", "쾌락의 토요일"];
 export default {
-  props: {
-    state: {
-      type: Object,
-    },
-  },
+  props: 
+   ['propsDate'],
+  //   {
+  //   state: {
+  //     type: Object,
+  //   },
+  // },
   data() {
     return {
       today: {},
@@ -71,7 +76,7 @@ export default {
     },
     getTime() {
       var now = new Date();
-      var year = now.getFullYear();
+      // var year = now.getFullYear();
       var month = this.setTwoDigits(1 + now.getMonth());
       var dateValue = this.setTwoDigits(now.getDate());
       var day = days[now.getDay()];
@@ -81,7 +86,7 @@ export default {
         this.setTwoDigits(now.getMinutes()) 
         // ":" +
         // this.setTwoDigits(now.getSeconds());
-      return { date: year+"."+ month + "." + dateValue, day, time };
+      return { date: month + "월" + dateValue +'일',day, time };
     },
     setTwoDigits(num) {
       if (num >= 10) {
@@ -99,6 +104,17 @@ export default {
       }
       return sub + this.setTwoDigits(num);
     },
+
+    upDate(){
+      this.$emit('upDate')
+
+    },
+
+    downDate(){
+      this.$emit('downDate')
+
+
+    }
   },
 };
 </script>
