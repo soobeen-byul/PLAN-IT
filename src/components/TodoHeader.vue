@@ -18,6 +18,10 @@
       <span class="fas fa-user-edit"> 계정 </span>
       <span class="fas fa-bell"> 알림</span>
     </div>
+    <label class="weather">
+      <div id="weather" class="weather"> {{weather.main}} </div>
+    </label>
+    <br>
     <h1> <img class="flowerlogo" src='../assets/flower.png'>PLAN IT<img class="flowerlogo" src='../assets/flower.png'></h1>
     <div class="today-header">
       <h2>
@@ -42,18 +46,33 @@ var days = ["두려움의 일요일", "고통의 월요일", "절망의 화요�
 
 // 날씨 API //
 const API_KEY = "91ec8d410db7b0c5b73ecc3dcf76935d"
-function onGeoOk(position) {
-const latitude = position.coords.latitude;
-const longitude = position.coords.longitude;
-fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric`)
-.then(response => response.json())
-.then(data => console.log(`온도 : ${data.main.temp}, 날씨 : ${data.weather[0].main} ` +  `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`));
-}
-function onGeoError() {
-alert("Can't find you. No weather for you.");
-}
-navigator.geolocation.getCurrentPosition(onGeoOk, onGeoError);
+function getWeather() {
+  function onGeoOK(position) {
+  
+  const lat = position.coords.latitude;
+  const lon = position.coords.longitude;
+  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`
+  fetch(url)
+    .then(Response => Response.json())
+    .then(data => {
+      const weather = document.getElementById("weather")
 
+      switch ((data.weather[0].icon).substr(0,2)) {
+        case ("03") : case ("04") :
+          weather.className = 'fas fa-cloud fa-lg';
+          break;
+        case ("09") : case ("10") :
+          weather.className = 'fas fa-tint fa-lg';
+          break;
+        case ("11") :
+          weather.className = 'fas fa-umbrella fa-lg';
+          break;
+          }
+      });
+} 
+
+navigator.geolocation.getCurrentPosition(onGeoOK);
+}
 export default {
   props: 
    ['propsDate'],
@@ -68,6 +87,13 @@ export default {
       auth: getAuth(),
       name:'',
       db: getFirestore(),
+
+      api_key: "91ec8d410db7b0c5b73ecc3dcf76935d",
+      url_base: "https://api.openweathermap.org/data/2.5/",
+      query: "",
+      weather: {},
+      latitude: '',
+      longitude: ''
       
     };
   },
@@ -80,6 +106,7 @@ export default {
     //     this.name = user.email;
     //   } 
     // });
+    getWeather()      
   },
 
   methods: {
@@ -171,6 +198,7 @@ export default {
     height: 25px;
     position: relative;
     cursor: pointer;
+    margin: 0.4rem 0rem 1rem;
   }
   input[id="menuicon"] + label span {
     display: block;
@@ -221,6 +249,22 @@ export default {
     width:40px;
     line-height:50px;
     float:left;
+  }
+  .fa-cloud {
+    color:lightblue
+  }
+  .fa-clouds {
+    color:lightblue
+  }
+  .fa-tint {
+    color:cornflowerblue
+  }
+  .fa-cloud-shower {
+    color: rgb(140, 152, 176)
+  }
+  .weather {
+    float: right;
+    margin: 0.4rem 1rem 1rem;
   }
 
 </style>
