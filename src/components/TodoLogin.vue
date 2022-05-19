@@ -20,6 +20,9 @@ import {
   signInWithEmailAndPassword,
   onAuthStateChanged  
 } from "firebase/auth";
+// import { collection, addDoc, getFirestore } from "firebase/firestore";
+import { doc, setDoc,getFirestore } from "firebase/firestore";
+
 
 export default {
   data() {
@@ -28,38 +31,37 @@ export default {
       auth: getAuth(),
       email: "",
       password: "",
-      // displayName: "",
-      // phoneNumber: "",
-      // photoURL: "",
-      // providerId:"",
-      // uid: "",
+      db: getFirestore()
     };
   },
   methods: {
-    addUser() {
-      createUserWithEmailAndPassword(this.auth, this.email, this.password)
+    addUser(){
+        try {
+          const first = doc(this.db, 'users', this.email);
+          setDoc(first, { keyidx: Date.now(),email:this.email,name:'' });
+        // const docRef = await addDoc(collection(this.db, "users"), {
+        //   email:this.email
+        // });
+        createUserWithEmailAndPassword(this.auth, this.email, this.password)
         .then((userCredential) => {
-            console.log(this.userCredential)
-          // Signed in
-          // var user = userCredential.user;
-          this.msg = "loggined as " + userCredential.user.email;                    
+            console.log(this.userCredential,'aaa')
+            console.log(this.email,'bbb')
+            console.log(userCredential.user.email)
+          }                   
           // ...
-        })
+        )
         .catch((error) => {
           this.msg = error;
-          // var errorCode = error.code;
-          // var errorMessage = error.message;
-          // ..
-        });
+        });     
+      } catch (e) {
+        console.error("Error adding document: ", e);
+      }
     },
+
     login() {
-        console.log(this.auth)
       signInWithEmailAndPassword(this.auth, this.email, this.password)
         .then((userCredential) => {
-          // Signed in
-          console.log(userCredential.user);
           this.name = userCredential.user.email;          
-          // ...
         })
         .catch((error) => {
           this.msg = error;
@@ -69,15 +71,9 @@ export default {
   beforeCreate() {
     onAuthStateChanged(getAuth(), (user) => {
       if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/firebase.User
-        console.log(user.email);
-        this.$router.push({ path: "todo" });
-        // ...
+        this.$router.push({ path: "todo" }).catch(()=>{});
       } else {
         console.log("not logged in");
-        // User is signed out
-        // ...
       }
     });
   },

@@ -7,7 +7,8 @@ Vue.use(Vuex);
 export const store = new Vuex.Store({
     state: {
         categoryItems: [],
-        todoList:[]
+        todoList:[],
+        userList:[]
     },
 
     getters:{
@@ -16,6 +17,9 @@ export const store = new Vuex.Store({
         },
         getTodoList : state=>{
             return state.todoList
+        },
+        getUserList: state=> {
+            return state.userList
         }
        
     },
