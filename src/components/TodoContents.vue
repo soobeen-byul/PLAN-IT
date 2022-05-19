@@ -12,7 +12,7 @@ import TodoHeader from "./TodoHeader.vue";
 import TodoList from "./TodoList.vue";
 import TodoInput from "./TodoInput.vue";
 import TodoFooter from "./TodoFooter.vue";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth, onAuthStateChanged} from "firebase/auth";
 
 export default {  
   components: {
@@ -54,13 +54,9 @@ export default {
    
     onAuthStateChanged(this.auth, (user) => {
       if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/firebase.User
         this.name = user.email;
-        // ...
       } else {
-        // this.$router.replace({ path: "/" });
-        this.$router.replace({name:"login",params:{redirect:"invalid access"}})
+        this.$router.replace({ path: "/" }).catch(()=>{});
       }
     });
   },
