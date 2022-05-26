@@ -17,8 +17,6 @@
       <p>설정</p>
       <span class="fas fa-user-edit"> 계정 </span>
       <span class="fas fa-bell"> 알림</span>
-      <i class="fa fa-cloud"> eff </i>
-      <span class="fas fa-frosty-head"> 폰트어썸 </span>
     </div>
     <label class="weather">
       <div id="weather" class="weather"> {{weather.main}} </div>
@@ -58,19 +56,10 @@ function getWeather() {
     .then(Response => Response.json())
     .then(data => {
       const weather = document.getElementById("weather")
-      console.log(data.weather[0].icon)
-      if (data.weather[0].icon == "01d") {
-        weather.className = 'fas fa-sun fa-lg'
-      } else if (data.weather[0].icon == "01n") {
-        weather.className = 'fas fa-moon fa-lg'
-      } else if (data.weather[0].icon == "02d") {
-        weather.className = 'fas fa-sun fa-lg'
-      } else if (data.weather[0].icon == "02n") {
-        weather.className = 'fas fa-moon fa-lg'
-      }
+
       switch ((data.weather[0].icon).substr(0,2)) {
         case ("03") : case ("04") :
-          weather.className = 'fa fa-cloud fa-lg';
+          weather.className = 'fas fa-cloud fa-lg';
           break;
         case ("09") : case ("10") :
           weather.className = 'fas fa-tint fa-lg';
@@ -78,10 +67,7 @@ function getWeather() {
         case ("11") :
           weather.className = 'fas fa-umbrella fa-lg';
           break;
-        case ("13") :
-          weather.className = 'fas fa-snowflake fa-lg';
-          break;
-        }
+          }
       });
 } 
 
@@ -275,15 +261,6 @@ export default {
   }
   .fa-cloud-shower {
     color: rgb(140, 152, 176)
-  }
-  .fa-sun {
-    color: rgba(248, 137, 106, 0.803)
-  }
-  .fa-moon {
-    color: rgb(238, 226, 95)
-  }
-  .fa-bolt {
-    color: rgb(238, 226, 95)
   }
   .weather {
     float: right;
