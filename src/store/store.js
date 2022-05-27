@@ -1,5 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import {getFirestore,doc,setDoc} from "firebase/firestore";
+import {getAuth} from "firebase/auth";
 
 Vue.use(Vuex);
 
@@ -8,7 +10,7 @@ export const store = new Vuex.Store({
     state: {
         categoryItems: [],
         todoList:[],
-        userList:[]
+        userInfo:[]
     },
 
     getters:{
@@ -18,8 +20,8 @@ export const store = new Vuex.Store({
         getTodoList : state=>{
             return state.todoList
         },
-        getUserList: state=> {
-            return state.userList
+        getUserInfo: state=> {
+            return state.userInfo
         }
        
     },
@@ -41,6 +43,26 @@ export const store = new Vuex.Store({
 
             state.todoList.push(items)
             localStorage.setItem('TodoList',JSON.stringify(state.todoList))
+
+            var user = getAuth().currentUser.email;
+            var db=getFirestore();
+
+            var docInfoData={
+                TodoInfo : {
+                    keyIdx:payload.keyIdx,
+                    task :payload.value,
+                    todoDate : payload.todoDate,
+                    done : false , 
+                    dday: payload.dday, 
+                    place: '', 
+                    memo: '', 
+                    category: payload.category, 
+                    alarm: ''
+                }
+                
+              }
+              var docFolder = doc(db,'users',user,'Todo',payload.value);
+              setDoc(docFolder , docInfoData);
 		},
 
         addNewCategory : (state,payload) => {
@@ -51,13 +73,25 @@ export const store = new Vuex.Store({
 
             state.categoryItems.push(items)
             localStorage.setItem("categoryItems",JSON.stringify(state.categoryItems));
-            
+
+            var user = getAuth().currentUser.email;
+            var db=getFirestore();
+            var docInfoData={
+                cateInfo : {
+                    category:payload.newCategory,
+                    categoryColor:payload.newCategoryColor
+                }                
+              }
+            var docFolder = doc(db,'users',user,'Category',payload.newCategory);
+            setDoc(docFolder , docInfoData);
+        
         },
 
         clearAll : (state) => {
             localStorage.clear();
             state.todoList=[];
             localStorage.setItem("categoryItems",JSON.stringify(state.categoryItems));
+
         },
 
         removeTodo: (state,keyIdx) => {
@@ -132,6 +166,27 @@ export const store = new Vuex.Store({
         getLocalData : (state,payload)=>{
             state.todoList=payload.todoList
             state.categoryItems=payload.categoryItems
+        },
+        addUserInfo: (state,email) => {
+            var info={
+                email:email
+            }
+            state.userInfo.push(info)
+            localStorage.setItem('userInfo',JSON.stringify(state.userInfo))
+
+            var user = getAuth().currentUser.email;
+            var db=getFirestore();
+
+            var docInfoData={
+              UserInfo : {
+                  email:info.email ,
+                  keyIdx: Date.now(),
+                  name:''
+              }
+              
+            }
+            var docFolder = doc(db,'users',user);
+            setDoc(docFolder , docInfoData);
         }
     }
 });

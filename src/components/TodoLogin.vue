@@ -20,8 +20,7 @@ import {
   signInWithEmailAndPassword,
   onAuthStateChanged  
 } from "firebase/auth";
-// import { collection, addDoc, getFirestore } from "firebase/firestore";
-import { doc, setDoc,getFirestore } from "firebase/firestore";
+
 
 
 export default {
@@ -30,23 +29,20 @@ export default {
       msg: "hi",
       auth: getAuth(),
       email: "",
-      password: "",
-      db: getFirestore()
+      password: ""
     };
   },
   methods: {
     addUser(){
         try {
-          const first = doc(this.db, 'users', this.email);
-          setDoc(first, { keyidx: Date.now(),email:this.email,name:'' });
-        // const docRef = await addDoc(collection(this.db, "users"), {
-        //   email:this.email
-        // });
+
+
         createUserWithEmailAndPassword(this.auth, this.email, this.password)
         .then((userCredential) => {
-            console.log(this.userCredential,'aaa')
-            console.log(this.email,'bbb')
-            console.log(userCredential.user.email)
+            console.log(userCredential)
+            var email=this.email
+            this.$store.commit('addUserInfo',email)
+
           }                   
           // ...
         )
