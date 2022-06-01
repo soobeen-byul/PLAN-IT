@@ -28,8 +28,8 @@ export const store = new Vuex.Store({
 
     mutations:{
         addTodo : (state,payload) => {
-
             var items={
+                user: getAuth().currentUser.email,
                 keyIdx:payload.keyIdx,
                 task :payload.value,
                 todoDate : payload.todoDate,
@@ -42,6 +42,7 @@ export const store = new Vuex.Store({
             }
 
             state.todoList.push(items)
+            console.log(1111,state.todoList)
             localStorage.setItem('TodoList',JSON.stringify(state.todoList))
 
             var user = getAuth().currentUser.email;
@@ -49,6 +50,7 @@ export const store = new Vuex.Store({
 
             var docInfoData={
                 TodoInfo : {
+                    user: getAuth().currentUser.email,
                     keyIdx:payload.keyIdx,
                     task :payload.value,
                     todoDate : payload.todoDate,
@@ -290,6 +292,7 @@ export const store = new Vuex.Store({
         getLocalData : (state,payload)=>{
             state.todoList=payload.todoList
             state.categoryItems=payload.categoryItems
+            state.userInfo=payload.userInfo
         },
         addUserInfo: (state,email) => {
             var info={

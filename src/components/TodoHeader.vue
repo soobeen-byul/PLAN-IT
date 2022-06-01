@@ -114,6 +114,7 @@ export default {
   created() {
     setInterval(() => {
       this.today = this.getTime();
+      
     }, 1000);
     // onAuthStateChanged(this.auth, (user) => {
     //   if (user) {
