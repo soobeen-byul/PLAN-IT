@@ -20,6 +20,7 @@ import {
   signInWithEmailAndPassword,
   onAuthStateChanged  
 } from "firebase/auth";
+import { getFirestore, doc, getDoc,collection, query, getDocs } from '@firebase/firestore';
 
 
 
@@ -33,10 +34,37 @@ export default {
     };
   },
   methods: {
+    async getFireInfo(){
+
+        var userInfo=[]
+        var todoList=[]
+        var categoryItems=[]
+
+        const docRef1 = doc(getFirestore(), "users", getAuth().currentUser.email);
+        const docUserInfo = await getDoc(docRef1);
+        if(docUserInfo.exists()){
+            userInfo.push(docUserInfo.data().UserInfo)
+        }
+
+        const q1=query(collection(getFirestore(), "users",getAuth().currentUser.email,'Todo'))
+        const querySnapshot1 = await getDocs(q1);
+        querySnapshot1.forEach((doc) => {
+          if(doc.exists()){
+            todoList.push(doc.data().TodoInfo)
+          }
+        })  
+        const q2=query(collection(getFirestore(), "users",getAuth().currentUser.email,'Category'))
+        const querySnapshot2 = await getDocs(q2);
+        querySnapshot2.forEach((doc) => {
+          if(doc.exists()){
+            categoryItems.push(doc.data().cateInfo)
+          }
+        })  
+
+        console.log(todoList)
+        this.$store.commit('getLocalData',{todoList,categoryItems,userInfo});},
     addUser(){
         try {
-
-
         createUserWithEmailAndPassword(this.auth, this.email, this.password)
         .then((userCredential) => {
             console.log(userCredential)
@@ -68,6 +96,7 @@ export default {
     onAuthStateChanged(getAuth(), (user) => {
       if (user) {
         this.$router.push({ path: "todo" }).catch(()=>{});
+        this.getFireInfo()
       } else {
         console.log("not logged in");
       }
