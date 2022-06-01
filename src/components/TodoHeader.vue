@@ -9,13 +9,10 @@
     <div class="sidebar">
       <img class="profile" src="../assets/seed.png"> 
        {{name}}
-      <span class="logoutbtn" @click="logout">로그아웃</span>
-      <p> 작고 소소한 미션 <span class="far fa-question-circle"> </span> </p>
-      <span>오늘의 미션 하러가기 <span class="fas fa-camera"> </span></span>
-      <span>모아보기</span>
+      <p class="logoutbtn" @click="logout">로그아웃</p>
+      <p class="fas fa-camera" @click="gotoMission">오늘의 미션 하러가기</p>
       <p>설정</p>
       <span class="fas fa-user-edit" @click="showEditInfoModal"> 계정 </span>
-
       <span class="fas fa-bell"> 알림</span>
 
     </div>
@@ -236,8 +233,10 @@ export default {
 
     downDate(){
       this.$emit('downDate')
+    },
 
-
+    gotoMission(){
+      this.$router.push({ path: "/mission" })
     }
   },
 };
