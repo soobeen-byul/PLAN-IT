@@ -110,8 +110,11 @@ export default {
       editedCate:''
     }
   },
-  
-
+  created() {
+    setInterval(() => {
+      this.checkDeadlines();
+    }, 1000);
+},
   methods: {
     removeTodo(keyIdx) {
       this.$store.commit('removeTodo',keyIdx);
@@ -192,6 +195,35 @@ export default {
 
       this.clearInput()
 
+    },
+    checkDeadlines() {
+      var now = new Date();
+      var yearCheck    = now.getFullYear();
+      var monthCheck   = now.getMonth() + 1;
+      var dayCheck     = now.getDate();
+      var hourCheck    = now.getHours();
+      var minuteCheck  = now.getMinutes();
+      var secondCheck  = now.getSeconds();
+      // console.log(yearCheck, monthCheck, dayCheck, hourCheck, minuteCheck);
+
+      for (var i of this.todoList) {
+        var alarmDay = i.todoDate;
+        var alarmTime = i.alarm;
+        // console.log(Number(alarmDay.split("-")[0]), Number(alarmDay.split("-")[1]) , Number(alarmDay.split("-")[2]) , Number(alarmTime.split(":")[0]), Number(alarmTime.split(":")[1]))
+        if (yearCheck == Number(alarmDay.split("-")[0])
+        && monthCheck == Number(alarmDay.split("-")[1])
+        && dayCheck == Number(alarmDay.split("-")[2])
+        && hourCheck == Number(alarmTime.split(":")[0])
+        && minuteCheck  == Number(alarmTime.split(":")[1])
+        && secondCheck == (0 || 1)
+        )
+        {
+          // createNotification(i.task)
+          navigator.vibrate([2000, 500, 2000, 500]);
+          alert(i.task + "를 할 시간입니다")
+          return i.task
+        }
+      }
     },
 
     clearInput(){

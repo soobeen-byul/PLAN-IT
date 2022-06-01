@@ -17,8 +17,6 @@
       <p>설정</p>
       <span class="fas fa-user-edit"> 계정 </span>
       <span class="fas fa-bell"> 알림</span>
-      <i class="fa fa-cloud"> eff </i>
-      <span class="fas fa-frosty-head"> 폰트어썸 </span>
     </div>
     <label class="weather">
       <div id="weather" class="weather"> {{weather.main}} </div>
