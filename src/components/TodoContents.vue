@@ -32,6 +32,7 @@ export default {
       auth: getAuth(),
       nowDate:'',
       nowPage:undefined,
+      TFEditInfoModal: false
       // todoList:[],
       // categoryItems:[],
       // userInfo:[]
@@ -131,12 +132,8 @@ export default {
    
     onAuthStateChanged(this.auth, (user) => {
       if (user) {
-        this.name = user.email;
+        this.email = user.email;
         this.getFireInfo()
-        // setInterval(() => {
-        //   this.getFireInfo()
-        //   }, 1000);
-
 
       } else {
         this.$router.replace({ path: "/" }).catch(()=>{});

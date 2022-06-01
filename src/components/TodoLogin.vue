@@ -21,7 +21,6 @@ import {
   onAuthStateChanged  
 } from "firebase/auth";
 import { getFirestore, doc, getDoc,collection, query, getDocs } from '@firebase/firestore';
-// import { getFirestore, doc, getDoc } from '@firebase/firestore';
 
 
 
@@ -46,6 +45,7 @@ export default {
         if(docUserInfo.exists()){
             userInfo.push(docUserInfo.data().UserInfo)
         }
+
         const q1=query(collection(getFirestore(), "users",getAuth().currentUser.email,'Todo'))
         const querySnapshot1 = await getDocs(q1);
         querySnapshot1.forEach((doc) => {

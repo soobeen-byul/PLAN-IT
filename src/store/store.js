@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import {getFirestore,doc,setDoc,deleteDoc,updateDoc} from "firebase/firestore";
 import {getAuth} from "firebase/auth";
 
+
 Vue.use(Vuex);
 
 
@@ -294,11 +295,12 @@ export const store = new Vuex.Store({
             state.categoryItems=payload.categoryItems
             state.userInfo=payload.userInfo
         },
+        
         addUserInfo: (state,email) => {
-            var info={
-                email:email
-            }
-            state.userInfo.push(info)
+            // var info={
+            //     email:email
+            // }
+            // state.userInfo.push(info)
             localStorage.setItem('userInfo',JSON.stringify(state.userInfo))
 
             var user = getAuth().currentUser.email;
@@ -306,7 +308,7 @@ export const store = new Vuex.Store({
 
             var docInfoData={
               UserInfo : {
-                  email:info.email ,
+                  email:email ,
                   keyIdx: Date.now(),
                   name:''
               }
@@ -314,7 +316,25 @@ export const store = new Vuex.Store({
             }
             var docFolder = doc(db,'users',user);
             setDoc(docFolder , docInfoData);
-        }
+        },
+        editName: (state,payload)=>{
+            var user = getAuth().currentUser.email;
+            var db=getFirestore();
+
+
+            console.log(state.userInfo[0].email,333)
+            console.log(payload.name,7777)
+            
+            var docInfoData={
+                UserInfo : {
+                    email:payload.email ,
+                    keyIdx: Date.now(),
+                    name:payload.name
+                }}
+
+            setDoc(doc(db,'users',user),docInfoData)
+                }
+            }
     }
-});
+);
 
