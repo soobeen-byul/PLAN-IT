@@ -107,7 +107,8 @@ export default {
       dday:'',
       editedTodoItem: [],
       editpastCate:'',
-      editedCate:''
+      editedCate:'',
+      todoListF:[]
     }
   },
   created() {
@@ -116,6 +117,19 @@ export default {
     }, 1000);
 },
   methods: {
+    // async getFireInfo(){
+    //     const docRef1 = doc(getFirestore(), "users", getAuth().currentUser.email);
+    //     const docUserInfo = await getDoc(docRef1);
+    //     console.log(1,docUserInfo.exists(),docUserInfo.data().UserInfo.email)
+
+    //     const docRef2 = doc(getFirestore(), "users", getAuth().currentUser.email,'Todo');
+    //     const docTodoInfo = await getDoc(docRef2);
+
+    //     docTodoInfo.forEach((doc)=>{
+    //       console.log(2,doc.exists(),doc.data())
+    //     })
+    //     },
+
     removeTodo(keyIdx) {
       this.$store.commit('removeTodo',keyIdx);
     },
@@ -246,7 +260,8 @@ export default {
       } else {
         this.showEditAlertModal=!this.showEditAlertModal
       }
-    }
+    },
+    
   },
 
   components: {

@@ -9,19 +9,17 @@
     <div class="sidebar">
       <img class="profile" src="../assets/seed.png"> 
        {{name}}
-      <span class="logoutbtn" @click="logout">로그아웃</span>
-      <p> 친구 목록 </p>
-      <p> 작고 소소한 미션 <span class="far fa-question-circle"> </span> </p>
-      <span>오늘의 미션 하러가기 <span class="fas fa-camera"> </span></span>
-      <span>모아보기</span>
+      <p class="logoutbtn" @click="logout">로그아웃</p>
+      <p class="fas fa-camera" @click="gotoMission">오늘의 미션 하러가기</p>
       <p>설정</p>
-      <span class="fas fa-user-edit"> 계정 </span>
+      <span class="fas fa-user-edit" @click="showEditInfoModal"> 계정 </span>
       <span class="fas fa-bell"> 알림</span>
     </div>
     <label class="weather">
       <div id="weather" class="weather"> {{weather.main}} </div>
     </label>
     <br>
+
     <h1> <img class="flowerlogo" src='../assets/flower.png'>PLAN IT<img class="flowerlogo" src='../assets/flower.png'></h1>
     <div class="today-header">
       <h2>
@@ -30,17 +28,28 @@
         <span class="rightpageBtn fas fa-angle-right" type="Button" @click="upDate()"></span>
       </h2>
       <h6 class="today-time">오늘은 {{ today.day}} {{' '}}{{today.date}} {{ today.time }}</h6>
+    
     </div>
+      <EditInfoModal v-if="TFEditInfoModal" @close="TFEditInfoModal = false">
+        <h3 slot="header"><img class="profile" src="../assets/seed.png"> {{name}}</h3>
+        <div slot="content">
+          <span>별명</span>
+          <input type="name" v-model="name">
+        </div>
+        <span slot="footer" class="closeModalBtn" @click="editName(name,email)">저장하기</span>
+      </EditInfoModal>
 
   </header>
+  
 </template>
 
 <script>
-// import {getAuth,onAuthStateChanged,signOut} from "firebase/auth";
+import {onAuthStateChanged} from "firebase/auth";
+import EditInfoModal from './common/EditInfoModal.vue'
 import {getAuth,signOut} from "firebase/auth";
-
-import { getFirestore } from "firebase/firestore";
-
+import { mapGetters} from 'vuex'
+// import { getFirestore} from '@firebase/firestore';
+import { getFirestore, doc, getDoc,collection, query, getDocs } from '@firebase/firestore';
 
 var days = ["두려움의 일요일", "고통의 월요일", "절망의 화요일", "인내의 수요일", "희망의 목요일", "환희의 금요일", "쾌락의 토요일"];
 
@@ -86,6 +95,11 @@ function getWeather() {
 navigator.geolocation.getCurrentPosition(onGeoOK);
 }
 export default {
+  computed:{
+    ...mapGetters({
+      'userInfo':'getUserInfo'
+    })
+  },
   props: 
    ['propsDate'],
   //   {
@@ -98,36 +112,86 @@ export default {
       today: {},
       auth: getAuth(),
       name:'',
+      email:'',
+
       db: getFirestore(),
+
 
       api_key: "91ec8d410db7b0c5b73ecc3dcf76935d",
       url_base: "https://api.openweathermap.org/data/2.5/",
       query: "",
       weather: {},
       latitude: '',
-      longitude: ''
+      longitude: '',
+      TFEditInfoModal: false
       
     };
   },
   created() {
     setInterval(() => {
       this.today = this.getTime();
+      
     }, 1000);
-    // onAuthStateChanged(this.auth, (user) => {
-    //   if (user) {
-    //     this.name = user.email;
-    //   } 
-    // });
-    getWeather()      
+    onAuthStateChanged(this.auth, (user) => {
+      if (user) {
+        this.email = user.email;
+        this.getFireInfo();
+        // this.name = this.userInfo[0].name;
+      } 
+    });
+    getWeather()
+  },
+  components:{
+    EditInfoModal:EditInfoModal
   },
 
+
   methods: {
+    async getFireInfo(){
+
+        var userInfo=[]
+        var todoList=[]
+        var categoryItems=[]
+
+        const docRef1 = doc(getFirestore(), "users", getAuth().currentUser.email);
+        const docUserInfo = await getDoc(docRef1);
+        if(docUserInfo.exists()){
+            userInfo.push(docUserInfo.data().UserInfo)
+        }
+        
+        const q1=query(collection(getFirestore(), "users",getAuth().currentUser.email,'Todo'))
+        const querySnapshot1 = await getDocs(q1);
+        querySnapshot1.forEach((doc) => {
+          if(doc.exists()){
+            todoList.push(doc.data().TodoInfo)
+          }
+        })  
+        const q2=query(collection(getFirestore(), "users",getAuth().currentUser.email,'Category'))
+        const querySnapshot2 = await getDocs(q2);
+        querySnapshot2.forEach((doc) => {
+          if(doc.exists()){
+            categoryItems.push(doc.data().cateInfo)
+          }
+        })  
+
+        this.$store.commit('getLocalData',{todoList,categoryItems,userInfo});},    
+    editName(name,email){
+
+      email=getAuth().currentUser.email
+      this.$store.commit('editName',{name,email})
+      this.TFEditInfoModal = false
+
+    },
+
     logout(){
       signOut(this.auth)
       .then(() => {
 
     });
-
+    },
+    showEditInfoModal(){
+      this.email=getAuth().currentUser.email
+      this.TFEditInfoModal=!this.TFEditInfoModal
     },
 
     getTime() {
@@ -168,8 +232,10 @@ export default {
 
     downDate(){
       this.$emit('downDate')
+    },
 
-
+    gotoMission(){
+      this.$router.push({ path: "/mission" })
     }
   },
 };
