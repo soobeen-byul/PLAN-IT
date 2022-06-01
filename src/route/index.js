@@ -5,13 +5,15 @@ Vue.use(VueRouter);
 
 import TodoLogin from '../components/TodoLogin'
 import TodoContents from '../components/TodoContents'
+import TodoMission from '../components/TodoMission' 
 
 const router = new VueRouter({
     mode: 'history',
     routes: [
         { path: '/', name: 'login',component: TodoLogin },
         { path: '/todo', component: TodoContents },
-        { path: '*', component: TodoLogin }
+        { path : '/mission',component :TodoMission},
+        { path: '*', component: TodoLogin}
     ]
 })
 
