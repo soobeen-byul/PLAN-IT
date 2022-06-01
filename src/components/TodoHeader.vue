@@ -11,8 +11,8 @@
        {{name}}
       <span class="logoutbtn" @click="logout">로그아웃</span>
       <p> 친구 목록 </p>
-      <p> 작고 소소한 미션 <span class="far fa-question-circle"> </span> </p>
-      <span>오늘의 미션 하러가기 <span class="fas fa-camera"> </span></span>
+      <!-- <p> 작고 소소한 미션 <span class="far fa-question-circle"> </span> </p> -->
+      <span>오늘의 미션 하러가기 <span class="fas fa-camera" @click=gotoMission()> </span></span>
       <span>모아보기</span>
       <p>설정</p>
       <span class="fas fa-user-edit"> 계정 </span>
@@ -40,7 +40,6 @@
 <script>
 // import {getAuth,onAuthStateChanged,signOut} from "firebase/auth";
 import {getAuth,signOut} from "firebase/auth";
-
 import { getFirestore } from "firebase/firestore";
 
 
@@ -170,8 +169,10 @@ export default {
 
     downDate(){
       this.$emit('downDate')
+    },
 
-
+    gotoMission(){
+      this.$router.push({ path: "/mission" })
     }
   },
 };
